@@ -2,11 +2,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 public class SmartEnemy extends GameObject{
 
 	private Handler handler;
 	private GameObject player;
+	private BufferedImage enemy_image;
 	
 	public SmartEnemy(float x, float y, ID id, Handler handler){
 		super(x, y, id);
@@ -18,6 +20,9 @@ public class SmartEnemy extends GameObject{
 				player = handler.objects.get(i);
 			}
 		}
+		SpriteSheet ss = new SpriteSheet(Game.sprite_sheet);
+		
+		enemy_image = ss.grabImage(1, 4, 25, 25);
 		
 		
 	}
@@ -41,7 +46,7 @@ public class SmartEnemy extends GameObject{
 			velX*= -1;
 		}
 		
-		handler.addObject(new BasicTrail(x, y, ID.Trail, Color.MAGENTA, 25, 25, 0.02f, handler));
+		//handler.addObject(new BasicTrail(x, y, ID.Trail, Color.MAGENTA, 25, 25, 0.02f, handler));
 	}
 	
 	public Rectangle getBounds() {
@@ -49,9 +54,6 @@ public class SmartEnemy extends GameObject{
 	}
 	
 	public void render(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
-		
-		g.setColor(Color.MAGENTA);
-		g.fillRect((int)this.x, (int)this.y, 25, 25);
+		g.drawImage(enemy_image, (int)x, (int)y, null);
 	}
 }

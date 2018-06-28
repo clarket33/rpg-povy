@@ -1,8 +1,9 @@
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-import java.util.Random;
+import java.awt.image.BufferedImage;
 
 public class Game extends Canvas implements Runnable{
 
@@ -14,33 +15,46 @@ public class Game extends Canvas implements Runnable{
 	private boolean running = false;
 	private Handler handler;
 	private HUD hud;
-	private Random r;
 	private Spawner spawner;
 	private Menu menu;
+	public static boolean paused = false;
+	private Shop shop;
 	
 	public enum STATE{
 		Menu,
 		Help,
 		End,
+		Shop,
 		Game
 	};
 	
 	public STATE gameState = STATE.Menu;
 	
+	public static BufferedImage sprite_sheet;
+	
 	public Game() {
-		// TODO Auto-generated constructor stub
+		
+		BufferedImageLoader loader = new BufferedImageLoader();
+		
+		try {
+			sprite_sheet = loader.loadImage("/sprite_board.png");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 		handler = new Handler(this);
 		hud = new HUD();
+		shop = new Shop(handler, hud);
 		menu = new Menu(this, handler, hud);
 		this.addMouseListener(menu);
-		this.addKeyListener(new KeyInput(handler));
+		this.addMouseListener(shop);
+		this.addKeyListener(new KeyInput(handler, this));
+		AudioPlayer.load();
+		AudioPlayer.getMusic("music").loop();
 		new Window(WIDTH, HEIGHT, "Povy the Alien", this);
+		
 		spawner = new Spawner(handler, hud);
-		r = new Random();
-		for(int i = 0; i <= 1000; i+=50) {
-			handler.addObject(new MenuParticle(10, i, ID.MenuParticle, handler));
-			handler.addObject(new MenuParticle(1250, 1000-i+25, ID.MenuParticle, handler));
-		}
+		
 		
 	}
 
@@ -91,19 +105,19 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	private void tick() {
-		handler.tick();
+		
 		if(gameState == STATE.Game) {
-			hud.tick();
-			spawner.tick();
-			if(hud.HEALTH <= 0) {
-				hud.HEALTH = 100;
-				gameState = STATE.End;
-				handler.clearEnemies();
-				for(int i = 0; i <= 1000; i+=50) {
-					handler.addObject(new MenuParticle(10, i, ID.MenuParticle, handler));
-					handler.addObject(new MenuParticle(1250, 1000-i+25, ID.MenuParticle, handler));
+			if(!paused) {
+				hud.tick();
+				spawner.tick();
+				handler.tick();
+				
+				if(hud.HEALTH <= 0) {
+					hud.HEALTH = 100;
+					gameState = STATE.End;
+					handler.clearEnemies();
 				}
-			}
+			}	
 		}
 		else if (gameState == STATE.Menu) {
 			menu.tick();
@@ -132,10 +146,20 @@ public class Game extends Canvas implements Runnable{
 		g.setColor(Color.black);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
-		handler.render(g);
+		if(paused) {
+			Font fo = new Font("arial", 2, 50);
+			g.setFont(fo);
+			g.setColor(Color.pink);
+			g.drawString("PAUSED", 550, 487);
+		}
 		if(gameState == STATE.Game) {
+			handler.render(g);
 			hud.render(g);
-		}else if (gameState == STATE.Menu || gameState == STATE.Help || gameState == STATE.End) {
+		}else if(gameState == STATE.Shop) {
+			shop.render(g);
+		}
+		else if (gameState == STATE.Menu || gameState == STATE.Help || gameState == STATE.End) {
+			handler.render(g);
 			menu.render(g);
 		} 
 		

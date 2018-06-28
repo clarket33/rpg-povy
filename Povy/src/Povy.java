@@ -1,15 +1,19 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 public class Povy extends GameObject{
 	
 	Handler handler;
+	private BufferedImage player_image;
 	
 	public Povy(int x, int y, ID id, Handler handler){
 		super(x, y, id);
 		this.handler = handler;
+		SpriteSheet ss = new SpriteSheet(Game.sprite_sheet);
 		
+		player_image = ss.grabImage(1, 1, 50, 50);
 	}
 	
 	public void tick() {
@@ -39,10 +43,11 @@ public class Povy extends GameObject{
 	}
 	
 	public void render(Graphics g) {
-		g.setColor(Color.green);
+		//g.setColor(Color.green);
 			
 			
-		g.fillRect((int)this.x, (int)this.y, 50, 50);
+		//g.fillRect((int)this.x, (int)this.y, 50, 50);
+		g.drawImage(player_image, (int)x, (int)y, null);
 	}
 
 }

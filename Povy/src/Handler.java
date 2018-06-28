@@ -4,21 +4,20 @@ import java.util.LinkedList;
 public class Handler {
 	LinkedList<GameObject> objects = new LinkedList<GameObject>();
 	Game game;
+	public static int spd = 7;
 	public Handler(Game game) {
 		this.game = game;
 	}
 	
 	public void tick() {
 		for(int i = 0; i < objects.size(); i++) {
-			GameObject tempObject =  objects.get(i);
-			tempObject.tick();
+			objects.get(i).tick();;
 		}
 	}
 	
 	public void render(Graphics g) {
 		for(int i = 0; i < objects.size(); i++) {
-			GameObject tempObject =  objects.get(i);
-			tempObject.render(g);
+			objects.get(i).render(g);;
 		}
 	}
 	
@@ -31,7 +30,7 @@ public class Handler {
 	}
 
 	public void clearEnemies() {
-		for(int i = 0; i < objects.size(); i++) {
+		for(int i = 0; i < this.objects.size(); i++) {
 			if(objects.get(i).getID() != ID.Povy) {
 				removeObject(objects.get(i));
 				i--;

@@ -3,9 +3,11 @@ import java.awt.event.KeyEvent;
 
 public class KeyInput extends KeyAdapter{
 	private Handler handler;
+	private Game game;
 	private boolean[] keyDown = new boolean[4];
-	public KeyInput(Handler handler) {
+	public KeyInput(Handler handler, Game game) {
 		this.handler = handler;
+		this.game = game;
 		keyDown[0] = false;
 		keyDown[1] = false;
 		keyDown[2] = false;
@@ -18,13 +20,33 @@ public class KeyInput extends KeyAdapter{
 			GameObject temp = handler.objects.get(i);
 			if(temp.getID() == ID.Povy) {
 				//key Events for Povy
-				if(key == KeyEvent.VK_UP) {temp.setVelY(-7);keyDown[0] = true;}
-				if(key == KeyEvent.VK_LEFT) { temp.setVelX(-7);keyDown[1] = true;}
-				if(key == KeyEvent.VK_DOWN) { temp.setVelY(7);keyDown[2] = true;}
-				if(key == KeyEvent.VK_RIGHT) { temp.setVelX(7);keyDown[3] = true;}
+				if(key == KeyEvent.VK_UP) {temp.setVelY(-handler.spd);keyDown[0] = true;}
+				if(key == KeyEvent.VK_LEFT) { temp.setVelX(-handler.spd);keyDown[1] = true;}
+				if(key == KeyEvent.VK_DOWN) { temp.setVelY(handler.spd);keyDown[2] = true;}
+				if(key == KeyEvent.VK_RIGHT) { temp.setVelX(handler.spd);keyDown[3] = true;}
 			}
 		}
+		
+		if(key == KeyEvent.VK_SPACE) {
+			if(game.gameState == Game.STATE.Game) {
+				if(Game.paused) {
+					Game.paused = false;
+				}
+				else {
+					Game.paused = true;
+				}
+			}
+		}
+		
 		if(key == KeyEvent.VK_ESCAPE) System.exit(1);
+		
+		if(key == KeyEvent.VK_S) {
+			if(game.gameState == Game.STATE.Game)
+				game.gameState = Game.STATE.Shop;
+			else if(game.gameState == Game.STATE.Shop) {
+				game.gameState = Game.STATE.Game;
+			}
+		}
 	}
 	
 	
