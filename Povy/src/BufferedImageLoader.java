@@ -1,8 +1,14 @@
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+/**
+ * 
+ * @author clarkt5
+ * aids in the loading in of images
+ */
 public class BufferedImageLoader {
 	
 	BufferedImage image;

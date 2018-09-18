@@ -1,76 +1,100 @@
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 
+
+/**
+ * the Menu is the Main Menu of the game. You can start a new game or quit
+ * @author clarkt5
+ *
+ */
 public class Menu extends MouseAdapter{
 	private Game game;
 	private Handler handler;
 	private Random r;
 	private HUD hud;
+	private BufferedImage titleScreen;
+	private BufferedImage play, quit;
 	
+	/**
+	 * creates the menu
+	 * @param game
+	 * @param handler
+	 * @param hud
+	 */
 	public Menu(Game game, Handler handler, HUD hud) {
 		this.game = game;
 		this.handler = handler;
 		r = new Random();
 		this.hud = hud;
+		play = null;
+		quit = null;
+		 try {
+	        play = ImageIO.read(new File("Povy/res/NewGame.png"));
+	        quit = ImageIO.read(new File("Povy/res/quit.png"));
+	    } catch (IOException e) {
+	    	e.printStackTrace();
+	    }
+		SpriteSheet ss = new SpriteSheet(Game.sprite_sheet);
+		titleScreen = ss.grabImage(1, 1, 1280, 975, "space");
 	}
 	
+	/**
+	 * either starts a new game or quits
+	 */
 	public void mousePressed(MouseEvent e) {
 		int mx = e.getX();
 		int my = e.getY();
-
-		//back in help menu
-		if(game.gameState == Game.STATE.Help) {
-			//return to main menu
-			if(mouseOver(mx, my, 460, 600, 400, 100)) {
-				AudioPlayer.getSound("click").play();
-				game.gameState = Game.STATE.Menu;
-				return;
-			}
-		}
 		if(game.gameState == Game.STATE.Menu) {
 			//play button
-			if(mouseOver(mx, my, 460, 300, 400, 100)) {
-				AudioPlayer.getSound("click").play();
-				game.gameState = Game.STATE.Game;
-				handler.clearEnemies();
-				handler.addObject(new Povy(100, 100, ID.Povy, handler));
-				handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH-56), r.nextInt(Game.HEIGHT-76), ID.BasicEnemy, handler));
+			if(mouseOver(mx, my, game.WIDTH/2 - 190, game.HEIGHT/2 - 186, 400, 100)) {
+				AudioPlayer.getSound("click").play(1, (float).1);
+				AudioPlayer.getMusic("title").stop();
+				
+				
+				handler.clear();
+				Game.map = new MapReader(handler);
+				AudioPlayer.getMusic("dungeon").loop(1, (float).1);
+				handler.addObject(new Povy(257*2, 49*2, ID.Povy, handler));
+				handler.addObject(new Grogo(182*2, 24*2, ID.Grogo, handler));
+				handler.addObject(new Golem(550*2, 216*2, ID.Golem, handler, Golem.GolemType.firstGolem));
+				handler.addObject(new Golem(1753*2, 98*2, ID.Golem, handler, Golem.GolemType.normal));
+				handler.addObject(new Golem(2349*2, 510*2, ID.Golem, handler, Golem.GolemType.normal));
+				handler.addObject(new Golem(2259*2, 1729*2, ID.Golem, handler, Golem.GolemType.normal));
+				handler.addObject(new Golem(765*2, 509*2, ID.Golem, handler, Golem.GolemType.normal));
+				
+				handler.addObject(new Rat(2165*2, 170*2, ID.Rat, handler, 0));
+				handler.addObject(new Rat(1424*2, 252*2, ID.Rat, handler, 1));
+				handler.addObject(new Rat(2335*2, 1097*2, ID.Rat, handler, 0));
+				handler.addObject(new Rat(435*2, 1566*2, ID.Rat, handler, 0));
+				
+				game.gameState = Game.STATE.KeyFromGrogo;
+				
+				
+				
+				
 			}
 			
 			
 			
 			//quit
-			if(mouseOver(mx, my, 460, 600, 400, 100)) {
+			if(mouseOver(mx, my, game.WIDTH/2 - 190, game.HEIGHT/2 + 114, 400, 100)) {
+				AudioPlayer.getMusic("title").stop();
+				AudioPlayer.getSound("click").play(1, (float).1);
 				System.exit(0);
 			}
 			
-			//help
-			if(mouseOver(mx, my, 460, 450, 400, 100)) {
-				AudioPlayer.getSound("click").play();
-				game.gameState = Game.STATE.Help;
-			}
-		}
-		
-		if(game.gameState == Game.STATE.End) {
-			//exit
-			if(mouseOver(mx, my, 460, 600, 400, 100)) {
-				System.exit(0);
-			}
-			if(mouseOver(mx, my, 460, 450, 400, 100)) {
-				AudioPlayer.getSound("click").play();
-				game.gameState = Game.STATE.Game;
-				handler.clearEnemies();
-				handler.addObject(new Povy(100, 100, ID.Povy, handler));
-				handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH-56), r.nextInt(Game.HEIGHT-76), ID.BasicEnemy, handler));
-				hud.setLevel(1);
-				hud.setScore(0);
-				
-			}
 		}
 		
 	}
@@ -93,94 +117,41 @@ public class Menu extends MouseAdapter{
 		return false;
 	}
 	
+	/**
+	 * renders the menu
+	 * @param g
+	 */
 	public void render(Graphics g) {
-		for(int i = 0; i <= 1000; i+=50) {
-			g.setColor(new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
-			g.fillRect(10, i, 25, 25);
-			g.fillRect(1250, 1000-i, 25, 25);
-		}
+	
 		if(game.gameState == Game.STATE.Menu) {
+			g.drawImage(titleScreen, 0, 0, null);
+			
+			
+			
 			Font fo = new Font("algerian", 1, 100);
 			
-			g.setFont(fo);
-			g.setColor(Color.BLACK);
-			g.fillRect(530, 75, 275, 85);
+			
+			String fName = "/android/Android Scratch.ttf";
+		    InputStream is = Menu.class.getResourceAsStream(fName);
+		    try {
+		    	Font font = Font.createFont(Font.TRUETYPE_FONT, is);
+		    	Font titleFont = font.deriveFont(1, 75);
+		    	g.setFont(titleFont);
+		    }catch(Exception e) {
+		    	g.setFont(fo);
+		    }
+
+			
+			
 			g.setColor(Color.GREEN);
-			g.drawString("POVY", 530, 150);
+			g.drawString("POVY THE ALIEN", Game.WIDTH / 2 - 380, game.HEIGHT /2 - 336);
 			
 			fo = new Font("arial", 1, 50);
 			g.setFont(fo);
-			
-			g.setColor(Color.BLACK);
-			g.fillRect(460, 300, 400, 100);
-			g.setColor(Color.WHITE);
-			g.drawRect(460, 300, 400, 100);
-			g.drawString("Play", 600, 370);
-			
-			g.setColor(Color.BLACK);
-			g.fillRect(460, 450, 400, 100);
-			g.setColor(Color.WHITE);
-			g.drawRect(460, 450, 400, 100);
-			g.drawString("Help", 600, 520);
-			
-			g.setColor(Color.BLACK);
-			g.fillRect(460, 600, 400, 100);
-			g.setColor(Color.WHITE);
-			g.drawRect(460, 600, 400, 100);
-			g.drawString("Quit", 600, 670);
+			g.drawImage(play, game.WIDTH/2-190, game.HEIGHT/2-186, null);
+			g.drawImage(quit, game.WIDTH/2-190, game.HEIGHT/2+114, null);
+
 		}
-		else if(game.gameState == Game.STATE.Help){
-			Font fo = new Font("algerian", 1, 100);
-			
-			g.setFont(fo);
-			g.setColor(Color.white);
-			g.drawString("Help", 530, 150);
-			
-			
-			fo = new Font("arial", 1, 25);
-			g.setFont(fo);
-			g.drawString("Use the arrow keys to dodge enemies and survive"
-					+ " for as long as you can", 250, 300);
-			g.drawString("Use the space bar to pause", 500, 400);
-			
-			
-			fo = new Font("arial", 1, 50);
-			g.setFont(fo);
-			g.setColor(Color.BLACK);
-			g.fillRect(460, 600, 400, 100);
-			g.setColor(Color.white);
-			g.drawRect(460, 600, 400, 100);
-			g.drawString("Back", 600, 670);
-		}
-		
-		else if(game.gameState == Game.STATE.End) {
-			Font fo = new Font("algerian", 1, 100);
-			
-			g.setFont(fo);
-			g.setColor(Color.white);
-			g.drawString("Game Over", 350, 150);
-			
-			
-			fo = new Font("arial", 1, 25);
-			g.setFont(fo);
-			g.drawString("You survived up to level " + hud.getLevel(), 480, 300);
-			
-			
-			fo = new Font("arial", 1, 50);
-			g.setFont(fo);
-			g.setColor(Color.BLACK);
-			g.fillRect(460, 450, 400, 100);
-			g.setColor(Color.white);
-			g.drawRect(460, 450, 400, 100);
-			g.drawString("Play", 600, 520);
-			
-			g.setColor(Color.BLACK);
-			g.fillRect(460, 600, 400, 100);
-			g.setColor(Color.white);
-			g.drawRect(460, 600, 400, 100);
-			g.drawString("Quit", 600, 670);
-		}
-		
 	}
 
 }
