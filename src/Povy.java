@@ -77,7 +77,7 @@ public class Povy extends GameObject{
 		laserBlaster = new ArrayList<BufferedImage>();
 		laser = null;
 		try {
-	        laser = ImageIO.read(new File("Povy/res/LaserBullet.png"));
+	        laser = ImageIO.read(new File("res/LaserBullet.png"));
 	    } catch (IOException e) {
 	    	e.printStackTrace();
 	    }

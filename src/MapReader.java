@@ -102,7 +102,7 @@ public class MapReader {
 		
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
-			File theMap = new File("Povy/res/Dungeon/rpg-dungeon-pack v1.1(wonderdot)/DUNGEON.xml");
+			File theMap = new File("res/Dungeon/rpg-dungeon-pack v1.1(wonderdot)/DUNGEON.xml");
 			 DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			 DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			 Document doc = dBuilder.parse(theMap);
@@ -118,7 +118,7 @@ public class MapReader {
 	            }
 	         }
 	         
-	        File tileSet = new File("Povy/res/Dungeon/rpg-dungeon-pack v1.1(wonderdot)/DungeonTileSet.xml");
+	        File tileSet = new File("res/Dungeon/rpg-dungeon-pack v1.1(wonderdot)/DungeonTileSet.xml");
 	        dbFactory = DocumentBuilderFactory.newInstance();
 			dBuilder = dbFactory.newDocumentBuilder();
 			doc = dBuilder.parse(tileSet);
@@ -398,6 +398,7 @@ public class MapReader {
 			}
 		}
 		**/
+		/**
 		Iterator<String> itr = Game.collisionTiles.get(new Integer(0)).keySet().iterator();
 		while(itr.hasNext()) {
 			String currr = itr.next();
@@ -407,6 +408,7 @@ public class MapReader {
 				g.drawRect(Game.collisionTiles.get(new Integer(0)).get(currr).get(i), Game.collisionTiles.get(new Integer(0)).get(currr).get(i+1),32,32);
 			}
 		}
+		**/
 	    
 	}
 	

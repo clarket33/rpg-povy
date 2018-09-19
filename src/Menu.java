@@ -41,8 +41,8 @@ public class Menu extends MouseAdapter{
 		play = null;
 		quit = null;
 		 try {
-	        play = ImageIO.read(new File("Povy/res/NewGame.png"));
-	        quit = ImageIO.read(new File("Povy/res/quit.png"));
+	        play = ImageIO.read(new File("res/NewGame.png"));
+	        quit = ImageIO.read(new File("res/quit.png"));
 	    } catch (IOException e) {
 	    	e.printStackTrace();
 	    }
@@ -62,7 +62,6 @@ public class Menu extends MouseAdapter{
 				AudioPlayer.getSound("click").play(1, (float).1);
 				AudioPlayer.getMusic("title").stop();
 				
-				
 				handler.clear();
 				Game.map = new MapReader(handler);
 				AudioPlayer.getMusic("dungeon").loop(1, (float).1);
@@ -80,9 +79,6 @@ public class Menu extends MouseAdapter{
 				handler.addObject(new Rat(435*2, 1566*2, ID.Rat, handler, 0));
 				
 				game.gameState = Game.STATE.KeyFromGrogo;
-				
-				
-				
 				
 			}
 			

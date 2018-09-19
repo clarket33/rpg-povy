@@ -65,8 +65,8 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 		text = null;
 		allyCover = null;
 		try {
-	        text = ImageIO.read(new File("Povy/res/textbox.png"));
-	        allyCover = ImageIO.read(new File("Povy/res/allyCover.png"));
+	        text = ImageIO.read(new File("res/textbox.png"));
+	        allyCover = ImageIO.read(new File("res/allyCover.png"));
 	    } catch (IOException e) {
 	    	e.printStackTrace();
 	    }

@@ -182,7 +182,7 @@ public class Battle{
 		 */
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
-			File theMap = new File("Povy/res/Dungeon/rpg-dungeon-pack v1.1(wonderdot)/Battle.xml");
+			File theMap = new File("res/Dungeon/rpg-dungeon-pack v1.1(wonderdot)/Battle.xml");
 			 DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			 DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			 Document doc = dBuilder.parse(theMap);

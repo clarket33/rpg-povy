@@ -43,7 +43,7 @@ public class KeyToPovy extends KeyAdapter{
 	    dungeonKey = null;
 		
 	    try {
-	        dungeonKey = ImageIO.read(new File("Povy/res/dungeonKey.png"));
+	        dungeonKey = ImageIO.read(new File("res/dungeonKey.png"));
 	    } catch (IOException e) {
 	    	e.printStackTrace();
 	    }
