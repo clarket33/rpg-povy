@@ -9,7 +9,7 @@ import java.util.Random;
 /**
  * 
  * @author clarkt5
- * a Golem is an enemy that has two attacks and is a guard in the dungeon
+ * an Elephant Guard is a mid-level boss that has three attacks
  */
 public class ElephantGuard extends GameObject{
 	
@@ -36,7 +36,7 @@ public class ElephantGuard extends GameObject{
 	
 	
 	/**
-	 * creates the golem
+	 * creates the elephant
 	 * @param x
 	 * @param y
 	 * @param id
@@ -163,7 +163,7 @@ public class ElephantGuard extends GameObject{
 		}
 	}
 	/**
-	 * tick method for golem
+	 * tick method for elephant
 	 */
 	public void tick() {
 		if(Game.gameState == Game.STATE.Game) {
@@ -442,6 +442,7 @@ public class ElephantGuard extends GameObject{
 						
 						return;
 					}
+					//punch
 					else if(attackNum == 2) {
 						g.drawImage(attack3.get(attack3Count), (int)x, (int)y, null);
 						
@@ -541,7 +542,7 @@ public class ElephantGuard extends GameObject{
 	
 	@Override
 	/**
-	 * returns the health of the golem
+	 * returns the health of the elephant
 	 */
 	public int getHealth() {
 		// TODO Auto-generated method stub
@@ -561,7 +562,7 @@ public class ElephantGuard extends GameObject{
 	
 	@Override
 	/**
-	 * returns the maximum health that the golem had originally
+	 * returns the maximum health that the elephant had originally
 	 */
 	public int getMaxHealth() {
 		// TODO Auto-generated method stub
