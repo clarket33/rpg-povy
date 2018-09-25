@@ -66,6 +66,7 @@ public class Menu extends MouseAdapter{
 				Game.map = new MapReader(handler);
 				AudioPlayer.getMusic("dungeon").loop(1, (float).1);
 				handler.addObject(new Povy(257*2, 49*2, ID.Povy, handler));
+				//handler.addObject(new Povy(192*2*2, 1200*2, ID.Povy, handler));
 				handler.addObject(new Grogo(182*2, 24*2, ID.Grogo, handler));
 				handler.addObject(new Golem(550*2, 216*2, ID.Golem, handler, Golem.GolemType.firstGolem));
 				handler.addObject(new Golem(1753*2, 98*2, ID.Golem, handler, Golem.GolemType.normal));
@@ -77,6 +78,8 @@ public class Menu extends MouseAdapter{
 				handler.addObject(new Rat(1424*2, 252*2, ID.Rat, handler, 1));
 				handler.addObject(new Rat(2335*2, 1097*2, ID.Rat, handler, 0));
 				handler.addObject(new Rat(435*2, 1566*2, ID.Rat, handler, 0));
+				
+				handler.addObject(new ElephantGuard(192*2, 1024*2, ID.ElephantGuard, handler));
 				
 				game.gameState = Game.STATE.KeyFromGrogo;
 				

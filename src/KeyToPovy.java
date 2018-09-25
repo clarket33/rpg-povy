@@ -266,9 +266,9 @@ public class KeyToPovy extends KeyAdapter{
 			if(speedChanged) {
 				count = dialogue.get(new Integer(sceneNumber)).length;
 				for(int i = 0; i < count; i++) {
-					System.out.println(doneCount);
-					System.out.println(copy);
-					System.out.println(dialogue.get(new Integer(sceneNumber)));
+					//System.out.println(doneCount);
+					//System.out.println(copy);
+					//System.out.println(dialogue.get(new Integer(sceneNumber)));
 					copy[i] = dialogue.get(new Integer(sceneNumber))[i];
 				}
 			}

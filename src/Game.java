@@ -70,6 +70,8 @@ public class Game extends Canvas implements Runnable{
 			sprite_sheet.put("yeti", loader.loadImage("/yeti-Sheet.png"));
 			sprite_sheet.put("werewolf", loader.loadImage("/werewolf-Sheet.png"));
 			sprite_sheet.put("golem", loader.loadImage("/golem-Sheet.png"));
+			sprite_sheet.put("elephantGuard", loader.loadImage("/Guard.png"));
+			sprite_sheet.put("elephantGuard1", loader.loadImage("/Guard1.png"));
 			sprite_sheet.put("golem1", loader.loadImage("/golem-SheetRight.png"));
 			sprite_sheet.put("space", loader.loadImage("/Space_Sheet.png"));
 			sprite_sheet.put("rat", loader.loadImage("/rat-Sheet.png"));
@@ -164,7 +166,7 @@ public class Game extends Canvas implements Runnable{
 			frames++;
 			if(System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
-				//System.out.println("FPS: " + frames);
+				System.out.println("FPS: " + frames);
 				frames = 0;
 			}
 		}

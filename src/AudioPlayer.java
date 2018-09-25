@@ -53,6 +53,8 @@ public class AudioPlayer {
 			soundMap.put("escaped", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/Stingers_Jingles/Racing/FA_Positive_Notification_1.wav"));
 			soundMap.put("noEscape", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Stinger/PP_Negative_Feedback.wav"));
 			soundMap.put("ratHit", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Cute_Impact_1_1.wav"));
+			soundMap.put("elephantJump", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Jump_1_5.wav"));
+			soundMap.put("elephantLand", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Small_Impact_1_5.wav"));
 			
 		} catch(SlickException e) {
 			e.printStackTrace();

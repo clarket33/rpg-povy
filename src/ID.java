@@ -11,6 +11,7 @@ public enum ID {
 	Werewolf(),
 	Yeti(),
 	Grogo(),
+	ElephantGuard(),
 	Rat(),
 	NonEnemy();
 	

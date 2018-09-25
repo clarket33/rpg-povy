@@ -90,6 +90,9 @@ public class Battle{
 		else if(enemy.getID() == ID.Rat){
 			canRun = true;
 		}
+		else if(enemy.getID() == ID.ElephantGuard){
+			canRun = false;
+		}
 		
 		transition = new ArrayList<BufferedImage>();
 		transition.add(ss.grabImage(3, 3, 1280, 960,"transition"));
@@ -279,15 +282,21 @@ public class Battle{
 							AudioPlayer.getSound("laserHit").play(1, (float).1);
 							if(enemy.getID() == ID.Golem) {
 								damage = damageMaker.nextInt(30);
-								if(damage <= 20) enemy.takeDamage(4);
-								else if(damage <=28)enemy.takeDamage(10);
-								else enemy.takeDamage(15);
+								if(damage <= 20) enemy.takeDamage(4 + (2*ExperienceBar.laserLevel));
+								else if(damage <=28)enemy.takeDamage(10 + (2*ExperienceBar.laserLevel));
+								else enemy.takeDamage(15 + (2*ExperienceBar.laserLevel));
 							}
 							if(enemy.getID() == ID.Rat) {
 								damage = damageMaker.nextInt(30);
-								if(damage <= 20) enemy.takeDamage(6);
-								else if(damage <=28)enemy.takeDamage(12);
-								else enemy.takeDamage(17);
+								if(damage <= 20) enemy.takeDamage(6 + (2*ExperienceBar.laserLevel));
+								else if(damage <=28)enemy.takeDamage(12 + (2*ExperienceBar.laserLevel));
+								else enemy.takeDamage(17 + (2*ExperienceBar.laserLevel));
+							}
+							if(enemy.getID() == ID.ElephantGuard) {
+								damage = damageMaker.nextInt(30);
+								if(damage <= 20) enemy.takeDamage(4 + (2*ExperienceBar.laserLevel));
+								else if(damage <=28)enemy.takeDamage(12 + (2*ExperienceBar.laserLevel));
+								else enemy.takeDamage(17 + (2*ExperienceBar.laserLevel));
 							}
 							player.setVelX(-3);
 							Povy.laserBulletX = (int)player.getX() + 67;
@@ -340,6 +349,7 @@ public class Battle{
 			if(menuPosition == 3) {
 				if(enemy.getID() == ID.Golem) runStat = runAway.nextInt(5);
 				else if(enemy.getID() == ID.Rat) runStat = runAway.nextInt(3);
+				else if(enemy.getID() == ID.ElephantGuard) runStat = runAway.nextInt(4);
 				else runStat = runAway.nextInt(4);
 				
 				if(runStat <= 1) {
@@ -405,9 +415,32 @@ public class Battle{
 					else HUD.HEALTH -= 8;
 				}
 				if(enemy.getID() == ID.Rat) {
-					damage = damageMaker.nextInt(5);
-					if(damage == 0 || damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 4;
-					else HUD.HEALTH -= 4;
+					HUD.HEALTH -= 4;
+				}
+				if(enemy.getID() == ID.ElephantGuard) {
+					ElephantGuard e = (ElephantGuard) enemy;
+					int attack = e.getAttackDam();
+					if(attack == 2) {
+						damage = damageMaker.nextInt(5);
+						if(damage == 0) {
+							HUD.HEALTH -= 4;
+						}
+						else if(damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 8;
+						else HUD.HEALTH -= 12;
+					}
+					else if(attack == 1) {
+						damage = damageMaker.nextInt(5);
+						if(damage == 0 || damage == 1 || damage == 2) HUD.HEALTH -= 8;
+						else HUD.HEALTH -= 12;
+					}
+					else {
+						damage = damageMaker.nextInt(5);
+						if(damage == 0) {
+							HUD.HEALTH -= 4;
+						}
+						else HUD.HEALTH -= 8;
+					}
+					
 				}
 			}
 		}
@@ -417,15 +450,27 @@ public class Battle{
 				if(menuPosition == 5) {
 					if(enemy.getID() == ID.Golem) {
 						damage = damageMaker.nextInt(20);
-						if(damage <= 12) enemy.takeDamage(2);
-						else if(damage <=18)enemy.takeDamage(3);
-						else enemy.takeDamage(4);
+						if(ExperienceBar.pummelLevel == 0) {
+							if(damage <= 12) enemy.takeDamage(2);
+							else if(damage <=18)enemy.takeDamage(3);
+							else enemy.takeDamage(4);
+						}
+						else if(ExperienceBar.pummelLevel == 1) {
+							if(damage <= 10) enemy.takeDamage(2);
+							else if(damage <=18)enemy.takeDamage(3);
+							else enemy.takeDamage(4);
+						}
 					}
 					if(enemy.getID() == ID.Rat) {
 						damage = damageMaker.nextInt(20);
-						if(damage <= 12) enemy.takeDamage(3);
-						else if(damage <=18)enemy.takeDamage(4);
+						if(damage <= 12) enemy.takeDamage(3 + ExperienceBar.pummelLevel);
+						else if(damage <=18)enemy.takeDamage(4 + ExperienceBar.pummelLevel);
 						else enemy.takeDamage(5);
+					}
+					if(enemy.getID() == ID.ElephantGuard) {
+						damage = damageMaker.nextInt(20);
+						if(damage <= 12) enemy.takeDamage(2 + ExperienceBar.pummelLevel);
+						else enemy.takeDamage(3 + ExperienceBar.pummelLevel);
 					}
 				}
 				//ally
@@ -440,6 +485,11 @@ public class Battle{
 							damage = damageMaker.nextInt(20);
 							if(damage <= 10) enemy.takeDamage(2);
 							else if(damage <=19)enemy.takeDamage(3);
+						}
+						if(enemy.getID() == ID.ElephantGuard) {
+							damage = damageMaker.nextInt(20);
+							if(damage <= 10) enemy.takeDamage(1);
+							else if(damage <=19)enemy.takeDamage(2);
 						}
 					}
 				}
@@ -698,6 +748,15 @@ public class Battle{
 						enemy.setY(2*210);
 						enemyOriginalX = (int)enemy.getX();
 					}
+					if(enemy.getID() == ID.ElephantGuard) {
+						enemyX = enemy.getX();
+						enemyY = enemy.getY();
+						velX = enemy.getVelX();
+						velY = enemy.getVelY();
+						enemy.setX(2*410);
+						enemy.setY(2*163);
+						enemyOriginalX = (int)enemy.getX();
+					}
 				}
 				return;
 			}
@@ -750,6 +809,17 @@ public class Battle{
 				HUD.allyCount = 0;
 				Battle.useAlly = false;
 				Game.gameState = Game.STATE.PostBattle;
+				if(enemy.getID() == ID.ElephantGuard) {
+					for(int i = 0; i < handler.objects.size(); i++) {
+						if(handler.objects.get(i) instanceof Gate) {
+							Gate temp = (Gate)handler.objects.get(i);
+							if(temp.gateNum() == 3) {
+								temp.hasKey();
+								temp.open();
+							}
+						}
+					}
+				}
 				
 				
 			}
