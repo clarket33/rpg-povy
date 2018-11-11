@@ -116,6 +116,11 @@ public class Game extends Canvas implements Runnable{
 			sprite_sheet.put("allyMenu", loader.loadImage("/allyMenu.png"));
 			sprite_sheet.put("allyMeter", loader.loadImage("/allyMeter.png"));
 			
+			sprite_sheet.put("smallAttackBoost", loader.loadImage("/smallAttackBoost.png"));
+			sprite_sheet.put("smallDefenseBoost", loader.loadImage("/smallDefenseBoost.png"));
+			sprite_sheet.put("largeAttackBoost", loader.loadImage("/LargeAttackBoost.png"));
+			sprite_sheet.put("largeDefenseBoost", loader.loadImage("/largeDefenseBoost.png"));
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

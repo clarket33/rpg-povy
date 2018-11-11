@@ -5,9 +5,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -15,6 +17,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
 /**
  * 
  * @author clarkt5
@@ -46,11 +49,14 @@ public class Battle{
 	public static boolean useAlly = false;
 	private int laserHit = 0;
 	private Random runAway;
+	private BufferedImage text;
 	private float enemyX, enemyY, velX, velY;
 	public static boolean left = true, itemSelected = false, allySelected = false;
 	private boolean setLaser = false;
 	public static boolean contact = false;
-	public static int expToBeAdded; 
+	public static int expToBeAdded;
+	public static boolean smDBoost=false, lgDBoost=false, smABoost=false, lgABoost=false;
+	public static int defenseCount = 0, attackCount = 0;
 	private int speedControl = 0, setSpeed = 0, setSpeedEnemy = 0, originalX, enemyOriginalX;
 
 	public enum BATTLESTATE{
@@ -93,6 +99,12 @@ public class Battle{
 		else if(enemy.getID() == ID.ElephantGuard){
 			canRun = false;
 		}
+		text = null;
+		try {
+	        text = ImageIO.read(new File("res/textbox.png"));
+	    } catch (IOException e) {
+	    	e.printStackTrace();
+	    }
 		
 		transition = new ArrayList<BufferedImage>();
 		transition.add(ss.grabImage(3, 3, 1280, 960,"transition"));
@@ -247,6 +259,14 @@ public class Battle{
 				if(player.getVelX() == -3) {
 					if(player.getX() <= originalX) {
 						player.setVelX(0);
+						if(lgABoost || smABoost) {
+							attackCount += 1;
+							if(attackCount == 3) {
+								lgABoost = false;
+								smABoost = false;
+								attackCount = 0;
+							}
+						}
 						battleState = BATTLESTATE.EnemyTurn;
 					}
 				}
@@ -282,21 +302,57 @@ public class Battle{
 							AudioPlayer.getSound("laserHit").play(1, (float).1);
 							if(enemy.getID() == ID.Golem) {
 								damage = damageMaker.nextInt(30);
-								if(damage <= 20) enemy.takeDamage(4 + (2*ExperienceBar.laserLevel));
-								else if(damage <=28)enemy.takeDamage(10 + (2*ExperienceBar.laserLevel));
-								else enemy.takeDamage(15 + (2*ExperienceBar.laserLevel));
+								if(lgABoost) {
+									if(damage <= 18) enemy.takeDamage((4 + (2*ExperienceBar.laserLevel))*3);
+									else if(damage <=26)enemy.takeDamage((10 + (2*ExperienceBar.laserLevel))*3);
+									else enemy.takeDamage((15 + (2*ExperienceBar.laserLevel))*3);
+								}
+								else if(smABoost) {
+									if(damage <= 18) enemy.takeDamage((4 + (2*ExperienceBar.laserLevel))*2);
+									else if(damage <=26)enemy.takeDamage((10 + (2*ExperienceBar.laserLevel))*2);
+									else enemy.takeDamage((15 + (2*ExperienceBar.laserLevel))*2);
+								}
+								else {
+									if(damage <= 18) enemy.takeDamage(4 + (2*ExperienceBar.laserLevel));
+									else if(damage <=26)enemy.takeDamage(10 + (2*ExperienceBar.laserLevel));
+									else enemy.takeDamage(15 + (2*ExperienceBar.laserLevel));
+								}
 							}
 							if(enemy.getID() == ID.Rat) {
 								damage = damageMaker.nextInt(30);
-								if(damage <= 20) enemy.takeDamage(6 + (2*ExperienceBar.laserLevel));
-								else if(damage <=28)enemy.takeDamage(12 + (2*ExperienceBar.laserLevel));
-								else enemy.takeDamage(17 + (2*ExperienceBar.laserLevel));
+								if(lgABoost) {
+									if(damage <= 20) enemy.takeDamage((6 + (2*ExperienceBar.laserLevel))*4);
+									else if(damage <=28)enemy.takeDamage((12 + (2*ExperienceBar.laserLevel))*4);
+									else enemy.takeDamage((17 + (2*ExperienceBar.laserLevel))*4);
+								}
+								else if(smABoost) {
+									if(damage <= 20) enemy.takeDamage((6 + (2*ExperienceBar.laserLevel))*2);
+									else if(damage <=28)enemy.takeDamage((12 + (2*ExperienceBar.laserLevel))*2);
+									else enemy.takeDamage((17 + (2*ExperienceBar.laserLevel))*2);
+								}
+								else {
+									if(damage <= 20) enemy.takeDamage(6 + (2*ExperienceBar.laserLevel));
+									else if(damage <=28)enemy.takeDamage(12 + (2*ExperienceBar.laserLevel));
+									else enemy.takeDamage(17 + (2*ExperienceBar.laserLevel));
+								}
 							}
 							if(enemy.getID() == ID.ElephantGuard) {
 								damage = damageMaker.nextInt(30);
-								if(damage <= 20) enemy.takeDamage(4 + (2*ExperienceBar.laserLevel));
-								else if(damage <=28)enemy.takeDamage(12 + (2*ExperienceBar.laserLevel));
-								else enemy.takeDamage(17 + (2*ExperienceBar.laserLevel));
+								if(lgABoost) {
+									if(damage <= 20) enemy.takeDamage((4 + (2*ExperienceBar.laserLevel))*4);
+									else if(damage <=28)enemy.takeDamage((12 + (2*ExperienceBar.laserLevel))*4);
+									else enemy.takeDamage((17 + (2*ExperienceBar.laserLevel))*4);
+								}
+								else if(smABoost) {
+									if(damage <= 20) enemy.takeDamage((4 + (2*ExperienceBar.laserLevel))*2);
+									else if(damage <=28)enemy.takeDamage((12 + (2*ExperienceBar.laserLevel))*2);
+									else enemy.takeDamage((17 + (2*ExperienceBar.laserLevel))*2);
+								}
+								else {
+									if(damage <= 20) enemy.takeDamage(4 + (2*ExperienceBar.laserLevel));
+									else if(damage <=28)enemy.takeDamage(12 + (2*ExperienceBar.laserLevel));
+									else enemy.takeDamage(17 + (2*ExperienceBar.laserLevel));
+								}
 							}
 							player.setVelX(-3);
 							Povy.laserBulletX = (int)player.getX() + 67;
@@ -311,6 +367,14 @@ public class Battle{
 					}
 					if(player.getX() <= originalX) {
 						player.setVelX(0);
+						if(lgABoost || smABoost) {
+							attackCount += 1;
+							if(attackCount == 3) {
+								lgABoost = false;
+								smABoost = false;
+								attackCount = 0;
+							}
+						}
 						battleState = BATTLESTATE.EnemyTurn;
 					}
 				}	
@@ -341,6 +405,14 @@ public class Battle{
 						ally.setVelX(0);
 						battleState = BATTLESTATE.EnemyTurn;
 						ally.setX(360);
+						if(lgABoost || smABoost) {
+							attackCount += 1;
+							if(attackCount == 3) {
+								lgABoost = false;
+								smABoost = false;
+								attackCount = 0;
+							}
+						}
 					}
 				}
 			}
@@ -355,12 +427,24 @@ public class Battle{
 				if(runStat <= 1) {
 					escaped = 1;
 					AudioPlayer.getSound("noEscape").play(1, (float).1);
+					if(lgABoost || smABoost) {
+						attackCount += 1;
+						if(attackCount == 3) {
+							lgABoost = false;
+							smABoost = false;
+							attackCount = 0;
+						}
+					}
 					battleState = BATTLESTATE.EnemyTurn;
 				}
 				else {
 					escaped = 2;
 					AudioPlayer.getSound("escaped").play(1, (float).1);
 					battleState = BATTLESTATE.gotAway;
+					lgABoost = false;
+					smABoost = false;
+					lgDBoost = false;
+					smDBoost = false;
 				}
 			}
 		}
@@ -386,6 +470,14 @@ public class Battle{
 			if(enemy.getVelX() == 3) {
 				if(enemy.getX() >= enemyOriginalX) {
 					enemy.setVelX(0);
+					if(lgDBoost || smDBoost) {
+						defenseCount += 1;
+						if(defenseCount == 3) {
+							lgDBoost = false;
+							smDBoost = false;
+							defenseCount = 0;
+						}
+					}
 					battleState = BATTLESTATE.PlayerTurnStart;
 				}
 			}
@@ -411,34 +503,93 @@ public class Battle{
 			if(Battle.takeDamage == true) {
 				if(enemy.getID() == ID.Golem) {
 					damage = damageMaker.nextInt(5);
-					if(damage == 0 || damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 4;
-					else HUD.HEALTH -= 8;
+					if(smDBoost) {
+						if(damage == 0 || damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 0;
+						else HUD.HEALTH -= 4;
+					}
+					else if(lgDBoost) {
+						if(damage == 0 || damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 0;
+						else HUD.HEALTH -= 0;
+					}
+					else {
+						if(damage == 0 || damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 4;
+						else HUD.HEALTH -= 8;
+					}
 				}
 				if(enemy.getID() == ID.Rat) {
-					HUD.HEALTH -= 4;
+					if(smDBoost) {
+						HUD.HEALTH -= 0;
+					}
+					else if(lgDBoost) {
+						HUD.HEALTH -= 0;
+					}
+					else {
+						HUD.HEALTH -= 4;
+					}
 				}
 				if(enemy.getID() == ID.ElephantGuard) {
 					ElephantGuard e = (ElephantGuard) enemy;
 					int attack = e.getAttackDam();
 					if(attack == 2) {
 						damage = damageMaker.nextInt(5);
-						if(damage == 0) {
-							HUD.HEALTH -= 4;
+						if(smDBoost) {
+							if(damage == 0) {
+								HUD.HEALTH -= 0;
+							}
+							else if(damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 4;
+							else HUD.HEALTH -= 8;
 						}
-						else if(damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 8;
-						else HUD.HEALTH -= 12;
+						else if(lgDBoost) {
+							if(damage == 0) {
+								HUD.HEALTH -= 0;
+							}
+							else if(damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 0;
+							else HUD.HEALTH -= 4;
+						}
+						else {
+							if(damage == 0) {
+								HUD.HEALTH -= 4;
+							}
+							else if(damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 8;
+							else HUD.HEALTH -= 12;
+						}
 					}
 					else if(attack == 1) {
 						damage = damageMaker.nextInt(5);
-						if(damage == 0 || damage == 1 || damage == 2) HUD.HEALTH -= 8;
-						else HUD.HEALTH -= 12;
+						if(smDBoost) {
+							if(damage == 0 || damage == 1 || damage == 2) HUD.HEALTH -= 4;
+							else HUD.HEALTH -= 8;
+						}
+						else if(lgDBoost) {
+							if(damage == 0 || damage == 1 || damage == 2) HUD.HEALTH -= 0;
+							else HUD.HEALTH -= 4;
+						}
+						else {
+							if(damage == 0 || damage == 1 || damage == 2) HUD.HEALTH -= 8;
+							else HUD.HEALTH -= 12;
+						}
+						
 					}
 					else {
 						damage = damageMaker.nextInt(5);
-						if(damage == 0) {
-							HUD.HEALTH -= 4;
+						if(smDBoost) {
+							if(damage == 0) {
+								HUD.HEALTH -= 0;
+							}
+							else HUD.HEALTH -= 4;
 						}
-						else HUD.HEALTH -= 8;
+						else if(lgDBoost) {
+							if(damage == 0) {
+								HUD.HEALTH -= 0;
+							}
+							else HUD.HEALTH -= 0;
+						}
+						else {
+							if(damage == 0) {
+								HUD.HEALTH -= 4;
+							}
+							else HUD.HEALTH -= 8;
+						}
 					}
 					
 				}
@@ -450,27 +601,56 @@ public class Battle{
 				if(menuPosition == 5) {
 					if(enemy.getID() == ID.Golem) {
 						damage = damageMaker.nextInt(20);
-						if(ExperienceBar.pummelLevel == 0) {
-							if(damage <= 12) enemy.takeDamage(2);
-							else if(damage <=18)enemy.takeDamage(3);
-							else enemy.takeDamage(4);
+						if(smABoost) {
+							if(damage <= 12) enemy.takeDamage((2 + ExperienceBar.pummelLevel)*2);
+							else if(damage <=18)enemy.takeDamage((3 + ExperienceBar.pummelLevel)*2);
+							else enemy.takeDamage((4 + ExperienceBar.pummelLevel)*2);
 						}
-						else if(ExperienceBar.pummelLevel == 1) {
-							if(damage <= 10) enemy.takeDamage(2);
-							else if(damage <=18)enemy.takeDamage(3);
-							else enemy.takeDamage(4);
+						else if(lgABoost) {
+							if(damage <= 12) enemy.takeDamage((2 + ExperienceBar.pummelLevel)*3);
+							else if(damage <=18)enemy.takeDamage((3 + ExperienceBar.pummelLevel)*3);
+							else enemy.takeDamage((4 + ExperienceBar.pummelLevel)*3);
 						}
+						else {
+							if(damage <= 12) enemy.takeDamage(2 + ExperienceBar.pummelLevel);
+							else if(damage <=18)enemy.takeDamage(3 + ExperienceBar.pummelLevel);
+							else enemy.takeDamage(4 + ExperienceBar.pummelLevel);
+						}
+						
 					}
 					if(enemy.getID() == ID.Rat) {
 						damage = damageMaker.nextInt(20);
-						if(damage <= 12) enemy.takeDamage(3 + ExperienceBar.pummelLevel);
-						else if(damage <=18)enemy.takeDamage(4 + ExperienceBar.pummelLevel);
-						else enemy.takeDamage(5);
+						if(smABoost) {
+							if(damage <= 12) enemy.takeDamage((3 + ExperienceBar.pummelLevel)*2);
+							else if(damage <=18)enemy.takeDamage((4 + ExperienceBar.pummelLevel)*2);
+							else enemy.takeDamage((5+ ExperienceBar.pummelLevel)*2);
+						}
+						else if(lgABoost) {
+							if(damage <= 12) enemy.takeDamage((3 + ExperienceBar.pummelLevel)*3);
+							else if(damage <=18)enemy.takeDamage((4 + ExperienceBar.pummelLevel)*3);
+							else enemy.takeDamage((5 + ExperienceBar.pummelLevel)*3);
+						}
+						else {
+							if(damage <= 12) enemy.takeDamage(3 + ExperienceBar.pummelLevel);
+							else if(damage <=18)enemy.takeDamage(4 + ExperienceBar.pummelLevel);
+							else enemy.takeDamage(5 + ExperienceBar.pummelLevel);
+						}
 					}
+					
 					if(enemy.getID() == ID.ElephantGuard) {
 						damage = damageMaker.nextInt(20);
-						if(damage <= 12) enemy.takeDamage(2 + ExperienceBar.pummelLevel);
-						else enemy.takeDamage(3 + ExperienceBar.pummelLevel);
+						if(smABoost) {
+							if(damage <= 12) enemy.takeDamage((2 + ExperienceBar.pummelLevel)*2);
+							else enemy.takeDamage((3 + ExperienceBar.pummelLevel)*2);
+						}
+						else if(lgABoost) {
+							if(damage <= 12) enemy.takeDamage((2 + ExperienceBar.pummelLevel)*3);
+							else enemy.takeDamage((3 + ExperienceBar.pummelLevel)*3);
+						}
+						else {
+							if(damage <= 12) enemy.takeDamage(2 + ExperienceBar.pummelLevel);
+							else enemy.takeDamage(3 + ExperienceBar.pummelLevel);
+						}
 					}
 				}
 				//ally
@@ -523,7 +703,6 @@ public class Battle{
 	        x = 0;
 	     	y = 0;
 	       	for(int j = 0; j < cur.length; j++) {
-	       		String stringCur = cur[j].replace("\n", "");
 	       		curID = Integer.parseInt(cur[j].replace("\n", ""));
 	       		if(curID != 0) {
 	       			if(Game.animationDungeon.get("torch").contains(cur[j])) {
@@ -554,6 +733,18 @@ public class Battle{
 	       		
 	       	 }
 		}
+		if(lgABoost) {
+			g.drawImage(new Item(Item.ItemType.LargeAttackBoost).getImage(), (int)player.getX()-16, (int)player.getY()-32, null);
+		}
+		else if(smABoost) {
+			g.drawImage(new Item(Item.ItemType.SmallAttackBoost).getImage(), (int)player.getX()-16, (int)player.getY()-32, null);
+		}
+		if(smDBoost) {
+			g.drawImage(new Item(Item.ItemType.SmallDefenseBoost).getImage(), (int)player.getX()+16, (int)player.getY()-32, null);
+		}
+		else if(lgDBoost) {
+			g.drawImage(new Item(Item.ItemType.LargeDefenseBoost).getImage(), (int)player.getX()+16, (int)player.getY()-32, null);
+		}
 		if(escaped == 1) {
 			if(escapeCount <= 100) {
 				g.setFont(new Font("Cooper Black",1,50));
@@ -582,8 +773,12 @@ public class Battle{
        		/**
        		 * draw the option screen to pick an attack
        		 */
+       		Font fo = new Font("Bodoni MT", 1, 20);
+			g.setColor(Color.WHITE);
+			g.setFont(fo);
        		if(!itemSelected && !allySelected) {
 	       		if(left) {
+	       			//laser blaster
 		       		if(menuPosition == 0) {
 		       			g.drawImage(menuActions.get(menuChange+15), 50, 150, null);
 		       			speedControl++;
@@ -595,7 +790,13 @@ public class Battle{
 		       			else if(menuChange == 3) {
 		       				menuChange = -15;
 		       			}
+		       			else {
+							g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+							g.drawString("Hits opponent with a laser blast. Current Level: " + ExperienceBar.laserLevel, Game.camX + 420, Game.camY + 800);
+		       			}
+		       			
 		       		}
+		       		//items
 		       		if(menuPosition == 1) {
 		       			g.drawImage(menuActions.get(menuChange), 50, 150, null);
 		       			speedControl++;
@@ -604,7 +805,12 @@ public class Battle{
 		       					menuChange++;
 		       				}
 		       			}
+		       			else {
+		       				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+							g.drawString("View Items", Game.camX + 590, Game.camY + 800);
+		       			}
 		       		}
+		       		//special
 		       		if(menuPosition == 2) {
 		       			g.drawImage(menuActions.get(menuChange+3), 50, 150, null);
 		       			speedControl++;
@@ -613,7 +819,12 @@ public class Battle{
 		       					menuChange++;
 		       				}
 		       			}
+		       			else {
+		       				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+							g.drawString("???", Game.camX + 620, Game.camY + 800);
+		       			}
 		       		}
+		       		//run
 		       		if(menuPosition == 3) {
 		       			g.drawImage(menuActions.get(menuChange+6), 50, 150, null);
 		       			speedControl++;
@@ -622,7 +833,20 @@ public class Battle{
 		       					menuChange++;
 		       				}
 		       			}
+		       			else {
+		       				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+							g.drawString("Attempt Escape from battle", Game.camX + 530, Game.camY + 800);
+							if(canRun) {
+								g.setColor(Color.green);
+								g.drawString("Can attempt Escape", Game.camX + 545, Game.camY + 850);
+							}
+							else {
+								g.setColor(Color.red);
+								g.drawString("Cannot attempt Escape", Game.camX + 545, Game.camY + 850);
+							}
+		       			}
 		       		}
+		       		//ally
 		       		if(menuPosition == 4) {
 		       			g.drawImage(menuActions.get(menuChange+9), 50, 150, null);
 		       			speedControl++;
@@ -631,7 +855,24 @@ public class Battle{
 		       					menuChange++;
 		       				}
 		       			}
+		       			else {
+		       				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+		       				String ready = "";
+		       				Color c;
+		       				if(Battle.useAlly) {
+		       					c = Color.green;
+		       					ready = "Ready!";
+		       				}
+		       				else {
+		       					c = Color.red;
+		       					ready = "Not Ready";
+		       				}
+							g.drawString("Summon an Ally", Game.camX + 565, Game.camY + 800);
+							g.setColor(c);
+							g.drawString(ready, Game.camX + 590, Game.camY + 850);
+		       			}
 		       		}
+		       		//pummel
 		       		if(menuPosition == 5) {
 		       			g.drawImage(menuActions.get(menuChange + 12), 50, 150, null);
 		       			speedControl++;
@@ -639,6 +880,10 @@ public class Battle{
 		       				if(speedControl %10 == 0) {
 		       					menuChange++;
 		       				}
+		       			}
+		       			else {
+		       				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+							g.drawString("Pummel the opponent. Current Level: " + ExperienceBar.pummelLevel, Game.camX + 450, Game.camY + 800);
 		       			}
 		       		}
 	       		}
@@ -654,6 +899,10 @@ public class Battle{
 		       			else if(menuChange == 1) {
 		       				menuChange = -15;
 		       			}
+		       			else {
+							g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+							g.drawString("Hits opponent with a laser blast. Current Level: " + ExperienceBar.laserLevel, Game.camX + 420, Game.camY + 800);
+		       			}
 		       		}
 		       		if(menuPosition == 1) {
 		       			g.drawImage(menuActionsRight.get(menuChange+12), 50, 150, null);
@@ -662,6 +911,10 @@ public class Battle{
 		       				if(speedControl %10 == 0) {
 		       					menuChange++;
 		       				}
+		       			}
+		       			else {
+		       				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+							g.drawString("View Items", Game.camX + 590, Game.camY + 800);
 		       			}
 		       		}
 		       		if(menuPosition == 2) {
@@ -672,6 +925,10 @@ public class Battle{
 		       					menuChange++;
 		       				}
 		       			}
+		       			else {
+		       				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+							g.drawString("???", Game.camX + 620, Game.camY + 800);
+		       			}
 		       		}
 		       		if(menuPosition == 3) {
 		       			g.drawImage(menuActionsRight.get(menuChange+6), 50, 150, null);
@@ -680,6 +937,18 @@ public class Battle{
 		       				if(speedControl %10 == 0) {
 		       					menuChange++;
 		       				}
+		       			}
+		       			else {
+		       				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+							g.drawString("Attempt Escape from battle", Game.camX + 530, Game.camY + 800);
+							if(canRun) {
+								g.setColor(Color.green);
+								g.drawString("Can attempt Escape", Game.camX + 545, Game.camY + 850);
+							}
+							else {
+								g.setColor(Color.red);
+								g.drawString("Cannot attempt Escape", Game.camX + 545, Game.camY + 850);
+							}
 		       			}
 		       		}
 		       		if(menuPosition == 4) {
@@ -690,6 +959,22 @@ public class Battle{
 		       					menuChange++;
 		       				}
 		       			}
+		       			else {
+		       				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+		       				String ready = "";
+		       				Color c;
+		       				if(Battle.useAlly) {
+		       					c = Color.green;
+		       					ready = "Ready!";
+		       				}
+		       				else {
+		       					c = Color.red;
+		       					ready = "Not Ready";
+		       				}
+							g.drawString("Summon an Ally", Game.camX + 565, Game.camY + 800);
+							g.setColor(c);
+							g.drawString(ready, Game.camX + 590, Game.camY + 850);
+		       			}
 		       		}
 		       		if(menuPosition == 5) {
 		       			g.drawImage(menuActionsRight.get(menuChange), 50, 150, null);
@@ -698,6 +983,10 @@ public class Battle{
 		       				if(speedControl %10 == 0) {
 		       					menuChange++;
 		       				}
+		       			}
+		       			else {
+		       				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+							g.drawString("Pummel the opponent. Current Level: " + ExperienceBar.pummelLevel, Game.camX + 450, Game.camY + 800);
 		       			}
 		       		}
 	       		}

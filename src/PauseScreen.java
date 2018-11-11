@@ -34,6 +34,10 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 	//progress pause screen
 	private boolean goBackFromProg = false;
 	
+	//item currently hovering over
+	private ArrayList<String> curItemOverLst;
+	private Item curItemOver;
+	
 	//ally pause screen
 	private boolean goBackFromAlly = false;
 	private boolean overAnAlly = false;
@@ -62,6 +66,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 	 * makes a new pause screen, loads in all images
 	 */
 	public PauseScreen() {
+		curItemOverLst = new ArrayList<String>();
 		text = null;
 		allyCover = null;
 		try {
@@ -222,6 +227,8 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 					}
 					yItemP += 34;
 				}
+				int num = (yItemP - 198) / 34;
+				curItemOver = Game.itemPouch.getItem(num);
 			}
 			if(pauseState == PauseState.ItemUse) {
 				if(mouseOver(mx, my, 516, 496, 114, 38)) {
@@ -313,6 +320,8 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 						}
 						yItemP += 34;
 					}
+					int num = (yItemP - 198) / 34;
+					curItemOver = Game.itemPouch.getItem(num);
 				}
 				else {
 					if(mouseOver(mx, my, 516, 496, 114, 38)) {
@@ -604,12 +613,37 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 					}
 					
 					if(overItem == true) {
+						Font fo = new Font("Arial", 1, 20);
+						g.setColor(Color.WHITE);
+						g.setFont(fo);
 						g.drawImage(itemCover, 0+491, 0 + overItemY, null);
+						g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+						if(curItemOver != null) {
+							curItemOverLst = curItemOver.itemDescript();
+							int ySpot = 0;
+							for(int i = 0; i < curItemOverLst.size(); i++) {
+								g.drawString(curItemOverLst.get(i), Game.camX + 390, Game.camY + 800 + ySpot);
+								ySpot += 25;
+							}
+						}
 					}
 				}
 				else {
 					g.drawImage(itemMenu.get(0), 0, 0, null);
 					Game.itemPouch.render(g);
+					Font fo = new Font("Arial", 1, 25);
+					g.setColor(Color.orange);
+					g.setFont(fo);
+					g.drawImage(itemCover, Game.camX+491, Game.camY + overItemY, null);
+					g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+					if(curItemOver != null) {
+						curItemOverLst = curItemOver.itemDescript();
+						int ySpot = 0;
+						for(int i = 0; i < curItemOverLst.size(); i++) {
+							g.drawString(curItemOverLst.get(i), Game.camX + 390, Game.camY + 800 + ySpot);
+							ySpot += 25;
+						}
+					}
 					if(overYes) g.drawImage(useItem.get(1), 0, 0, null);
 					else if(overNo)  g.drawImage(useItem.get(2), 0, 0, null);
 					else  g.drawImage(useItem.get(0), 0, 0, null);
@@ -708,12 +742,37 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				}
 				
 				if(overItem == true) {
+					Font fo = new Font("Arial", 1, 25);
+					g.setColor(Color.orange);
+					g.setFont(fo);
 					g.drawImage(itemCover, Game.camX+491, Game.camY + overItemY, null);
+					g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+					if(curItemOver != null) {
+						curItemOverLst = curItemOver.itemDescript();
+						int ySpot = 0;
+						for(int i = 0; i < curItemOverLst.size(); i++) {
+							g.drawString(curItemOverLst.get(i), Game.camX + 390, Game.camY + 800 + ySpot);
+							ySpot += 25;
+						}
+					}
 				}
 			}
 			if(pauseState == PauseState.ItemUse) {
 				g.drawImage(itemMenu.get(0), Game.camX, Game.camY, null);
 				Game.itemPouch.render(g);
+				Font fo = new Font("Arial", 1, 25);
+				g.setColor(Color.orange);
+				g.setFont(fo);
+				g.drawImage(itemCover, Game.camX+491, Game.camY + overItemY, null);
+				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+				if(curItemOver != null) {
+					curItemOverLst = curItemOver.itemDescript();
+					int ySpot = 0;
+					for(int i = 0; i < curItemOverLst.size(); i++) {
+						g.drawString(curItemOverLst.get(i), Game.camX + 390, Game.camY + 800 + ySpot);
+						ySpot += 25;
+					}
+				}
 				if(overYes) g.drawImage(useItem.get(1), Game.camX, Game.camY, null);
 				else if(overNo)  g.drawImage(useItem.get(2), Game.camX, Game.camY, null);
 				else  g.drawImage(useItem.get(0), Game.camX, Game.camY, null);

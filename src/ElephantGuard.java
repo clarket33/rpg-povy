@@ -400,8 +400,6 @@ public class ElephantGuard extends GameObject{
 							yFactorDown = yFactorUp;
 							if((attack2Count == 3 && changeCount % 20 == 0)) {
 								AudioPlayer.getSound("elephantJump").play(1, (float).5);
-								Battle.takeDamage = true;
-								if(HUD.allyCount != 3) HUD.allyCount += 1;
 							}
 						}
 						if((attack2Count == 7) || (attack2Count == 8) || (attack2Count == 9) 

@@ -62,6 +62,23 @@ public class ItemPouch {
 	}
 	
 	/**
+	 * aids in showing the description of the item when the user is hovering over it
+	 * @param num
+	 */
+	public Item getItem(int num) {
+		Iterator<Item> itr = items.keySet().iterator();
+		int count= 0;
+		while(itr.hasNext()) {
+			Item cur = itr.next();
+			if(count == num) {
+				return cur;
+			}
+			count++;
+		}
+		return null;
+	}
+	
+	/**
 	 * prints the pouch(used for error checking, not implemented in-game)
 	 */
 	public String toString() {

@@ -1,4 +1,5 @@
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 /**
  * 
  * @author clarkt5
@@ -25,6 +26,18 @@ public class Item {
 		else if(it == ItemType.MaxHP) {
 			itemImage = ss.grabImage(1, 1, 32, 32, "maxHP");
 		}
+		else if(it == ItemType.SmallAttackBoost) {
+			itemImage = ss.grabImage(1, 1, 32, 32, "smallAttackBoost");
+		}
+		else if(it == ItemType.SmallDefenseBoost) {
+			itemImage = ss.grabImage(1, 1, 32, 32, "smallDefenseBoost");
+		}
+		else if(it == ItemType.LargeAttackBoost) {
+			itemImage = ss.grabImage(1, 1, 32, 32, "largeAttackBoost");
+		}
+		else if(it == ItemType.LargeDefenseBoost) {
+			itemImage = ss.grabImage(1, 1, 32, 32, "largeDefenseBoost");
+		}
 		
 	}
 	/**
@@ -35,6 +48,10 @@ public class Item {
 	public enum ItemType{
 		SmallHP,
 		LargeHP,
+		SmallAttackBoost,
+		LargeAttackBoost,
+		SmallDefenseBoost,
+		LargeDefenseBoost,
 		MaxHP;
 	};
 	
@@ -64,6 +81,28 @@ public class Item {
 		else if(it == ItemType.MaxHP) {
 			HUD.HEALTH = HUD.maxHealth;
 		}
+		if(Game.gameState == Game.STATE.Battle) {
+			if(it == ItemType.SmallAttackBoost) {
+				Battle.smABoost = true;
+				Battle.lgABoost = false;
+				Battle.attackCount = 0;
+			}
+			else if(it == ItemType.SmallDefenseBoost) {
+				Battle.smDBoost = true;
+				Battle.lgDBoost = false;
+				Battle.defenseCount = 0;
+			}
+			else if(it == ItemType.LargeAttackBoost) {
+				Battle.lgABoost = true;
+				Battle.smABoost = false;
+				Battle.attackCount = 0;
+			}
+			else if(it == ItemType.LargeDefenseBoost) {
+				Battle.lgDBoost = true;
+				Battle.smDBoost = false;
+				Battle.defenseCount = 0;
+			}
+		}
 		
 	}
 	
@@ -73,6 +112,45 @@ public class Item {
 	 */
 	public BufferedImage getImage() {
 		return itemImage;
+	}
+	
+	/**
+	 * 
+	 * @return description of the item in list format
+	 */
+	public ArrayList<String> itemDescript() {
+		ArrayList<String> lst;
+		lst = new ArrayList<String>();
+		if(it == ItemType.SmallHP) {
+			lst.add("Replenishes a single heart of health(16)");
+		}
+		else if(it == ItemType.LargeHP) {
+			lst.add("Replenishes two hearts of health(32)");
+		}
+		else if(it == ItemType.MaxHP) {
+			lst.add("Replenishes all of Povy's health");
+		}
+		else if(it == ItemType.SmallAttackBoost) {
+			lst.add("Gives Povy a small attack boost for 3 turns");
+			lst.add("(Ineffective when used outside of battle)");
+			lst.add("(Overrides any attack boost currently in use)");
+		}
+		else if(it == ItemType.SmallDefenseBoost) {
+			lst.add("Gives Povy a small defense boost for 3 turns");
+			lst.add("(Ineffective when used outside of battle)");
+			lst.add("(Overrides any defense boost currently in use)");
+		}
+		else if(it == ItemType.LargeAttackBoost) {
+			lst.add("Gives Povy a large attack boost for 3 turns");
+			lst.add("(Ineffective when used outside of battle)");
+			lst.add("(Overrides any attack boost currently in use)");
+		}
+		else if(it == ItemType.LargeDefenseBoost) {
+			lst.add("Gives Povy a large defense boost for 3 turns");
+			lst.add("(Ineffective when used outside of battle)");
+			lst.add("(Overrides any defense boost currently in use)");
+		}
+		return lst;
 	}
 	
 	/**
