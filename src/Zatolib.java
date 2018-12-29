@@ -3,15 +3,19 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 /**
  * 
  * @author clarkt5
- * an Elephant Guard is a mid-level boss that has three attacks
+ * Zatolib is the main villain of the game and the first boss of the game
  */
-public class ElephantGuard extends GameObject{
+public class Zatolib extends GameObject{
 	
 	Handler handler;
 	private ArrayList<BufferedImage> idle;
@@ -21,7 +25,9 @@ public class ElephantGuard extends GameObject{
 	private ArrayList<BufferedImage> attack1;
 	private ArrayList<BufferedImage> attack2;
 	private ArrayList<BufferedImage> attack3;
-	private ArrayList<BufferedImage> die;
+	
+	private BufferedImage laser;
+	
 	private Random attackOption, healthGenerator;
 	private int attackNum;
 	private int health = 0;
@@ -32,117 +38,132 @@ public class ElephantGuard extends GameObject{
 	private int changeCount = 0;
 	private int hurtCount = 0;
 	private int maxHealth = 0;
-	private float beforeJumpY = 0;
-	private float yFactorUp = (float) 2, yFactorDown;
+	private int laserBulletX, laserBulletY;
+	private float yFactorUp = (float) 2, yFactorDown=0;
 	
 	
 	/**
-	 * creates the elephant
+	 * creates the alien
 	 * @param x
 	 * @param y
 	 * @param id
 	 * @param handler
 	 * @param g
 	 */
-	public ElephantGuard(float x, float y, ID id, Handler handler){
+	public Zatolib(float x, float y, ID id, Handler handler){
 		super(x, y, id);
-		this.height = 160;
+		this.height = 120;
 		this.handler = handler;
 		attackOption = new Random();
 		healthGenerator = new Random();
 		health = healthGenerator.nextInt(3);
-		health = 90;
+		health = 1000;
 		maxHealth = health;
 		
 		SpriteSheet ss = new SpriteSheet(Game.sprite_sheet);
 		
 		idle = new ArrayList<BufferedImage>();
-		idle.add(ss.grabImage(1, 1, 170, 160,"elephantGuard"));
-		idle.add(ss.grabImage(1, 2, 170, 160,"elephantGuard"));
-		idle.add(ss.grabImage(1, 3, 170, 160,"elephantGuard"));
-		idle.add(ss.grabImage(1, 4, 170, 160,"elephantGuard"));
+		idle.add(ss.grabImage(1, 1, 145, 133,"zatolib"));
+		idle.add(ss.grabImage(1, 2, 145, 133,"zatolib"));
+		idle.add(ss.grabImage(1, 3, 145, 133,"zatolib"));
+		idle.add(ss.grabImage(1, 4, 145, 133,"zatolib"));
+		idle.add(ss.grabImage(1, 5, 145, 133,"zatolib"));
 		
 		movingLeft = new ArrayList<BufferedImage>();
-		movingLeft.add(ss.grabImage(1, 5, 170, 160,"elephantGuard"));
-		movingLeft.add(ss.grabImage(1, 6, 170, 160,"elephantGuard"));
-		movingLeft.add(ss.grabImage(2, 1, 170, 160,"elephantGuard"));
-		movingLeft.add(ss.grabImage(2, 2, 170, 160,"elephantGuard"));
+		movingLeft.add(ss.grabImage(1, 6, 145, 133,"zatolib"));
+		movingLeft.add(ss.grabImage(1, 7, 145, 133,"zatolib"));
+		movingLeft.add(ss.grabImage(1, 8, 145, 133,"zatolib"));
+		movingLeft.add(ss.grabImage(2, 1, 145, 133,"zatolib"));
+		movingLeft.add(ss.grabImage(2, 2, 145, 133,"zatolib"));
+		movingLeft.add(ss.grabImage(2, 3, 145, 133,"zatolib"));
 		
 		movingRight = new ArrayList<BufferedImage>();
-		movingRight.add(ss.grabImage(1, 2, 170, 160,"elephantGuard1"));
-		movingRight.add(ss.grabImage(1, 1, 170, 160,"elephantGuard1"));
-		movingRight.add(ss.grabImage(2, 6, 170, 160,"elephantGuard1"));
-		movingRight.add(ss.grabImage(2, 5, 170, 160,"elephantGuard1"));
+		movingRight.add(ss.grabImage(1, 3, 145, 133,"zatolibRight"));
+		movingRight.add(ss.grabImage(1, 2, 145, 133,"zatolibRight"));
+		movingRight.add(ss.grabImage(1, 1, 145, 133,"zatolibRight"));
+		movingRight.add(ss.grabImage(2, 8, 145, 133,"zatolibRight"));
+		movingRight.add(ss.grabImage(2, 7, 145, 133,"zatolibRight"));
+		movingRight.add(ss.grabImage(2, 6, 145, 133,"zatolibRight"));
 		
 		hurt = new ArrayList<BufferedImage>();
-		hurt.add(ss.grabImage(10, 2, 170, 160,"elephantGuard"));
-		hurt.add(ss.grabImage(10, 3, 170, 160,"elephantGuard"));
+		hurt.add(ss.grabImage(8, 4, 145, 133,"zatolib"));
+		hurt.add(ss.grabImage(8, 5, 145, 133,"zatolib"));
 		
 		attack1 = new ArrayList<BufferedImage>();
-		attack1.add(ss.grabImage(2, 3, 170, 160,"elephantGuard"));
-		attack1.add(ss.grabImage(2, 4, 170, 160,"elephantGuard"));
-		attack1.add(ss.grabImage(2, 5, 170, 160,"elephantGuard"));
-		attack1.add(ss.grabImage(2, 6, 170, 160,"elephantGuard"));
-		attack1.add(ss.grabImage(3, 1, 170, 160,"elephantGuard"));
-		attack1.add(ss.grabImage(3, 2, 170, 160,"elephantGuard"));
-		attack1.add(ss.grabImage(3, 3, 170, 160,"elephantGuard"));
-		attack1.add(ss.grabImage(3, 4, 170, 160,"elephantGuard"));
-		attack1.add(ss.grabImage(3, 5, 170, 160,"elephantGuard"));
-		attack1.add(ss.grabImage(3, 6, 170, 160,"elephantGuard"));
-		attack1.add(ss.grabImage(4, 1, 170, 160,"elephantGuard"));
-		attack1.add(ss.grabImage(4, 2, 170, 160,"elephantGuard"));
-		attack1.add(ss.grabImage(4, 3, 170, 160,"elephantGuard"));
-		attack1.add(ss.grabImage(4, 4, 170, 160,"elephantGuard"));
-		attack1.add(ss.grabImage(4, 5, 170, 160,"elephantGuard"));
-		attack1.add(ss.grabImage(4, 6, 170, 160,"elephantGuard"));
-		attack1.add(ss.grabImage(5, 1, 170, 160,"elephantGuard"));
-		attack1.add(ss.grabImage(5, 2, 170, 160,"elephantGuard"));
+		attack1.add(ss.grabImage(2, 4, 145, 133,"zatolib"));
+		attack1.add(ss.grabImage(2, 5, 145, 133,"zatolib"));
+		attack1.add(ss.grabImage(2, 6, 145, 133,"zatolib"));
+		attack1.add(ss.grabImage(2, 7, 145, 133,"zatolib"));
+		attack1.add(ss.grabImage(2, 8, 145, 133,"zatolib"));
+		attack1.add(ss.grabImage(3, 1, 145, 133,"zatolib"));
+		attack1.add(ss.grabImage(3, 2, 145, 133,"zatolib"));
+		attack1.add(ss.grabImage(3, 3, 145, 133,"zatolib"));
+		attack1.add(ss.grabImage(3, 4, 145, 133,"zatolib"));
+		attack1.add(ss.grabImage(3, 5, 145, 133,"zatolib"));
+		attack1.add(ss.grabImage(3, 6, 145, 133,"zatolib"));
+		attack1.add(ss.grabImage(3, 7, 145, 133,"zatolib"));
+		attack1.add(ss.grabImage(3, 8, 145, 133,"zatolib"));
+		attack1.add(ss.grabImage(4, 1, 145, 133,"zatolib"));
+		attack1.add(ss.grabImage(4, 2, 145, 133,"zatolib"));
+		attack1.add(ss.grabImage(4, 3, 145, 133,"zatolib"));
+		attack1.add(ss.grabImage(4, 4, 145, 133,"zatolib"));
+		
+		
 		
 		attack2 = new ArrayList<BufferedImage>();
-		attack2.add(ss.grabImage(5, 3, 170, 160,"elephantGuard"));
-		attack2.add(ss.grabImage(5, 4, 170, 160,"elephantGuard"));
-		attack2.add(ss.grabImage(5, 5, 170, 160,"elephantGuard"));
-		attack2.add(ss.grabImage(5, 6, 170, 160,"elephantGuard"));
-		attack2.add(ss.grabImage(6, 1, 170, 160,"elephantGuard"));
-		attack2.add(ss.grabImage(6, 2, 170, 160,"elephantGuard"));
-		attack2.add(ss.grabImage(6, 3, 170, 160,"elephantGuard"));
-		attack2.add(ss.grabImage(6, 4, 170, 160,"elephantGuard"));
-		attack2.add(ss.grabImage(6, 5, 170, 160,"elephantGuard"));
-		attack2.add(ss.grabImage(6, 6, 170, 160,"elephantGuard"));
-		attack2.add(ss.grabImage(7, 1, 170, 160,"elephantGuard"));
-		attack2.add(ss.grabImage(7, 2, 170, 160,"elephantGuard"));
-		attack2.add(ss.grabImage(7, 3, 170, 160,"elephantGuard"));
+		attack2.add(ss.grabImage(4, 5, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(4, 6, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(4, 7, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(4, 8, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(5, 1, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(5, 2, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(5, 3, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(5, 4, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(5, 5, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(5, 6, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(5, 7, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(5, 8, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(6, 1, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(6, 2, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(6, 3, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(6, 4, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(6, 5, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(6, 6, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(6, 7, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(6, 8, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(7, 1, 145, 133,"zatolib"));
+		attack2.add(ss.grabImage(7, 2, 145, 133,"zatolib"));
 		
 		attack3 = new ArrayList<BufferedImage>();
-		attack3.add(ss.grabImage(7, 4, 170, 160,"elephantGuard"));
-		attack3.add(ss.grabImage(7, 5, 170, 160,"elephantGuard"));
-		attack3.add(ss.grabImage(7, 6, 170, 160,"elephantGuard"));
-		attack3.add(ss.grabImage(8, 1, 170, 160,"elephantGuard"));
-		attack3.add(ss.grabImage(8, 2, 170, 160,"elephantGuard"));
-		attack3.add(ss.grabImage(8, 3, 170, 160,"elephantGuard"));
-		attack3.add(ss.grabImage(8, 4, 170, 160,"elephantGuard"));
-		attack3.add(ss.grabImage(8, 5, 170, 160,"elephantGuard"));
-		attack3.add(ss.grabImage(8, 6, 170, 160,"elephantGuard"));
-		attack3.add(ss.grabImage(9, 1, 170, 160,"elephantGuard"));
-		attack3.add(ss.grabImage(9, 2, 170, 160,"elephantGuard"));
-		attack3.add(ss.grabImage(9, 3, 170, 160,"elephantGuard"));
-		attack3.add(ss.grabImage(9, 4, 170, 160,"elephantGuard"));
-		attack3.add(ss.grabImage(9, 5, 170, 160,"elephantGuard"));
-		attack3.add(ss.grabImage(9, 6, 170, 160,"elephantGuard"));
-		attack3.add(ss.grabImage(10, 1, 170, 160,"elephantGuard"));
+		attack3.add(ss.grabImage(7, 3, 145, 133,"zatolib"));
+		attack3.add(ss.grabImage(7, 4, 145, 133,"zatolib"));
+		attack3.add(ss.grabImage(7, 5, 145, 133,"zatolib"));
+		attack3.add(ss.grabImage(7, 6, 145, 133,"zatolib"));
+		attack3.add(ss.grabImage(7, 7, 145, 133,"zatolib"));
+		attack3.add(ss.grabImage(7, 8, 145, 133,"zatolib"));
+		attack3.add(ss.grabImage(8, 1, 145, 133,"zatolib"));
+		attack3.add(ss.grabImage(8, 2, 145, 133,"zatolib"));
+		attack3.add(ss.grabImage(8, 3, 145, 133,"zatolib"));
 		
 		
+		/**
 		die = new ArrayList<BufferedImage>();
-		die.add(ss.grabImage(10, 4, 170, 160,"elephantGuard"));
-		die.add(ss.grabImage(10, 5, 170, 160,"elephantGuard"));
-		die.add(ss.grabImage(10, 6, 170, 160,"elephantGuard"));
-		die.add(ss.grabImage(11, 1, 170, 160,"elephantGuard"));
-		die.add(ss.grabImage(11, 2, 170, 160,"elephantGuard"));
-		die.add(ss.grabImage(11, 3, 170, 160,"elephantGuard"));
-		die.add(ss.grabImage(11, 4, 170, 160,"elephantGuard"));
-		die.add(ss.grabImage(11, 5, 170, 160,"elephantGuard"));
+		die.add(ss.grabImage(10, 4, 145, 133,"zatolib"));
+		die.add(ss.grabImage(10, 5, 145, 133,"zatolib"));
+		die.add(ss.grabImage(10, 6, 145, 133,"zatolib"));
+		die.add(ss.grabImage(11, 1, 145, 133,"zatolib"));
+		die.add(ss.grabImage(11, 2, 145, 133,"zatolib"));
+		die.add(ss.grabImage(11, 3, 145, 133,"zatolib"));
+		die.add(ss.grabImage(11, 4, 145, 133,"zatolib"));
+		die.add(ss.grabImage(11, 5, 145, 133,"zatolib"));
+		**/
 		
-		
+		laser = null;
+		try {
+	        laser = ImageIO.read(new File("res/zatolibBullet.png"));
+	    } catch (IOException e) {
+	    	e.printStackTrace();
+	    }
 		
 		velX = 0;
 	}
@@ -150,8 +171,8 @@ public class ElephantGuard extends GameObject{
 	/**
 	 * returns a copy of the elephant guard
 	 */
-	public ElephantGuard copy() {
-		return new ElephantGuard(x, y, id, handler);
+	public Zatolib copy() {
+		return new Zatolib(x, y, id, handler);
 	}
 	
 	/**
@@ -161,7 +182,6 @@ public class ElephantGuard extends GameObject{
 		if(attackCheck == false) {
 			attackNum = attackOption.nextInt(3);
 			attackCheck = true;
-			beforeJumpY = this.getY();
 		}
 	}
 	/**
@@ -222,10 +242,10 @@ public class ElephantGuard extends GameObject{
 	public Rectangle getBounds() {
 		if(Game.gameState == Game.STATE.Battle) {
 			if(Battle.menuPosition == 0 && Game.gameState == Game.STATE.Battle && Battle.battleState == Battle.BATTLESTATE.PlayerTurnAction)
-				return new Rectangle((int)x + 70,(int)y+54,113, 30);
-			return new Rectangle((int)x + 50, (int)y + 130, 113, 30);
+				return new Rectangle((int)x + 85,(int)y+109, 59, 24);
+			return new Rectangle((int)x + 66, (int)y + 112, 62, 20);
 		}
-		return new Rectangle((int)x-600, (int)y, 1200, 160);
+		return new Rectangle((int)x + 66, (int)y+112, 62, 20);
 	}
 	
 	
@@ -248,15 +268,14 @@ public class ElephantGuard extends GameObject{
 			String display = String.valueOf(health);
 			g.drawString(display, (int)this.getX() + 60, (int)this.getY()-10);
 		}
-		//g.setColor(Color.green);
-		//g.fillRect((int)x, (int)y, 50, 50);
+		
 		if(Game.gameState == Game.STATE.KeyFromGrogo) {
 			g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
 			changeCount++;
 			if(changeCount % 2 == 0) {
 				idleCount++;
 			}
-			if(idleCount == 4) {
+			if(idleCount == 5) {
 				idleCount = 0;
 				changeCount = 0;
 			}
@@ -268,7 +287,7 @@ public class ElephantGuard extends GameObject{
 				if(changeCount % 2 == 0) {
 					idleCount++;
 				}
-				if(idleCount == 4) {
+				if(idleCount == 5) {
 					idleCount = 0;
 					changeCount = 0;
 				}
@@ -279,7 +298,7 @@ public class ElephantGuard extends GameObject{
 				if(changeCount % 2 == 0) {
 					animationCount++;
 				}
-				if(animationCount == 4) {
+				if(animationCount == 6) {
 					animationCount = 0;
 					changeCount = 0;
 				}
@@ -290,7 +309,7 @@ public class ElephantGuard extends GameObject{
 				if(changeCount % 2 == 0) {
 					animationCount++;
 				}
-				if(animationCount == 4) {
+				if(animationCount == 6) {
 					animationCount = 0;
 					changeCount = 0;
 				}
@@ -318,19 +337,22 @@ public class ElephantGuard extends GameObject{
 				if(changeCount % 20 == 0) {
 					idleCount++;
 				}
-				if(idleCount == 4) {
+				if(idleCount == 5) {
 					idleCount = 0;
 					changeCount = 0;
 				}	
 			}
 			else if(Battle.battleState == Battle.BATTLESTATE.EnemyTurn) {
 				if(velX < 0) {
+					generateAttack();
+					laserBulletX = (int)this.getX()-25;
+					laserBulletY = (int)this.getY() + 40;
 					g.drawImage(movingLeft.get(animationCount), (int)x, (int)y, null);
 					changeCount++;
-					if(changeCount % 20 == 0) {
+					if(changeCount % 10 == 0) {
 						animationCount++;
 					}
-					if(animationCount == 4) {
+					if(animationCount == 6) {
 						animationCount = 0;
 						changeCount = 0;
 					}
@@ -342,14 +364,13 @@ public class ElephantGuard extends GameObject{
 					if(changeCount % 20 == 0) {
 						animationCount++;
 					}
-					if(animationCount == 4) {
+					if(animationCount == 6) {
 						animationCount = 0;
 						changeCount = 0;
 					}
 				}
 				else if(velX==0) {
-					generateAttack();
-					//Trunk attack
+					//hair whip
 					if(attackNum == 0) {
 						g.drawImage(attack1.get(attack1Count), (int)x, (int)y, null);
 						changeCount++;
@@ -357,15 +378,17 @@ public class ElephantGuard extends GameObject{
 							attack1Count++;
 						}
 						
-						if(attack1Count == 8 && changeCount % 20 == 0) {
-							AudioPlayer.getSound("menuSlider").play(1, (float).5);
-						}
-						if(attack1Count >= 8 && attack1Count <= 12) {
+						
+						if(attack1Count >= 4 && attack1Count <= 13) {
 							attack1Count++;
 							changeCount = 0;
 						}
 						
-						if(attack1Count == 12 && changeCount % 20 == 0) {
+						if(attack1Count == 5) {
+							AudioPlayer.getSound("hairWhip").play(1, (float).5);
+						}
+						
+						if(attack1Count == 12) {
 							AudioPlayer.getSound("golemPunch").play(1, (float).5);
 							Battle.takeDamage = true;
 							if(HUD.allyCount != 3) HUD.allyCount += 1;
@@ -373,13 +396,14 @@ public class ElephantGuard extends GameObject{
 						else {
 							Battle.takeDamage = false;
 						}
+						
 						if(attack1Count == 11 || attack1Count == 12 || attack1Count == 13) {
 							Battle.contact = true;
 						}
 						else {
 							Battle.contact = false;
 						}
-						if(attack1Count == 18) {
+						if(attack1Count == 17) {
 							attack1Count = 0;
 							this.setVelX(3);
 							attackCheck = false;
@@ -387,55 +411,75 @@ public class ElephantGuard extends GameObject{
 						
 						return;
 					}
-					//jumping attack
+					//blaster
 					else if(attackNum == 1) {
+						
 						g.drawImage(attack2.get(attack2Count), (int)x, (int)y, null);
 						changeCount++;
 						if(changeCount % 20 == 0) {
 							attack2Count++;
 						}
-						if((attack2Count == 3) || (attack2Count == 4) || (attack2Count == 5) 
-								|| (attack2Count == 6) ) {
-							this.y -= yFactorUp;
-							this.x -= .7;
-							yFactorUp -= .05;
-							yFactorDown = yFactorUp;
-							if((attack2Count == 3 && changeCount % 20 == 0)) {
-								AudioPlayer.getSound("elephantJump").play(1, (float).5);
-							}
-						}
-						if((attack2Count == 7) || (attack2Count == 8) || (attack2Count == 9) 
-								|| (attack2Count == 10)) {
-							
-							this.y += yFactorDown;
-							this.x -= .7;
-							yFactorDown += .05;	
+						
+						if(attack2Count >= 3 && attack2Count <= 8) {
+							attack2Count++;
+							changeCount = 0;
 						}
 						
+						if((attack2Count == 13 && changeCount % 20 == 0)) {
+							AudioPlayer.getSound("laserShotZ").play(1, (float).5);
+						}
 						
-						if((attack2Count == 7 && changeCount % 20 == 0)) {
-							AudioPlayer.getSound("elephantLand").play(1, (float).5);
+						if((attack2Count == 16 && changeCount % 20 == 0)) {
+							AudioPlayer.getSound("impact2").play(1, (float).5);
 							Battle.takeDamage = true;
 							if(HUD.allyCount != 3) HUD.allyCount += 1;
-							this.setY((int)beforeJumpY);
 						}
 						else {
 							Battle.takeDamage = false;
 						}
+						if(attack2Count != 22) {
+							if(attack2Count >= 14 && attack2Count <=18) {
+								
+								laserBulletY -= yFactorUp;
+								laserBulletX -= 5;
+								yFactorUp -= .1;
+								yFactorDown = yFactorUp;
+								
+								if(laserBulletY > (int)this.getY() + 50) {
+									return;
+								}
+								
+								g.drawImage(laser, laserBulletX, laserBulletY, null);
+								
+							}
+							if(attack2Count >=19) {
+								
+								laserBulletY += yFactorDown;
+								laserBulletX -= 5;
+								yFactorDown += .1;	
+								
+								if(laserBulletY > (int)this.getY() + 50) {
+									return;
+								}
+								
+								g.drawImage(laser, laserBulletX, laserBulletY, null);
+							}
+						}
+					
 						
 						
 						
-						if(attack2Count == 8 || attack2Count == 9 || attack2Count == 10) {
+						if(attack2Count == 16 || attack2Count == 17) {
 							Battle.contact = true;
 						}
 						else {
 							Battle.contact = false;
 						}
-						if(attack2Count == 13) {
+						if(attack2Count == 22) {
 							attack2Count = 0;
 							this.setVelX(3);
 							attackCheck = false;
-							yFactorUp = 2;
+							yFactorUp = (float) 2;
 							yFactorDown = 0;
 							
 						}
@@ -443,7 +487,7 @@ public class ElephantGuard extends GameObject{
 						
 						return;
 					}
-					//punch
+					//eye laser
 					else if(attackNum == 2) {
 						g.drawImage(attack3.get(attack3Count), (int)x, (int)y, null);
 						
@@ -451,25 +495,29 @@ public class ElephantGuard extends GameObject{
 						if(changeCount % 20 == 0) {
 							attack3Count++;
 						}
-						if(attack3Count >= 2 && attack3Count <= 9) {
-							attack3Count++;
-							changeCount = 0;
+						
+						if((attack3Count == 1 && changeCount % 20 == 0)) {
+							AudioPlayer.getSound("laserEye").play(1, (float).5);
 						}
-						if((attack3Count == 8 && changeCount % 20 == 0)) {
-							AudioPlayer.getSound("golemPunch").play(1, (float).5);
+						
+						
+						if((attack3Count == 4 && changeCount % 20 == 0)) {
+							AudioPlayer.getSound("impact2").play(1, (float).5);
 							Battle.takeDamage = true;
 							if(HUD.allyCount != 3) HUD.allyCount += 1;
 						}
 						else {
 							Battle.takeDamage = false;
 						}
-						if(attack3Count == 8 || attack3Count == 9 || attack3Count == 10) {
+						
+						if(attack3Count >= 4 && attack3Count <= 6) {
 							Battle.contact = true;
 						}
 						else {
 							Battle.contact = false;
 						}
-						if(attack3Count == 16) {
+						
+						if(attack3Count == 9) {
 							attack3Count = 0;
 							this.setVelX(3);
 							attackCheck = false;
@@ -479,6 +527,7 @@ public class ElephantGuard extends GameObject{
 					}
 				}
 			}
+			/**
 			else if(Battle.battleState == Battle.BATTLESTATE.BattleEnd) {
 				g.drawImage(die.get(dieCount), (int)x, (int)y, null);
 				changeCount++;
@@ -494,6 +543,7 @@ public class ElephantGuard extends GameObject{
 				g.drawImage(die.get(7), (int)x, (int)y, null);
 				
 			}
+			**/
 			else {
 				g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
 				changeCount++;
@@ -508,14 +558,14 @@ public class ElephantGuard extends GameObject{
 		}
 		
 		else if(Game.gameState == Game.STATE.Transition || Game.gameState == Game.STATE.Paused) {
+			if(idleCount == 4) {
+				idleCount = 0;
+				changeCount = 0;
+			}
 			g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
 			changeCount++;
 			if(changeCount % 5 == 0) {
 				idleCount++;
-			}
-			if(idleCount == 4) {
-				idleCount = 0;
-				changeCount = 0;
 			}
 		}
 		

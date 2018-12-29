@@ -72,6 +72,9 @@ public class Game extends Canvas implements Runnable{
 			sprite_sheet.put("golem", loader.loadImage("/golem-Sheet.png"));
 			sprite_sheet.put("elephantGuard", loader.loadImage("/Guard.png"));
 			sprite_sheet.put("elephantGuard1", loader.loadImage("/Guard1.png"));
+			sprite_sheet.put("zatolib", loader.loadImage("/Lord_Zatolib.png"));
+			sprite_sheet.put("zatolibRight", loader.loadImage("/Lord_Zatolib_Right.png"));
+			sprite_sheet.put("zatolibBullet", loader.loadImage("/zatolibBullet.png"));
 			sprite_sheet.put("golem1", loader.loadImage("/golem-SheetRight.png"));
 			sprite_sheet.put("space", loader.loadImage("/Space_Sheet.png"));
 			sprite_sheet.put("rat", loader.loadImage("/rat-Sheet.png"));

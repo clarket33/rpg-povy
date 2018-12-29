@@ -55,6 +55,11 @@ public class AudioPlayer {
 			soundMap.put("ratHit", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Cute_Impact_1_1.wav"));
 			soundMap.put("elephantJump", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Jump_1_5.wav"));
 			soundMap.put("elephantLand", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Small_Impact_1_5.wav"));
+			soundMap.put("laserEye", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/FA_Speed_Up.wav"));
+			soundMap.put("impact2", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Heavy_Impact_1_3.wav"));
+			soundMap.put("laserShotZ", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Weapon_Shoot_Big.wav"));
+			soundMap.put("hairWhip", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Whoosh_1_2.wav"));
+			
 			
 		} catch(SlickException e) {
 			e.printStackTrace();

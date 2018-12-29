@@ -20,28 +20,32 @@ import javax.imageio.ImageIO;
 public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 	
 	//regular pause screen
-	private boolean none = true, option1 = false, option2 = false, option3 = false, option4 = false;
+	private static boolean none = true;
+	private static boolean option1 = false;
+	private static boolean option2 = false;
+	private static boolean option3 = false;
+	private static boolean option4 = false;
 	//itemScreen
-	private boolean backToRegFromItem = false;
-	private boolean overItem = false;
+	private static boolean backToRegFromItem = false;
+	private static boolean overItem = false;
 	//use item? screen
-	private boolean overYes = false, overNo = false;
+	private static boolean overYes = false, overNo = false;
 	//post battle screen
-	private boolean overNext = false;
-	private boolean overHealth = false, overAlly = false, overPummel = false, overLaser = false;
+	private static boolean overNext = false;
+	private static boolean overHealth = false, overAlly = false, overPummel = false, overLaser = false;
 	//if item was selected as attack
-	private boolean itemSelect = false;
+	private static boolean itemSelect = false;
 	//progress pause screen
-	private boolean goBackFromProg = false;
+	private static boolean goBackFromProg = false;
 	
 	//item currently hovering over
 	private ArrayList<String> curItemOverLst;
 	private Item curItemOver;
 	
 	//ally pause screen
-	private boolean goBackFromAlly = false;
-	private boolean overAnAlly = false;
-	private int xValAlly, yValAlly, xValForDrawing;
+	private static boolean goBackFromAlly = false;
+	private static boolean overAnAlly = false;
+	private int xValAlly, xValForDrawing;
 	
 	private BufferedImage text;
 	private BufferedImage allyCover;
@@ -412,6 +416,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				if(mouseOver(mx, my, 512, 261, 278, 64)) {
 					AudioPlayer.getSound("click").play(1, (float).1);
 					pauseState = PauseState.ProgressScreen;
+					changeScreens();
 				}
 				
 				
@@ -419,6 +424,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				if(mouseOver(mx, my, 512, 348, 278, 64)) {
 					AudioPlayer.getSound("click").play(1, (float).1);
 					pauseState = PauseState.AllyScreen;
+					changeScreens();
 				}
 				
 				
@@ -426,7 +432,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				if(mouseOver(mx, my, 512, 438, 278, 64)) {
 					pauseState = PauseState.ItemScreen;
 					AudioPlayer.getSound("click").play(1, (float).1);
-					
+					changeScreens();
 				}
 				
 				
@@ -434,12 +440,14 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				if(mouseOver(mx, my, 820, 88, 33, 34)) {
 					Game.gameState = Game.STATE.Game;
 					AudioPlayer.getSound("click").play(1, (float).1);
+					changeScreens();
 				}
 			}
 			if(pauseState == PauseState.ItemScreen) {
 				if(mouseOver(mx, my, 430, 78, 36, 36)) {
 					pauseState = PauseState.Regular;
 					AudioPlayer.getSound("click").play(1, (float).1);
+					changeScreens();
 				}
 				yItem = 198;
 				for(int i = 0; i < Game.itemPouch.getItemAmnt(); i++) {
@@ -459,21 +467,25 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 					pauseState = PauseState.Regular;
 					AudioPlayer.getSound("click").play(1, (float).1);
 					overYes = false;
+					changeScreens();
 				}
 				else if(mouseOver(mx, my, 650, 496, 114, 38)) {
 					overNo = false;
 					pauseState = PauseState.ItemScreen;
 					AudioPlayer.getSound("click").play(1, (float).1);
+					changeScreens();
 				}
 			}
 			if(pauseState == PauseState.ProgressScreen) {
 				if(mouseOver(mx, my, 53, 82, 36, 36)) {
 					pauseState = PauseState.Regular;
+					changeScreens();
 				}
 			}
 			if(pauseState == PauseState.AllyScreen) {
 				if(mouseOver(mx, my, 53, 82, 36, 36)) {
 					pauseState = PauseState.Regular;
+					changeScreens();
 				}
 			}
 		}
@@ -483,6 +495,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 					if(mouseOver(mx, my, 430, 78, 36, 36)) {
 						Battle.itemSelected = false;
 						AudioPlayer.getSound("click").play(1, (float).1);
+						changeScreens();
 					}
 					yItem = 198;
 					for(int i = 0; i < Game.itemPouch.getItemAmnt(); i++) {
@@ -503,11 +516,13 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 						itemSelect = false;
 						overYes = false;
 						AudioPlayer.getSound("click").play(1, (float).1);
+						changeScreens();
 					}
 					else if(mouseOver(mx, my, 650, 496, 114, 38)) {
 						overNo = false;
 						itemSelect = false;
 						AudioPlayer.getSound("click").play(1, (float).1);
+						changeScreens();
 					}
 				}
 			}
@@ -515,6 +530,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				if(mouseOver(mx, my, 53, 82, 36, 36)) {
 					Battle.allySelected = false;
 					AudioPlayer.getSound("click").play(1, (float).1);
+					changeScreens();
 				}
 				//System.out.println(Game.itemPouch.getItemAmnt());
 				xValAlly = 182;
@@ -525,6 +541,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 						Battle.useAlly = false;
 						HUD.allyCount = 0;
 						overAnAlly = false;
+						changeScreens();
 						break;
 					}
 					xValAlly += 232;
@@ -547,6 +564,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				if(mouseOver(mx, my, 483, 716, 278, 64)) {
 					Game.gameState = Game.STATE.Game;
 					AudioPlayer.getSound("click").play(1, (float).1);
+					changeScreens();
 				}
 			}
 			if(ExperienceBar.levelUp == true) {
@@ -631,8 +649,8 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				else {
 					g.drawImage(itemMenu.get(0), 0, 0, null);
 					Game.itemPouch.render(g);
-					Font fo = new Font("Arial", 1, 25);
-					g.setColor(Color.orange);
+					Font fo = new Font("Arial", 1, 20);
+					g.setColor(Color.WHITE);
 					g.setFont(fo);
 					g.drawImage(itemCover, Game.camX+491, Game.camY + overItemY, null);
 					g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
@@ -742,8 +760,8 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				}
 				
 				if(overItem == true) {
-					Font fo = new Font("Arial", 1, 25);
-					g.setColor(Color.orange);
+					Font fo = new Font("Arial", 1, 20);
+					g.setColor(Color.WHITE);
 					g.setFont(fo);
 					g.drawImage(itemCover, Game.camX+491, Game.camY + overItemY, null);
 					g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
@@ -760,8 +778,8 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 			if(pauseState == PauseState.ItemUse) {
 				g.drawImage(itemMenu.get(0), Game.camX, Game.camY, null);
 				Game.itemPouch.render(g);
-				Font fo = new Font("Arial", 1, 25);
-				g.setColor(Color.orange);
+				Font fo = new Font("Arial", 1, 20);
+				g.setColor(Color.WHITE);
 				g.setFont(fo);
 				g.drawImage(itemCover, Game.camX+491, Game.camY + overItemY, null);
 				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
@@ -831,6 +849,36 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				}
 			}
 		}
+	}
+	
+	
+	
+	/**
+	 * aids in rendering so when a certain screen is returned to,
+	 * it resets the rendering so no buttons are highlighted as if
+	 * the mouse is hovering over
+	 */
+	public static void changeScreens() {
+		none = true;
+		option1 = false;
+		option2 = false;
+		option3 = false;
+		option4 = false;
+		backToRegFromItem = false;
+		overItem = false;
+		overYes = false;
+		overNo = false;
+		overNext = false;
+		overHealth = false;
+		overAlly = false;
+		overPummel = false;
+		overLaser = false;
+		itemSelect = false;
+		goBackFromProg = false;
+		goBackFromAlly = false;
+		overAnAlly = false;
+		
+		
 	}
 
 }

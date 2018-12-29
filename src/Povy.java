@@ -368,6 +368,17 @@ public class Povy extends GameObject{
 	 * @return bounds to check enemy collision(all of lower body)
 	 */
 	public Rectangle getBounds() {
+		if(Game.gameState == Game.STATE.Battle) {
+			if(Battle.battleState == Battle.BATTLESTATE.EnemyTurn && Battle.enemy.id == ID.Zatolib) {
+				Zatolib z = (Zatolib) Battle.enemy;
+				if(z.getAttackDam() == 1) {
+					return new Rectangle((int)x + 300, (int)y + 51, 31, 13);
+				}
+				if(z.getAttackDam() == 2) {
+					return new Rectangle((int)x + 50, (int)y + 51, 31, 13);
+				}
+			}
+		}
 		return new Rectangle((int)x + 8, (int)y + 51, 31, 13);
 	}
 	/**
@@ -809,7 +820,8 @@ public class Povy extends GameObject{
 		
 		
 	}
-
+	
+	
 	@Override
 	public void takeDamage(int damage) {
 		// TODO Auto-generated method stub

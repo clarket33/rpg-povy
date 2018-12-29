@@ -73,6 +73,7 @@ public class KeyInput extends KeyAdapter{
 			if(key == KeyEvent.VK_SPACE) {
 				Game.gameState = Game.STATE.Game;
 				PauseScreen.pauseState = PauseScreen.PauseState.Regular;
+				PauseScreen.changeScreens();
 				return;
 			}
 		}

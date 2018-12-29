@@ -13,6 +13,7 @@ public enum ID {
 	Grogo(),
 	ElephantGuard(),
 	Rat(),
+	Zatolib(),
 	NonEnemy();
 	
 }

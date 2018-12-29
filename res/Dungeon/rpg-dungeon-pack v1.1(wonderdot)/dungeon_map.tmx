@@ -411,7 +411,7 @@
   </object>
   <object id="103" name="Golem4" x="2259" y="1729" width="74" height="57"/>
   <object id="106" name="Rat3" x="406" y="1534" width="42" height="24"/>
-  <object id="108" name="Guard1" x="187" y="1762" width="61" height="78"/>
+  <object id="108" name="Golem6" x="299" y="1770" width="61" height="78"/>
   <object id="110" name="Golem5" x="765" y="509" width="74" height="57"/>
   <object id="111" name="Guard2" x="1179" y="1413" width="67" height="72"/>
   <object id="113" name="Zatolib" x="1449" y="1008" width="98" height="151"/>

@@ -65,7 +65,7 @@ public class KeyToPovy extends KeyAdapter{
 	    String str2 = "no wonder Lord Zatolib wants to extract the energy from inside you.";
 	    String str3 = "He could rule the galaxy with that kind of power! We got to get out";
 	    String str4 = "of here before he can begin the extraction.";
-	    String str5 = "I knabbed a key off of a guard awhile ago but it doesn't work on my";
+	    String str5 = "I nabbed a key off of a guard awhile ago but it doesn't work on my";
 	    String str6 = "door. Here, try on yours.";
 	    String str7 = "Recieved Dungeon Key!";
 	    String str8 = "The guard outside must have my key. Get it from him and free me.";
