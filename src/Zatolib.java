@@ -22,6 +22,8 @@ public class Zatolib extends GameObject{
 	private ArrayList<BufferedImage> movingLeft;
 	private ArrayList<BufferedImage> movingRight;
 	private ArrayList<BufferedImage> hurt;
+	private ArrayList<BufferedImage> laugh;
+	private ArrayList<BufferedImage> die;
 	private ArrayList<BufferedImage> attack1;
 	private ArrayList<BufferedImage> attack2;
 	private ArrayList<BufferedImage> attack3;
@@ -57,7 +59,7 @@ public class Zatolib extends GameObject{
 		attackOption = new Random();
 		healthGenerator = new Random();
 		health = healthGenerator.nextInt(3);
-		health = 1000;
+		health = 500;
 		maxHealth = health;
 		
 		SpriteSheet ss = new SpriteSheet(Game.sprite_sheet);
@@ -78,12 +80,12 @@ public class Zatolib extends GameObject{
 		movingLeft.add(ss.grabImage(2, 3, 145, 133,"zatolib"));
 		
 		movingRight = new ArrayList<BufferedImage>();
-		movingRight.add(ss.grabImage(1, 3, 145, 133,"zatolibRight"));
-		movingRight.add(ss.grabImage(1, 2, 145, 133,"zatolibRight"));
-		movingRight.add(ss.grabImage(1, 1, 145, 133,"zatolibRight"));
-		movingRight.add(ss.grabImage(2, 8, 145, 133,"zatolibRight"));
-		movingRight.add(ss.grabImage(2, 7, 145, 133,"zatolibRight"));
-		movingRight.add(ss.grabImage(2, 6, 145, 133,"zatolibRight"));
+		movingRight.add(ss.grabImage(1, 6, 145, 133,"zatolibRight"));
+		movingRight.add(ss.grabImage(1, 7, 145, 133,"zatolibRight"));
+		movingRight.add(ss.grabImage(1, 8, 145, 133,"zatolibRight"));
+		movingRight.add(ss.grabImage(2, 1, 145, 133,"zatolibRight"));
+		movingRight.add(ss.grabImage(2, 2, 145, 133,"zatolibRight"));
+		movingRight.add(ss.grabImage(2, 3, 145, 133,"zatolibRight"));
 		
 		hurt = new ArrayList<BufferedImage>();
 		hurt.add(ss.grabImage(8, 4, 145, 133,"zatolib"));
@@ -145,18 +147,18 @@ public class Zatolib extends GameObject{
 		attack3.add(ss.grabImage(8, 2, 145, 133,"zatolib"));
 		attack3.add(ss.grabImage(8, 3, 145, 133,"zatolib"));
 		
+		laugh = new ArrayList<BufferedImage>();
+		laugh.add(ss.grabImage(8, 6, 145, 133,"zatolib"));
+		laugh.add(ss.grabImage(8, 7, 145, 133,"zatolib"));
+
 		
-		/**
 		die = new ArrayList<BufferedImage>();
-		die.add(ss.grabImage(10, 4, 145, 133,"zatolib"));
-		die.add(ss.grabImage(10, 5, 145, 133,"zatolib"));
-		die.add(ss.grabImage(10, 6, 145, 133,"zatolib"));
-		die.add(ss.grabImage(11, 1, 145, 133,"zatolib"));
-		die.add(ss.grabImage(11, 2, 145, 133,"zatolib"));
-		die.add(ss.grabImage(11, 3, 145, 133,"zatolib"));
-		die.add(ss.grabImage(11, 4, 145, 133,"zatolib"));
-		die.add(ss.grabImage(11, 5, 145, 133,"zatolib"));
-		**/
+		die.add(ss.grabImage(8, 8, 145, 133,"zatolib"));
+		die.add(ss.grabImage(9, 1, 145, 133,"zatolib"));
+		die.add(ss.grabImage(9, 2, 145, 133,"zatolib"));
+		die.add(ss.grabImage(9, 3, 145, 133,"zatolib"));
+		die.add(ss.grabImage(9, 4, 145, 133,"zatolib"));
+		
 		
 		laser = null;
 		try {
@@ -245,7 +247,7 @@ public class Zatolib extends GameObject{
 				return new Rectangle((int)x + 85,(int)y+109, 59, 24);
 			return new Rectangle((int)x + 66, (int)y + 112, 62, 20);
 		}
-		return new Rectangle((int)x + 66, (int)y+112, 62, 20);
+		return new Rectangle((int)x-20, (int)y-20, 450, 400);
 	}
 	
 	
@@ -254,6 +256,7 @@ public class Zatolib extends GameObject{
 	 */
 	public void render(Graphics g) {
 		if(Game.gameState == Game.STATE.Battle) {
+			/**
 			g.setFont(new Font("Cooper Black", 1, 50));
 			if(health >= (maxHealth - (maxHealth / 3))) {
 				g.setColor(Color.GREEN);
@@ -267,6 +270,7 @@ public class Zatolib extends GameObject{
 			
 			String display = String.valueOf(health);
 			g.drawString(display, (int)this.getX() + 60, (int)this.getY()-10);
+			**/
 		}
 		
 		if(Game.gameState == Game.STATE.KeyFromGrogo) {
@@ -319,13 +323,13 @@ public class Zatolib extends GameObject{
 			if(Battle.battleState == Battle.BATTLESTATE.PlayerTurnStart || Battle.battleState == Battle.BATTLESTATE.PlayerTurnAction) {
 				if(Battle.contact) {
 					g.drawImage(hurt.get(hurtCount), (int)x, (int)y, null);
-					//changeCount++;
-					/**
-					if(changeCount % 7 == 0) {
+					changeCount++;
+					
+					if(changeCount % 10 == 0) {
 						hurtCount++;
 					}
-					**/
-					hurtCount++;
+					
+					
 					if(hurtCount == 2) {
 						hurtCount = 0;
 						changeCount = 0;
@@ -397,12 +401,13 @@ public class Zatolib extends GameObject{
 							Battle.takeDamage = false;
 						}
 						
-						if(attack1Count == 11 || attack1Count == 12 || attack1Count == 13) {
+						if(attack1Count >= 11 && attack1Count <= 16) {
 							Battle.contact = true;
 						}
 						else {
 							Battle.contact = false;
 						}
+						
 						if(attack1Count == 17) {
 							attack1Count = 0;
 							this.setVelX(3);
@@ -527,6 +532,83 @@ public class Zatolib extends GameObject{
 					}
 				}
 			}
+			else if(Battle.battleState == Battle.BATTLESTATE.CrystalCutscene && CrystalCutscene.crystalState == CrystalCutscene.CRYSTALSTATE.PovyDead) {
+				g.drawImage(laugh.get(hurtCount), (int)x, (int)y, null);
+				changeCount++;
+				
+				if(changeCount % 20 == 0) {
+					hurtCount++;
+				}
+				
+				
+				if(hurtCount == 2) {
+					hurtCount = 0;
+					changeCount = 0;
+				}
+				return;
+				
+			}
+			else if(Battle.battleState == Battle.BATTLESTATE.CrystalCutscene && CrystalCutscene.crystalState == CrystalCutscene.CRYSTALSTATE.PovyRise) {
+				g.drawImage(laugh.get(hurtCount), (int)x, (int)y, null);
+				changeCount++;
+				
+				if(changeCount % 20 == 0) {
+					hurtCount++;
+				}
+				
+				
+				if(hurtCount == 2) {
+					hurtCount = 0;
+					changeCount = 0;
+				}
+				return;
+				
+			}
+			else if(Battle.battleState == Battle.BATTLESTATE.CrystalCutscene && CrystalCutscene.crystalState == CrystalCutscene.CRYSTALSTATE.UsingCrystal) {
+				if(Battle.contact) {
+					g.drawImage(hurt.get(hurtCount), (int)x, (int)y, null);
+					changeCount++;
+					
+					if(changeCount % 10 == 0) {
+						hurtCount++;
+					}
+					
+					
+					if(hurtCount == 2) {
+						hurtCount = 0;
+						changeCount = 0;
+					}
+					return;
+				}
+				
+				
+				g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
+				changeCount++;
+				if(changeCount % 20 == 0) {
+					idleCount++;
+				}
+				if(idleCount == 5) {
+					idleCount = 0;
+					changeCount = 0;
+				}	
+				
+			}
+			else if(Battle.battleState == Battle.BATTLESTATE.BackToGame && CrystalCutscene.crystalState == CrystalCutscene.CRYSTALSTATE.ZatolibDies) {
+				if(dieCount != 5) {
+					g.drawImage(die.get(dieCount), (int)x, (int)y, null);
+					changeCount++;
+					if(changeCount % 5 == 0) {
+						dieCount++;
+					}
+					if(dieCount == 4 && changeCount % 5 == 0) {
+						AudioPlayer.getSound("povyHittingGroundThud").play(1, (float).1);
+					}
+				}
+				else {
+					g.drawImage(die.get(4), (int)x, (int)y, null);
+				}
+				
+			}
 			/**
 			else if(Battle.battleState == Battle.BATTLESTATE.BattleEnd) {
 				g.drawImage(die.get(dieCount), (int)x, (int)y, null);
@@ -573,7 +655,7 @@ public class Zatolib extends GameObject{
 			g.drawRect((int)x + 50, (int)y + 130, 113, 30);
 		}
 		if(Game.gameState == Game.STATE.Game) {
-			g.drawRect((int)x, (int)y, 600, 160);
+			g.drawRect((int)x-20, (int)y-20, 450, 400);
 		}
 	}
 

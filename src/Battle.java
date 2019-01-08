@@ -58,13 +58,17 @@ public class Battle{
 	public static boolean smDBoost=false, lgDBoost=false, smABoost=false, lgABoost=false;
 	public static int defenseCount = 0, attackCount = 0;
 	private int speedControl = 0, setSpeed = 0, setSpeedEnemy = 0, originalX, enemyOriginalX;
+	private int deadCount = 0;
 
 	public enum BATTLESTATE{
 		PlayerTurnStart,
 		PlayerTurnAction,
-		EnemyTurn,
 		BattleEnd,
+		EnemyTurn,
 		gotAway,
+		PlayerDies,
+		ZatolibWins,
+		CrystalCutscene,
 		BackToGame;
 	};
 	
@@ -92,6 +96,9 @@ public class Battle{
 			else {
 				canRun = true;
 			}
+		}
+		if(enemy.getID() == ID.Zatolib) {
+			Game.lastBattle = true;
 		}
 		else if(enemy.getID() == ID.Rat){
 			canRun = true;
@@ -237,6 +244,7 @@ public class Battle{
 			for(int i = 0; i < Game.allies.allies.size(); i++) {
 				Game.allies.allies.get(i).tick();
 			}
+			
 		}
 		if(battleState == BATTLESTATE.PlayerTurnAction) {
 			//if they select pummel, perform the attack
@@ -500,6 +508,14 @@ public class Battle{
 							defenseCount = 0;
 						}
 					}
+					if(HUD.HEALTH <= 0 && enemy.getID() == ID.Zatolib ) {
+						Battle.battleState = Battle.BATTLESTATE.ZatolibWins;
+						if(AudioPlayer.getMusic("dungeonFight").playing()) {
+							AudioPlayer.getMusic("dungeonFight").stop();
+							AudioPlayer.getSound("povyDies").play(1, (float).3);
+						}
+						return;
+					}
 					battleState = BATTLESTATE.PlayerTurnStart;
 				}
 			}
@@ -518,6 +534,7 @@ public class Battle{
 	 * renders the aspects of the battle
 	 */
 	public void render(Graphics g) {
+		
 		/**
 		 * take damage off of the player during an enemy turn
 		 */
@@ -1177,6 +1194,12 @@ public class Battle{
        	 * once battle is over, go to the post battle screen
        	 */
        	if(Battle.battleState == Battle.BATTLESTATE.BackToGame) {
+       		if(enemy.getID() == ID.Zatolib) {
+       			deadCount++;
+       			if(deadCount <= 250) {
+       				return;
+       			}
+       		}
        		g.drawImage(transition.get(animationCount), 0, 0, null);
        		
 			changeCount++;
@@ -1185,6 +1208,29 @@ public class Battle{
 			}
 			
 			if(animationCount == 30) {
+				if(enemy.getID() == ID.Zatolib) {
+					Game.gameState = Game.STATE.Game;
+					HUD.allyCount = 0;
+					Battle.useAlly = false;
+					Game.firstBattle = false;
+					Battle.contact = false;
+					HUD.HEALTH = HUD.maxHealth;
+					if(enemy.getID() == ID.Zatolib) {
+						for(int j = 0; j < handler.objects.size(); j++) {
+							if(handler.objects.get(j).getID() == ID.Povy) {
+								handler.objects.get(j).setX(1520*2);
+								handler.objects.get(j).setY(1058*2);
+							}
+							
+							if(handler.objects.get(j).getID() == ID.Zatolib) {
+								handler.objects.get(j).setX(1550*2);
+								handler.objects.get(j).setY(1058*2);
+							}
+							handler.addObject(new Grogo(1460*2, 1058*2, ID.Grogo, handler));
+						}
+					}
+					return;
+				}
 				animationCount = 0;
 				changeCount = 0;
 				if(AudioPlayer.getSound("winBattle").playing()) {

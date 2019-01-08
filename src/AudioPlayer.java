@@ -22,6 +22,7 @@ public class AudioPlayer {
 			soundMap.put("explosion", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Monster_Dissipate.wav"));
 			soundMap.put("abduction", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/FA_Power_Up_1_1.wav"));
 			soundMap.put("thump", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Small_Impact_1_6.wav"));
+			musicMap.put("crystalScene", new Music("res/audio/Epic Action Loops/Epic Action Loop - Low Intensity.wav"));
 			musicMap.put("title", new Music("res/audio/Sound temple - Space Ambient Music.ogg"));
 			musicMap.put("opening", new Music("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/Stingers_Jingles/Fantasy/TD_Game_Over_Slow_Loop.wav"));
 			soundMap.put("chap0Start", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/Stingers_Jingles/Racing/FA_Win_Stinger_2.ogg"));
@@ -59,7 +60,10 @@ public class AudioPlayer {
 			soundMap.put("impact2", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Heavy_Impact_1_3.wav"));
 			soundMap.put("laserShotZ", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Weapon_Shoot_Big.wav"));
 			soundMap.put("hairWhip", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Whoosh_1_2.wav"));
-			
+			soundMap.put("povyHittingGroundThud", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Small_Impact_1_5.wav"));
+			soundMap.put("povyDies", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/Stingers_Jingles/Oriental/AF_Game_End.wav"));
+			soundMap.put("risingCrystal1", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Collect Item/PP_Special_Item.wav"));
+			soundMap.put("crystalPath", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Magic_Portal_Loop.wav"));
 			
 		} catch(SlickException e) {
 			e.printStackTrace();

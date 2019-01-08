@@ -27,6 +27,7 @@ public class Game extends Canvas implements Runnable{
 	public static HUD hud;
 	private Window w;
 	private KeyToPovy ktp;
+	private CrystalCutscene cc;
 	public static ExperienceBar expBarTracker;
 	public static MapReader map;
 	public static Battle battle;
@@ -37,7 +38,7 @@ public class Game extends Canvas implements Runnable{
 	public static int camX, camY;
 	public static ItemPouch itemPouch;
 	public static boolean battleReturn = false;
-	public static boolean firstBattle = true;
+	public static boolean firstBattle = true, lastBattle = false;
 	public static AllyPouch allies;
 	
 	public enum STATE{
@@ -47,6 +48,7 @@ public class Game extends Canvas implements Runnable{
 		Battle,
 		PostBattle,
 		Transition,
+		FinalCutscene,
 		KeyFromGrogo
 	};
 	
@@ -99,6 +101,7 @@ public class Game extends Canvas implements Runnable{
 			sprite_sheet.put("maxBP", loader.loadImage("/Items/maxBP.png"));
 			sprite_sheet.put("itemCover", loader.loadImage("/Items/itemCover.png"));
 			sprite_sheet.put("itemOption", loader.loadImage("/selectItemChoice.png"));
+			sprite_sheet.put("crystalAttack", loader.loadImage("/CrystalAttack1.png"));
 			
 			sprite_sheet.put("expBar", loader.loadImage("/expBar.png"));
 			sprite_sheet.put("healthBar", loader.loadImage("/healthBar.png"));
@@ -136,11 +139,13 @@ public class Game extends Canvas implements Runnable{
 		allies = new AllyPouch();
 		hud = new HUD();
 		ktp = new KeyToPovy(handler);
+		cc = new CrystalCutscene(handler);
 		menu = new Menu(this, handler, hud);
 		itemPouch = new ItemPouch();
 		this.addMouseListener(menu);
 		this.addKeyListener(new KeyInput(handler, this));
 		this.addKeyListener(ktp);
+		this.addKeyListener(cc);
 		this.addMouseMotionListener(pause);
 		this.addMouseListener(pause);
 		w = new Window(WIDTH, HEIGHT, "Povy the Alien", this);
@@ -212,11 +217,10 @@ public class Game extends Canvas implements Runnable{
 			menu.tick();
 		}
 		else if(gameState == STATE.Battle) {
+			hud.tick();
 			battle.tick();
 		}
-		else if(gameState == STATE.Paused) {
-			
-		}
+		
 	}
 	/**
 	 * 
@@ -296,6 +300,7 @@ public class Game extends Canvas implements Runnable{
 		} 
 		else if (gameState == STATE.Battle) {
 			battle.render(g);
+			cc.render(g);
 		}
 		else if (gameState == STATE.Transition) {
 			map.render(g);

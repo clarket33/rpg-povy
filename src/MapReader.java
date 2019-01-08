@@ -4,10 +4,12 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -27,6 +29,7 @@ public class MapReader {
 	private int torchCounter = 0;
 	private int trapCounter = 0;
 	private ArrayList<BufferedImage> transition;
+	private BufferedImage grogoShip;
 	private int changeCount = 0;
 	private int idleCount = 0;
 	
@@ -52,6 +55,13 @@ public class MapReader {
 		Game.animationDungeonCounter.put("chest", new Integer(0));
 		Game.animationDungeonCounter.put("lever", new Integer(0));
 		
+		 grogoShip = null;
+			
+		    try {
+		        grogoShip = ImageIO.read(new File("res/grogoShip.png"));
+		    } catch (IOException e) {
+		    	e.printStackTrace();
+		    }
 		
 		transition = new ArrayList<BufferedImage>();
 		transition.add(ss.grabImage(1, 1, 1280, 960,"transition"));
@@ -257,6 +267,7 @@ public class MapReader {
 			if(i == 2) {
 				//System.out.println(Game.gameState);
 				handler.render(g);
+				g.drawImage(grogoShip, 1650*2, 1180*2, null);
 			}
 		
 	       	cur = layers.get(i).split(",");
@@ -363,12 +374,22 @@ public class MapReader {
 				if(idleCount == 30) {
 					idleCount = 0;
 					changeCount = 0;
+					
 					if(AudioPlayer.getMusic("afterBattle").playing()) {
 						AudioPlayer.getMusic("afterBattle").stop();
 						AudioPlayer.getMusic("dungeon").loop(1, (float).1);
 						if(Game.firstBattle) {
 							Game.firstBattle = false;
 							Game.gameState = Game.STATE.KeyFromGrogo;
+						}
+						if(Game.lastBattle) {
+							Game.lastBattle = false;
+							Game.gameState = Game.STATE.FinalCutscene;
+						}
+					}
+					else {
+						if(AudioPlayer.getMusic("dungeon").playing() == false) {
+							AudioPlayer.getMusic("dungeon").loop(1, (float).1);
 						}
 					}
 					Game.battleReturn = false;

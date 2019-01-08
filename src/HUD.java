@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class HUD {
 	public int bounds = 0;
-	public static int HEALTH = 64;
+	public static int HEALTH = 4;
 	public static int maxHealth = 64;
 	public static int allyCount = 0;
 	
@@ -46,6 +46,9 @@ public class HUD {
 	public void tick() {
 		//HEALTH = (int) Game.clamp(HEALTH, 0, 200 + (bounds/2));
 		//greenValue = (int)Game.clamp((float)greenValue, 0, 255);
+		if(HEALTH <= 0) {
+			HEALTH = 0;
+		}
 	}
 	
 	/**

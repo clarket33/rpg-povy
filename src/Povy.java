@@ -14,6 +14,8 @@ import javax.imageio.ImageIO;
 
 
 
+
+
 /**
  * Povy is the main character of the game, the user controls him with the arrow keys and tries
  * to save the universe
@@ -26,8 +28,8 @@ public class Povy extends GameObject{
 	public static boolean takingPotion = false;
 	private BufferedImage player_image;
 	private ArrayList<BufferedImage> idle;
-	private int idleCount = 0;
-	private int speedControl = 0, idleControl = 0;
+	private int idleCount = 0, dieCount = 0, riseCount = 0;
+	private int speedControl = 0, crystalSpeedControl = 0, idleControl = 0, crystalCount = 0, crystalAttackCount = 0;
 	private ArrayList<BufferedImage> moving;
 	private ArrayList<BufferedImage> movingUp;
 	private ArrayList<BufferedImage> movingDown;
@@ -38,7 +40,7 @@ public class Povy extends GameObject{
 	private ArrayList<BufferedImage> hurt;
 	private ArrayList<BufferedImage> pummel;
 	private ArrayList<BufferedImage> itemTake;
-	private ArrayList<BufferedImage> laserBlaster;
+	private ArrayList<BufferedImage> laserBlaster, die, rise, crystalAttack, actualCrystal;
 	private BufferedImage laser;
 	private int moveCount = 0;
 	private int openingCount = 0;
@@ -75,6 +77,10 @@ public class Povy extends GameObject{
 		pummel = new ArrayList<BufferedImage>();
 		itemTake = new ArrayList<BufferedImage>();
 		laserBlaster = new ArrayList<BufferedImage>();
+		die = new ArrayList<BufferedImage>();
+		rise = new ArrayList<BufferedImage>();
+		crystalAttack = new ArrayList<BufferedImage>();
+		actualCrystal = new ArrayList<BufferedImage>();
 		laser = null;
 		try {
 	        laser = ImageIO.read(new File("res/LaserBullet.png"));
@@ -119,36 +125,35 @@ public class Povy extends GameObject{
 		movingDown.add(ss.grabImage(8, 3, 64, 64,"povy"));
 		movingDown.add(ss.grabImage(8, 4, 64, 64,"povy"));
 		
-		movingLeft.add(ss.grabImage(2, 3, 48, 64,"povy2"));
 		movingLeft.add(ss.grabImage(2, 2, 48, 64,"povy2"));
-		movingLeft.add(ss.grabImage(2, 1, 48, 64,"povy2"));
-		movingLeft.add(ss.grabImage(3, 4, 48, 64,"povy2"));
-		movingLeft.add(ss.grabImage(3, 3, 48, 64,"povy2"));
-		movingLeft.add(ss.grabImage(3, 2, 48, 64,"povy2"));
+		movingLeft.add(ss.grabImage(2, 3, 48, 64,"povy2"));
+		movingLeft.add(ss.grabImage(2, 4, 48, 64,"povy2"));
 		movingLeft.add(ss.grabImage(3, 1, 48, 64,"povy2"));
-		movingLeft.add(ss.grabImage(4, 4, 48, 64,"povy2"));
-		movingLeft.add(ss.grabImage(4, 3, 48, 64,"povy2"));
+		movingLeft.add(ss.grabImage(3, 2, 48, 64,"povy2"));
+		movingLeft.add(ss.grabImage(3, 3, 48, 64,"povy2"));
+		movingLeft.add(ss.grabImage(3, 4, 48, 64,"povy2"));
+		movingLeft.add(ss.grabImage(4, 1, 48, 64,"povy2"));
+		movingLeft.add(ss.grabImage(4, 2, 48, 64,"povy2"));
 		
-		
-		movingUpLeft.add(ss.grabImage(4, 2, 48, 64,"povy2"));
-		movingUpLeft.add(ss.grabImage(4, 1, 48, 64,"povy2"));
-		movingUpLeft.add(ss.grabImage(5, 4, 48, 64,"povy2"));
-		movingUpLeft.add(ss.grabImage(5, 3, 48, 64,"povy2"));
-		movingUpLeft.add(ss.grabImage(5, 2, 48, 64,"povy2"));
+		movingUpLeft.add(ss.grabImage(4, 3, 48, 64,"povy2"));
+		movingUpLeft.add(ss.grabImage(4, 4, 48, 64,"povy2"));
 		movingUpLeft.add(ss.grabImage(5, 1, 48, 64,"povy2"));
-		movingUpLeft.add(ss.grabImage(6, 4, 48, 64,"povy2"));
-		movingUpLeft.add(ss.grabImage(6, 3, 48, 64,"povy2"));
+		movingUpLeft.add(ss.grabImage(5, 2, 48, 64,"povy2"));
+		movingUpLeft.add(ss.grabImage(5, 3, 48, 64,"povy2"));
+		movingUpLeft.add(ss.grabImage(5, 4, 48, 64,"povy2"));
+		movingUpLeft.add(ss.grabImage(6, 1, 48, 64,"povy2"));
 		movingUpLeft.add(ss.grabImage(6, 2, 48, 64,"povy2"));
+		movingUpLeft.add(ss.grabImage(6, 3, 48, 64,"povy2"));
 		
-		movingDownLeft.add(ss.grabImage(6, 1, 48, 64,"povy2"));
-		movingDownLeft.add(ss.grabImage(7, 4, 48, 64,"povy2"));
-		movingDownLeft.add(ss.grabImage(7, 3, 48, 64,"povy2"));
-		movingDownLeft.add(ss.grabImage(7, 2, 48, 64,"povy2"));
+		movingDownLeft.add(ss.grabImage(6, 4, 48, 64,"povy2"));
 		movingDownLeft.add(ss.grabImage(7, 1, 48, 64,"povy2"));
-		movingDownLeft.add(ss.grabImage(8, 4, 48, 64,"povy2"));
-		movingDownLeft.add(ss.grabImage(8, 3, 48, 64,"povy2"));
-		movingDownLeft.add(ss.grabImage(8, 2, 48, 64,"povy2"));
+		movingDownLeft.add(ss.grabImage(7, 2, 48, 64,"povy2"));
+		movingDownLeft.add(ss.grabImage(7, 3, 48, 64,"povy2"));
+		movingDownLeft.add(ss.grabImage(7, 4, 48, 64,"povy2"));
 		movingDownLeft.add(ss.grabImage(8, 1, 48, 64,"povy2"));
+		movingDownLeft.add(ss.grabImage(8, 2, 48, 64,"povy2"));
+		movingDownLeft.add(ss.grabImage(8, 3, 48, 64,"povy2"));
+		movingDownLeft.add(ss.grabImage(8, 4, 48, 64,"povy2"));
 		
 		
 		rotation.add(ss.grabImage(7, 3, 150, 140,"spinning"));
@@ -208,6 +213,46 @@ public class Povy extends GameObject{
 		laserBlaster.add(ss.grabImage(12, 2, 64, 64,"povy"));
 		laserBlaster.add(ss.grabImage(12, 3, 64, 64,"povy"));
 		laserBlaster.add(ss.grabImage(12, 4, 64, 64,"povy"));
+		
+		die.add(ss.grabImage(19, 1, 64, 64,"povy"));
+		die.add(ss.grabImage(19, 2, 64, 64,"povy"));
+		die.add(ss.grabImage(19, 3, 64, 64,"povy"));
+		die.add(ss.grabImage(19, 4, 64, 64,"povy"));
+		die.add(ss.grabImage(20, 1, 64, 64,"povy"));
+		die.add(ss.grabImage(20, 2, 64, 64,"povy"));
+		
+		rise.add(ss.grabImage(20, 3, 64, 64,"povy"));
+		rise.add(ss.grabImage(20, 4, 64, 64,"povy"));
+		rise.add(ss.grabImage(21, 1, 64, 64,"povy"));
+		rise.add(ss.grabImage(21, 2, 64, 64,"povy"));
+		rise.add(ss.grabImage(21, 3, 64, 64,"povy"));
+		rise.add(ss.grabImage(21, 4, 64, 64,"povy"));
+		rise.add(ss.grabImage(22, 1, 64, 64,"povy"));
+		rise.add(ss.grabImage(22, 2, 64, 64,"povy"));
+		rise.add(ss.grabImage(22, 3, 64, 64,"povy"));
+		rise.add(ss.grabImage(22, 4, 64, 64,"povy"));
+		rise.add(ss.grabImage(23, 1, 64, 64,"povy"));
+		rise.add(ss.grabImage(23, 2, 64, 64,"povy"));
+		rise.add(ss.grabImage(23, 3, 64, 64,"povy"));
+		
+		crystalAttack.add(ss.grabImage(23, 4, 64, 64,"povy"));
+		crystalAttack.add(ss.grabImage(24, 1, 64, 64,"povy"));
+		crystalAttack.add(ss.grabImage(24, 2, 64, 64,"povy"));
+		crystalAttack.add(ss.grabImage(24, 3, 64, 64,"povy"));
+		crystalAttack.add(ss.grabImage(24, 4, 64, 64,"povy"));
+		crystalAttack.add(ss.grabImage(25, 1, 64, 64,"povy"));
+		
+		actualCrystal.add(ss.grabImage(1, 1, 480, 64,"crystalAttack"));
+		actualCrystal.add(ss.grabImage(1, 2, 480, 64,"crystalAttack"));
+		actualCrystal.add(ss.grabImage(1, 3, 480, 64,"crystalAttack"));
+		actualCrystal.add(ss.grabImage(1, 4, 480, 64,"crystalAttack"));
+		actualCrystal.add(ss.grabImage(2, 1, 480, 64,"crystalAttack"));
+		actualCrystal.add(ss.grabImage(2, 2, 480, 64,"crystalAttack"));
+		actualCrystal.add(ss.grabImage(2, 3, 480, 64,"crystalAttack"));
+		actualCrystal.add(ss.grabImage(2, 4, 480, 64,"crystalAttack"));
+		actualCrystal.add(ss.grabImage(3, 1, 480, 64,"crystalAttack"));
+		actualCrystal.add(ss.grabImage(3, 2, 480, 64,"crystalAttack"));
+
 	}
 	
 	/**
@@ -246,13 +291,9 @@ public class Povy extends GameObject{
 		if(Game.battleReturn == true && Game.gameState == Game.STATE.Game) {
 			this.setVelX(0);
 			this.setVelY(0);
+			this.isInvincible();
 		}
-		/**
-		for(int i = 0; i < handler.objects.size(); i++) {
-			System.out.println(handler.objects.get(i));
-		}
-		System.out.println();
-		**/
+		
 		
 		
 		
@@ -786,6 +827,97 @@ public class Povy extends GameObject{
 				}
 				g.setColor(Color.green);
 				g.drawRect((int)(x+8), (int)(y+51), 31, 13);
+			}
+			else if(Battle.battleState == Battle.BATTLESTATE.ZatolibWins) {
+				g.drawImage(die.get(dieCount), (int)x, (int)y, null);
+				speedControl++;
+				if(speedControl % 2 == 0) {
+					dieCount++;
+				}
+				
+				if(dieCount == 5) {
+					AudioPlayer.getSound("povyHittingGroundThud").play(1, (float).1);
+				}
+				if(dieCount == 6) {
+					Battle.battleState = Battle.BATTLESTATE.CrystalCutscene;
+					CrystalCutscene.crystalState = CrystalCutscene.CRYSTALSTATE.PovyDead;
+					dieCount = 0;
+				}
+			}
+			else if(Battle.battleState == Battle.BATTLESTATE.CrystalCutscene && CrystalCutscene.crystalState == CrystalCutscene.CRYSTALSTATE.PovyDead) {
+				g.drawImage(die.get(5), (int)x, (int)y, null);
+				
+			}
+			else if(Battle.battleState == Battle.BATTLESTATE.CrystalCutscene && CrystalCutscene.crystalState == CrystalCutscene.CRYSTALSTATE.PovyRise) {
+				
+				g.drawImage(rise.get(riseCount), (int)x, (int)y, null);
+				speedControl++;
+				if(speedControl % 15 == 0) {
+					riseCount++;
+					speedControl = 0;
+				}
+				
+				if(riseCount == 4 && speedControl % 15 == 0) {
+					AudioPlayer.getSound("risingCrystal1").play(1, (float).4);
+				}
+				
+				
+				if(riseCount == 13) {
+					riseCount = 10;
+				}
+			}
+			else if(Battle.battleState == Battle.BATTLESTATE.CrystalCutscene && CrystalCutscene.crystalState == CrystalCutscene.CRYSTALSTATE.UsingCrystal) {
+				g.drawImage(crystalAttack.get(crystalCount), (int)x, (int)y, null);
+				speedControl++;
+				if(speedControl % 10 == 0) {
+					crystalCount++;
+					speedControl = 0;
+				}
+				
+				if(crystalCount == 6) {
+					crystalCount = 3;
+				}
+				
+				if(crystalCount >= 3) {
+					if(crystalAttackCount == 3 && crystalSpeedControl % 10 == 0) {
+						AudioPlayer.getSound("crystalPath").loop(1, (float).2);
+					}
+					g.drawImage(actualCrystal.get(crystalAttackCount), (int)x+45, (int)y, null);
+					crystalSpeedControl++;
+					if(crystalSpeedControl % 10 == 0) {
+						crystalAttackCount++;
+						crystalSpeedControl = 0;
+					}
+					
+					if(crystalAttackCount >= 7) {
+						Battle.contact = true;
+					}
+					else {
+						Battle.contact = false;
+					}
+					
+					if(crystalAttackCount == 10) {
+						crystalAttackCount = 7;
+					}
+				}
+			}
+			else if(Battle.battleState == Battle.BATTLESTATE.CrystalCutscene && CrystalCutscene.crystalState == CrystalCutscene.CRYSTALSTATE.ZatolibDies) {
+				g.drawImage(die.get(dieCount), (int)x, (int)y, null);
+				speedControl++;
+				if(speedControl % 2 == 0) {
+					dieCount++;
+				}
+				
+				if(dieCount == 5) {
+					AudioPlayer.getSound("povyHittingGroundThud").play(1, (float).1);
+				}
+				if(dieCount == 6) {
+					Battle.battleState = Battle.BATTLESTATE.BackToGame;
+				}
+				
+			}
+			else if(Battle.battleState == Battle.BATTLESTATE.BackToGame && CrystalCutscene.crystalState == CrystalCutscene.CRYSTALSTATE.ZatolibDies) {
+				g.drawImage(die.get(5), (int)x, (int)y, null);
 			}
 			//battle beginning, post battle, battle end
 			else{
