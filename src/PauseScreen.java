@@ -8,7 +8,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 /**
@@ -25,6 +27,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 	private static boolean option2 = false;
 	private static boolean option3 = false;
 	private static boolean option4 = false;
+	private static boolean option5 = false;
 	//itemScreen
 	private static boolean backToRegFromItem = false;
 	private static boolean overItem = false;
@@ -43,15 +46,15 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 	private Item curItemOver;
 	
 	//ally pause screen
-	private static boolean goBackFromAlly = false;
-	private static boolean overAnAlly = false;
-	private int xValAlly, xValForDrawing;
+	private static boolean goBackFromAlly = false, goBackFromAttire = false;
+	private static boolean overAnAlly = false, overAnOutfit = false;
+	private int xValAlly, xValForDrawing, xValAttire, xValForDrawingAttire, gameOverCount = 0, gameOverSpeed = 0;
 	
 	private BufferedImage text;
 	private BufferedImage allyCover;
 	private int overItemY = 0;
 	public static int yItem = 198;
-	private ArrayList<BufferedImage> pauseMenu;
+	private ArrayList<BufferedImage> pauseMenu, attireMenu;
 	private ArrayList<BufferedImage> itemMenu;
 	private ArrayList<BufferedImage> useItem;
 	private ArrayList<BufferedImage> expMenuBattle;
@@ -62,6 +65,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 	private ArrayList<BufferedImage> pummelIcon;
 	private ArrayList<BufferedImage> laserIcon;
 	private ArrayList<BufferedImage> allyMenu;
+	private ArrayList<BufferedImage> gameOverMenu;
 	
 	private BufferedImage itemCover;
 	public static PauseState pauseState = PauseState.Regular;
@@ -73,6 +77,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 		curItemOverLst = new ArrayList<String>();
 		text = null;
 		allyCover = null;
+		
 		try {
 	        text = ImageIO.read(new File("res/textbox.png"));
 	        allyCover = ImageIO.read(new File("res/allyCover.png"));
@@ -88,6 +93,15 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 		pauseMenu.add(ss.grabImage(2, 1, 1280, 960, "pauseMenu"));
 		pauseMenu.add(ss.grabImage(2, 2, 1280, 960, "pauseMenu"));
 		pauseMenu.add(ss.grabImage(3, 1, 1280, 960, "pauseMenu"));
+		pauseMenu.add(ss.grabImage(3, 2, 1280, 960, "pauseMenu"));
+		
+		gameOverMenu = new ArrayList<BufferedImage>();
+		gameOverMenu.add(ss.grabImage(1, 1, 1280, 960, "gameOverMenu"));
+		gameOverMenu.add(ss.grabImage(1, 2, 1280, 960, "gameOverMenu"));
+		gameOverMenu.add(ss.grabImage(1, 3, 1280, 960, "gameOverMenu"));
+		gameOverMenu.add(ss.grabImage(2, 1, 1280, 960, "gameOverMenu"));
+		gameOverMenu.add(ss.grabImage(2, 2, 1280, 960, "gameOverMenu"));
+		
 		
 		itemMenu = new ArrayList<BufferedImage>();
 		itemMenu.add(ss.grabImage(1, 1, 1280, 960, "itemMenu"));
@@ -110,6 +124,10 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 		allyMenu = new ArrayList<BufferedImage>();
 		allyMenu.add(ss.grabImage(1, 1, 1280, 960, "allyMenu"));
 		allyMenu.add(ss.grabImage(1, 2, 1280, 960, "allyMenu"));
+		
+		attireMenu = new ArrayList<BufferedImage>();
+		attireMenu.add(ss.grabImage(1, 1, 1280, 960, "attireMenu"));
+		attireMenu.add(ss.grabImage(1, 2, 1280, 960, "attireMenu"));
 		
 		healthIcon = new ArrayList<BufferedImage>();
 		allyIcon = new ArrayList<BufferedImage>();
@@ -139,6 +157,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 		ItemScreen,
 		ItemUse,
 		AllyScreen,
+		AttireScreen,
 		ProgressScreen;
 	};
 	
@@ -189,11 +208,19 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				}
 				
 				//items
-				if(mouseOver(mx, my, 512, 438, 278, 64)) {
+				if(mouseOver(mx, my, 512, 435, 278, 64)) {
 					option3 = true;
 				}
 				else {
 					option3 = false;
+				}
+				
+				//attire
+				if(mouseOver(mx, my, 512, 522, 278, 64)) {
+					option5 = true;
+				}
+				else {
+					option5 = false;
 				}
 				
 				//x out
@@ -204,7 +231,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 					option4 = false;
 				}
 				
-				if(!option1 && !option2 && !option3 && !option4) {
+				if(!option1 && !option2 && !option3 && !option4 && !option5) {
 					none = true;
 				}
 				else {
@@ -299,6 +326,26 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 						overAnAlly = false;
 					}
 					xAlly += 232;
+				}
+			}
+			if(pauseState == PauseState.AttireScreen) {
+				if(mouseOver(mx, my, 53, 82, 36, 36)) {
+					goBackFromAttire = true;
+				}
+				else {
+					goBackFromAttire = false;
+				}
+				int xAttire = 182;
+				for(int i = 0; i < Game.costumePouch.costumes.size(); i++) {
+					if(mouseOver(mx, my, xAttire, 300, 208, 208)) {
+						overAnOutfit = true;
+						xValForDrawingAttire = xAttire;
+						break;
+					}
+					else {
+						overAnOutfit = false;
+					}
+					xAttire += 232;
 				}
 			}
 		}
@@ -410,7 +457,15 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 	public void mousePressed(MouseEvent e) {
 		int mx = e.getX();
 		int my = e.getY();
-		if(Game.gameState == Game.STATE.Paused) {
+		if(Game.gameState == Game.STATE.GameOver) {
+			
+			if(mouseOver(mx, my, 432, 590, 400, 100)) {
+				AudioPlayer.getSound("click").play(1, (float).1);
+				AudioPlayer.getSound("click").play(1, (float).1);
+				System.exit(1);
+			}
+		}
+		else if(Game.gameState == Game.STATE.Paused) {
 			if(pauseState == PauseState.Regular) {
 				//player progress
 				if(mouseOver(mx, my, 512, 261, 278, 64)) {
@@ -429,10 +484,19 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				
 				
 				//items
-				if(mouseOver(mx, my, 512, 438, 278, 64)) {
+				if(mouseOver(mx, my, 512, 435, 278, 64)) {
 					pauseState = PauseState.ItemScreen;
 					AudioPlayer.getSound("click").play(1, (float).1);
 					changeScreens();
+				}
+				
+				//attire
+				if(mouseOver(mx, my, 512, 522, 278, 64)) {
+					
+					pauseState = PauseState.AttireScreen;
+					AudioPlayer.getSound("click").play(1, (float).1);
+					changeScreens();
+					
 				}
 				
 				
@@ -479,14 +543,42 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 			if(pauseState == PauseState.ProgressScreen) {
 				if(mouseOver(mx, my, 53, 82, 36, 36)) {
 					pauseState = PauseState.Regular;
+					AudioPlayer.getSound("click").play(1, (float).1);
 					changeScreens();
 				}
 			}
 			if(pauseState == PauseState.AllyScreen) {
 				if(mouseOver(mx, my, 53, 82, 36, 36)) {
 					pauseState = PauseState.Regular;
+					AudioPlayer.getSound("click").play(1, (float).1);
 					changeScreens();
 				}
+			}
+			if(pauseState == PauseState.AttireScreen) {
+				if(mouseOver(mx, my, 53, 82, 36, 36)) {
+					pauseState = PauseState.Regular;
+					AudioPlayer.getSound("click").play(1, (float).1);
+					changeScreens();
+				}
+				xValAttire = 182;
+				int tempX = 182;
+				for(int i = 0; i < Game.costumePouch.costumes.size(); i++) {
+					if(mouseOver(mx, my, xValAttire, 300, 208, 208)) {
+						Iterator<Costume> itr = Game.costumePouch.costumes.iterator();
+						while(itr.hasNext()) {
+							Costume cur = itr.next();
+							if(tempX == xValAttire) {
+								AudioPlayer.getSound("click").play(1, (float).1);
+								Game.costumePouch.equip(cur.getCostume());
+								
+								
+							}
+							tempX += 232;
+						}
+					}
+					xValAttire += 232;
+				}
+				return;
 			}
 		}
 		else if(Game.gameState == Game.STATE.Battle) {
@@ -534,8 +626,20 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				}
 				//System.out.println(Game.itemPouch.getItemAmnt());
 				xValAlly = 182;
+				int tempX = 182;
 				for(int i = 0; i < Game.allies.allies.size(); i++) {
 					if(mouseOver(mx, my, xValAlly, 300, 208, 208)) {
+						Iterator<GameObject> itr = Game.allies.allies.iterator();
+						while(itr.hasNext()) {
+							GameObject cur = itr.next();
+							if(tempX == xValAlly) {
+								Game.battle.setAlly(cur);
+								AudioPlayer.getSound("click").play(1, (float).1);
+								break;
+							}
+							tempX += 232;
+						}
+						
 						Battle.battleState = Battle.BATTLESTATE.PlayerTurnAction;
 						Battle.allySelected = false;
 						Battle.useAlly = false;
@@ -546,16 +650,6 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 					}
 					xValAlly += 232;
 				}
-				int tempX = 182;
-				Iterator<GameObject> itr = Game.allies.allies.iterator();
-				while(itr.hasNext()) {
-					GameObject cur = itr.next();
-					if(tempX == xValAlly) {
-						Game.battle.setAlly(cur);
-					}
-					tempX += 232;
-				}
-				
 				return;
 			}
 		}
@@ -575,6 +669,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 						AudioPlayer.getSound("upgradeDone").play(1, (float).1);
 						HUD.maxHealth += 16;
 						HUD.HEALTH = HUD.maxHealth;
+						AudioPlayer.getSound("click").play(1, (float).1);
 					}
 				}
 				else if(mouseOver(mx, my, 252, 549, 64, 45)) {
@@ -583,6 +678,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 						ExperienceBar.levelUp = false;
 						AudioPlayer.getSound("upgradeDone").play(1, (float).1);
 						HUD.HEALTH = HUD.maxHealth;
+						AudioPlayer.getSound("click").play(1, (float).1);
 					}
 				}
 				else if(mouseOver(mx, my, 252, 599, 64, 45)) {
@@ -591,6 +687,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 						ExperienceBar.levelUp = false;
 						AudioPlayer.getSound("upgradeDone").play(1, (float).1);
 						HUD.HEALTH = HUD.maxHealth;
+						AudioPlayer.getSound("click").play(1, (float).1);
 					}
 				}
 				else if(mouseOver(mx, my, 252, 649, 64, 45)) {
@@ -599,6 +696,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 						ExperienceBar.levelUp = false;
 						AudioPlayer.getSound("upgradeDone").play(1, (float).1);
 						HUD.HEALTH = HUD.maxHealth;
+						AudioPlayer.getSound("click").play(1, (float).1);
 					}
 				}
 			}
@@ -618,7 +716,19 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 	 * @param g
 	 */
 	public void render(Graphics g) {
-		if(Game.gameState == Game.STATE.Battle) {
+		if(Game.gameState == Game.STATE.GameOver) {
+			if(gameOverCount != 5) {
+				g.drawImage(gameOverMenu.get(gameOverCount), 0, 0, null);
+				gameOverSpeed++;
+				if(gameOverSpeed % 5 == 0) {
+					gameOverCount++;
+				}
+			}
+			else{
+				g.drawImage(gameOverMenu.get(4), 0, 0, null);
+			}
+		}
+		else if(Game.gameState == Game.STATE.Battle) {
 			if(Battle.itemSelected) {
 				if(itemSelect == false) {
 					if(backToRegFromItem == true) {
@@ -746,6 +856,9 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 					g.drawImage(pauseMenu.get(3), Game.camX, Game.camY, null);
 				}
 				else if(option4 == true){
+					g.drawImage(pauseMenu.get(5), Game.camX, Game.camY, null);
+				}
+				else if(option5 == true){
 					g.drawImage(pauseMenu.get(4), Game.camX, Game.camY, null);
 				}
 			}
@@ -848,6 +961,19 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 					g.drawImage(allyCover, Game.camX + xValForDrawing, Game.camY + 300, null);
 				}
 			}
+			if(pauseState == PauseState.AttireScreen) {
+				if(goBackFromAttire == true) {
+					g.drawImage(attireMenu.get(1), Game.camX, Game.camY, null);
+					Game.costumePouch.render(g);
+				}
+				else {
+					g.drawImage(attireMenu.get(0), Game.camX, Game.camY, null);
+					Game.costumePouch.render(g);
+				}
+				if(overAnOutfit) {
+					g.drawImage(allyCover, Game.camX + xValForDrawingAttire, Game.camY + 300, null);
+				}
+			}
 		}
 	}
 	
@@ -864,6 +990,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 		option2 = false;
 		option3 = false;
 		option4 = false;
+		option5 = false;
 		backToRegFromItem = false;
 		overItem = false;
 		overYes = false;
@@ -877,6 +1004,9 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 		goBackFromProg = false;
 		goBackFromAlly = false;
 		overAnAlly = false;
+		goBackFromAttire = false;
+		overAnOutfit = false;
+		
 		
 		
 	}

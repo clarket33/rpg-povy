@@ -32,7 +32,6 @@ public class Lever extends GameObject{
 	 */
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
-		g.drawRect((int)x-32, (int)y-32, 96, 96);
 		if(pushed) {
 			if(count >= 2) {
 				g.drawImage(Game.dungeonTiles.get(383), (int)x, (int)y, null);

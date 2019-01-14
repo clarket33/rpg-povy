@@ -651,12 +651,7 @@ public class Zatolib extends GameObject{
 			}
 		}
 		
-		if(Game.gameState == Game.STATE.Battle) {
-			g.drawRect((int)x + 50, (int)y + 130, 113, 30);
-		}
-		if(Game.gameState == Game.STATE.Game) {
-			g.drawRect((int)x-20, (int)y-20, 450, 400);
-		}
+		
 	}
 
 	@Override

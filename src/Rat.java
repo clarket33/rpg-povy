@@ -20,6 +20,7 @@ public class Rat extends GameObject{
 	private ArrayList<BufferedImage> hurt;
 	private ArrayList<BufferedImage> attack1;
 	private ArrayList<BufferedImage> attack2;
+	private ArrayList<BufferedImage> facingRightIdle;
 	private ArrayList<BufferedImage> die;
 	private Random healthGenerator;
 	private int health = 0;
@@ -31,6 +32,7 @@ public class Rat extends GameObject{
 	private int maxHealth = 0;
 	private int idt;
 	private boolean setVel = false;
+	private int curDirection;
 	
 	/**
 	 * creates the rat
@@ -42,7 +44,7 @@ public class Rat extends GameObject{
 	 */
 	public Rat(float x, float y, ID id, Handler handler, int idt){
 		super(x, y, id);
-		this.height = 126;
+		this.height = 52;
 		this.handler = handler;
 		this.idt = idt;
 		healthGenerator = new Random();
@@ -66,6 +68,12 @@ public class Rat extends GameObject{
 		idle.add(ss.grabImage(1, 2, 100, 52,"rat"));
 		idle.add(ss.grabImage(1, 3, 100, 52,"rat"));
 		idle.add(ss.grabImage(1, 4, 100, 52,"rat"));
+		
+		facingRightIdle = new ArrayList<BufferedImage>();
+		facingRightIdle.add(ss.grabImage(1, 6, 100, 52,"rat1"));
+		facingRightIdle.add(ss.grabImage(1, 5, 100, 52,"rat1"));
+		facingRightIdle.add(ss.grabImage(1, 4, 100, 52,"rat1"));
+		facingRightIdle.add(ss.grabImage(1, 3, 100, 52,"rat1"));
 		
 		
 		movingLeft = new ArrayList<BufferedImage>();
@@ -134,6 +142,13 @@ public class Rat extends GameObject{
 				return;
 			}
 			x += velX;
+		}
+		
+		if(velX > 0) {
+			curDirection = 1;
+		}
+		else if(velX < 0) {
+			curDirection = -1;
 		}
 	}
 	
@@ -354,6 +369,17 @@ public class Rat extends GameObject{
 				g.drawImage(die.get(4), (int)x, (int)y, null);
 				
 			}
+			else if(Battle.battleState == Battle.BATTLESTATE.PlayerDies) {
+				g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
+				changeCount++;
+				if(changeCount % 20 == 0) {
+					idleCount++;
+				}
+				if(idleCount == 4) {
+					idleCount = 0;
+					changeCount = 0;
+				}
+			}
 			else {
 				g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
 				changeCount++;
@@ -368,6 +394,18 @@ public class Rat extends GameObject{
 		}
 		
 		else if(Game.gameState == Game.STATE.Transition || Game.gameState == Game.STATE.Paused) {
+			if(curDirection > 0) {
+				g.drawImage(facingRightIdle.get(idleCount), (int)x, (int)y, null);
+				changeCount++;
+				if(changeCount % 2 == 0) {
+					idleCount++;
+				}
+				if(idleCount == 4) {
+					idleCount = 0;
+					changeCount = 0;
+				}
+				return;
+			}
 			g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
 			changeCount++;
 			if(changeCount % 5 == 0) {
@@ -379,13 +417,7 @@ public class Rat extends GameObject{
 			}
 		}
 		
-		if(Game.gameState == Game.STATE.Battle) {
-			g.drawRect((int)x+10, (int)y + 10, 104, 49);
-		}
-		if(Game.gameState == Game.STATE.Game) {
-			
-			g.drawRect((int)x, (int)y + 10, 104, 49);
-		}
+		
 		
 	}
 

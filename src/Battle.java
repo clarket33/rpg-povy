@@ -176,31 +176,31 @@ public class Battle{
 		menuActions.add(ss.grabImage(3, 6, 720, 192,"menuActions"));
 		
 		menuActions.add(ss.grabImage(4, 1, 720, 192,"menuActions"));
+
 		
 		menuActionsRight = new ArrayList<BufferedImage>();
-		menuActionsRight.add(ss.grabImage(1, 1, 720, 192,"menuActionsRight"));
-		menuActionsRight.add(ss.grabImage(1, 2, 720, 192,"menuActionsRight"));
-		menuActionsRight.add(ss.grabImage(1, 3, 720, 192,"menuActionsRight"));
-		menuActionsRight.add(ss.grabImage(1, 4, 720, 192,"menuActionsRight"));
-		menuActionsRight.add(ss.grabImage(1, 5, 720, 192,"menuActionsRight"));
-		menuActionsRight.add(ss.grabImage(1, 6, 720, 192,"menuActionsRight"));
+		menuActionsRight.add(ss.grabImage(4, 1, 720, 192,"menuActions"));
+		menuActionsRight.add(ss.grabImage(3, 6, 720, 192,"menuActions"));
+		menuActionsRight.add(ss.grabImage(3, 5, 720, 192,"menuActions"));
+		menuActionsRight.add(ss.grabImage(3, 4, 720, 192,"menuActions"));
+		menuActionsRight.add(ss.grabImage(3, 3, 720, 192,"menuActions"));
+		menuActionsRight.add(ss.grabImage(3, 2, 720, 192,"menuActions"));
 		
-		menuActionsRight.add(ss.grabImage(2, 1, 720, 192,"menuActionsRight"));
-		menuActionsRight.add(ss.grabImage(2, 2, 720, 192,"menuActionsRight"));
-		menuActionsRight.add(ss.grabImage(2, 3, 720, 192,"menuActionsRight"));
-		menuActionsRight.add(ss.grabImage(2, 4, 720, 192,"menuActionsRight"));
-		menuActionsRight.add(ss.grabImage(2, 5, 720, 192,"menuActionsRight"));
-		menuActionsRight.add(ss.grabImage(2, 6, 720, 192,"menuActionsRight"));
+		menuActionsRight.add(ss.grabImage(3, 1, 720, 192,"menuActions"));
+		menuActionsRight.add(ss.grabImage(2, 6, 720, 192,"menuActions"));
+		menuActionsRight.add(ss.grabImage(2, 5, 720, 192,"menuActions"));
+		menuActionsRight.add(ss.grabImage(2, 4, 720, 192,"menuActions"));
+		menuActionsRight.add(ss.grabImage(2, 3, 720, 192,"menuActions"));
+		menuActionsRight.add(ss.grabImage(2, 2, 720, 192,"menuActions"));
 		
-		menuActionsRight.add(ss.grabImage(3, 1, 720, 192,"menuActionsRight"));
-		menuActionsRight.add(ss.grabImage(3, 2, 720, 192,"menuActionsRight"));
-		menuActionsRight.add(ss.grabImage(3, 3, 720, 192,"menuActionsRight"));
-		menuActionsRight.add(ss.grabImage(3, 4, 720, 192,"menuActionsRight"));
-		menuActionsRight.add(ss.grabImage(3, 5, 720, 192,"menuActionsRight"));
-		menuActionsRight.add(ss.grabImage(3, 6, 720, 192,"menuActionsRight"));
+		menuActionsRight.add(ss.grabImage(2, 1, 720, 192,"menuActions"));
+		menuActionsRight.add(ss.grabImage(1, 6, 720, 192,"menuActions"));
+		menuActionsRight.add(ss.grabImage(1, 5, 720, 192,"menuActions"));
+		menuActionsRight.add(ss.grabImage(1, 4, 720, 192,"menuActions"));
+		menuActionsRight.add(ss.grabImage(1, 3, 720, 192,"menuActions"));
+		menuActionsRight.add(ss.grabImage(1, 2, 720, 192,"menuActions"));
 		
-		menuActionsRight.add(ss.grabImage(4, 1, 720, 192,"menuActionsRight"));
-		
+		menuActionsRight.add(ss.grabImage(1, 1, 720, 192,"menuActions"));
 		
 		/**
 		 * read in the background map from tiled and store it in the layers array list
@@ -516,6 +516,10 @@ public class Battle{
 						}
 						return;
 					}
+					else if(HUD.HEALTH <= 0) {
+						Battle.battleState = Battle.BATTLESTATE.PlayerDies;
+						return;
+					}
 					battleState = BATTLESTATE.PlayerTurnStart;
 				}
 			}
@@ -811,6 +815,18 @@ public class Battle{
 			if(i == 1) {
 				if(battleState == BATTLESTATE.PlayerTurnAction) {
 					enemy.render(g);
+					if(lgABoost) {
+						g.drawImage(new Item(Item.ItemType.LargeAttackBoost).getImage(), (int)player.getX()-16, (int)player.getY()-32, null);
+					}
+					else if(smABoost) {
+						g.drawImage(new Item(Item.ItemType.SmallAttackBoost).getImage(), (int)player.getX()-16, (int)player.getY()-32, null);
+					}
+					if(smDBoost) {
+						g.drawImage(new Item(Item.ItemType.SmallDefenseBoost).getImage(), (int)player.getX()+16, (int)player.getY()-32, null);
+					}
+					else if(lgDBoost) {
+						g.drawImage(new Item(Item.ItemType.LargeDefenseBoost).getImage(), (int)player.getX()+16, (int)player.getY()-32, null);
+					}
 					player.render(g);
 					if(menuPosition == 4) {
 						ally.render(g);
@@ -818,6 +834,18 @@ public class Battle{
 				}
 				else {
 					player.render(g);
+					if(lgABoost) {
+						g.drawImage(new Item(Item.ItemType.LargeAttackBoost).getImage(), (int)player.getX()-16, (int)player.getY()-32, null);
+					}
+					else if(smABoost) {
+						g.drawImage(new Item(Item.ItemType.SmallAttackBoost).getImage(), (int)player.getX()-16, (int)player.getY()-32, null);
+					}
+					if(smDBoost) {
+						g.drawImage(new Item(Item.ItemType.SmallDefenseBoost).getImage(), (int)player.getX()+16, (int)player.getY()-32, null);
+					}
+					else if(lgDBoost) {
+						g.drawImage(new Item(Item.ItemType.LargeDefenseBoost).getImage(), (int)player.getX()+16, (int)player.getY()-32, null);
+					}
 					enemy.render(g);
 				}
 				
@@ -858,18 +886,7 @@ public class Battle{
 	       		
 	       	 }
 		}
-		if(lgABoost) {
-			g.drawImage(new Item(Item.ItemType.LargeAttackBoost).getImage(), (int)player.getX()-16, (int)player.getY()-32, null);
-		}
-		else if(smABoost) {
-			g.drawImage(new Item(Item.ItemType.SmallAttackBoost).getImage(), (int)player.getX()-16, (int)player.getY()-32, null);
-		}
-		if(smDBoost) {
-			g.drawImage(new Item(Item.ItemType.SmallDefenseBoost).getImage(), (int)player.getX()+16, (int)player.getY()-32, null);
-		}
-		else if(lgDBoost) {
-			g.drawImage(new Item(Item.ItemType.LargeDefenseBoost).getImage(), (int)player.getX()+16, (int)player.getY()-32, null);
-		}
+		
 		if(escaped == 1) {
 			if(escapeCount <= 100) {
 				g.setFont(new Font("Cooper Black",1,50));
@@ -1226,7 +1243,7 @@ public class Battle{
 								handler.objects.get(j).setX(1550*2);
 								handler.objects.get(j).setY(1058*2);
 							}
-							handler.addObject(new Grogo(1460*2, 1058*2, ID.Grogo, handler));
+							//handler.addObject(new Grogo(1460*2, 1058*2, ID.Grogo, handler));
 						}
 					}
 					return;
@@ -1304,6 +1321,28 @@ public class Battle{
 				HUD.allyCount = 0;
 				Battle.useAlly = false;
 				Game.gameState = Game.STATE.Game;
+				
+				
+			}
+       	}
+    	if(Battle.battleState == Battle.BATTLESTATE.PlayerDies) {
+   			deadCount++;
+   			if(deadCount <= 250) {
+   				return;
+   			}
+       		
+       		g.drawImage(transition.get(animationCount), 0, 0, null);
+       		
+			changeCount++;
+			if(changeCount % 10 == 0) {
+				animationCount++;
+			}
+			
+			if(animationCount == 30) {
+				animationCount = 0;
+				changeCount = 0;
+				AudioPlayer.getMusic("gameOver").loop();
+				Game.gameState = Game.STATE.GameOver;
 				
 				
 			}

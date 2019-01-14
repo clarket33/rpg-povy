@@ -373,6 +373,23 @@
    <frame tileid="281" duration="2500"/>
    <frame tileid="283" duration="100"/>
    <frame tileid="282" duration="2500"/>
+   <frame tileid="283" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="282">
+  <animation>
+   <frame tileid="282" duration="2500"/>
+   <frame tileid="283" duration="100"/>
+   <frame tileid="281" duration="2500"/>
+   <frame tileid="283" duration="100"/>
+  </animation>
+ </tile>
+ <tile id="283">
+  <animation>
+   <frame tileid="281" duration="2500"/>
+   <frame tileid="283" duration="100"/>
+   <frame tileid="282" duration="2500"/>
+   <frame tileid="283" duration="100"/>
   </animation>
  </tile>
  <tile id="287">
@@ -383,11 +400,6 @@
  <tile id="288">
   <objectgroup draworder="index">
    <object id="1" x="0.363636" y="-0.363636" width="15.4545" height="15.8182"/>
-  </objectgroup>
- </tile>
- <tile id="289">
-  <objectgroup draworder="index">
-   <object id="1" x="0.181818" y="-0.181818" width="15.4545" height="15.8182"/>
   </objectgroup>
  </tile>
  <tile id="290">

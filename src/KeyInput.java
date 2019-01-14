@@ -41,6 +41,12 @@ public class KeyInput extends KeyAdapter{
 			}
 			if(key == KeyEvent.VK_SPACE) {
 				Game.gameState = Game.STATE.Paused;
+				PauseScreen.changeScreens();
+				return;
+			}
+			if(key == KeyEvent.VK_ESCAPE) {
+				Game.gameState = Game.STATE.Paused;
+				PauseScreen.changeScreens();
 				return;
 			}
 			if(key == KeyEvent.VK_ENTER) {
@@ -71,6 +77,12 @@ public class KeyInput extends KeyAdapter{
 		}
 		if(game.gameState == Game.STATE.Paused) {
 			if(key == KeyEvent.VK_SPACE) {
+				Game.gameState = Game.STATE.Game;
+				PauseScreen.pauseState = PauseScreen.PauseState.Regular;
+				PauseScreen.changeScreens();
+				return;
+			}
+			if(key == KeyEvent.VK_ESCAPE) {
 				Game.gameState = Game.STATE.Game;
 				PauseScreen.pauseState = PauseScreen.PauseState.Regular;
 				PauseScreen.changeScreens();
@@ -127,7 +139,7 @@ public class KeyInput extends KeyAdapter{
 		}
 		
 		
-		if(key == KeyEvent.VK_ESCAPE) System.exit(1);
+		//if(key == KeyEvent.VK_ESCAPE) System.exit(1);
 		
 	}
 	

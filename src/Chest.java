@@ -26,13 +26,15 @@ public class Chest extends GameObject{
 		rand = new Random();
 		int val = rand.nextInt(37);
 		
+		
+		
 		if(val >= 0 && val <=10)item = new Item(Item.ItemType.SmallHP);
 		else if(val >= 11 && val <= 12)item = new Item(Item.ItemType.MaxHP);
 		else if(val >= 13 && val <= 16)item = new Item(Item.ItemType.LargeHP);
-		else if(val >= 17 && val <= 22)item = new Item(Item.ItemType.SmallAttackBoost);
-		else if(val >= 23 && val <= 26)item = new Item(Item.ItemType.LargeAttackBoost);
-		else if(val >= 27 && val <= 32)item = new Item(Item.ItemType.SmallDefenseBoost);
-		else if(val >= 33 && val <= 36)item = new Item(Item.ItemType.LargeDefenseBoost);
+		else if(val >= 17 && val <= 24)item = new Item(Item.ItemType.SmallAttackBoost);
+		else if(val >= 25 && val <= 26)item = new Item(Item.ItemType.LargeAttackBoost);
+		else if(val >= 27 && val <= 34)item = new Item(Item.ItemType.SmallDefenseBoost);
+		else if(val >= 35 && val <= 36)item = new Item(Item.ItemType.LargeDefenseBoost);
 		
 		
 	}
@@ -48,7 +50,6 @@ public class Chest extends GameObject{
 	 */
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
-		g.drawRect((int)x, (int)y, 32, 64);
 		if(opened) {
 			g.drawImage(Game.dungeonTiles.get(336), (int)x, (int)y, null);
 			if(count <= 20) {

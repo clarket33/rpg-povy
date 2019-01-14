@@ -115,15 +115,16 @@ public class KeyToPovy extends KeyAdapter{
 					else {
 						doneCount += 2;
 					}
+					if(doneCount == 10 && Game.firstBattle == true) {
+						Game.gameState = Game.STATE.Game;
+					}
 					count = 0;
 					countLine2 = 0;
 					copy = new char[dialogue.get(new Integer(doneCount)).length];
 					copy2 = new char[dialogue.get(new Integer(doneCount)).length];
 					speedChanged = false;
 					done = false;
-					if(doneCount == 10 && Game.firstBattle == true) {
-						Game.gameState = Game.STATE.Game;
-					}
+					
 					if(doneCount == 11) {
 						for(int i = 0; i < handler.objects.size(); i++) {
 							if(handler.objects.get(i) instanceof Gate) {

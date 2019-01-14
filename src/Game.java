@@ -1,13 +1,13 @@
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+
 /**
  * 
  * @author clarkt5
@@ -37,6 +37,7 @@ public class Game extends Canvas implements Runnable{
 	public static Map<String, Integer> animationDungeonCounter;
 	public static int camX, camY;
 	public static ItemPouch itemPouch;
+	public static CostumePouch costumePouch;
 	public static boolean battleReturn = false;
 	public static boolean firstBattle = true, lastBattle = false;
 	public static AllyPouch allies;
@@ -44,11 +45,13 @@ public class Game extends Canvas implements Runnable{
 	public enum STATE{
 		Menu,
 		Game,
+		GameOver,
 		Paused,
 		Battle,
 		PostBattle,
 		Transition,
 		FinalCutscene,
+		Dead,
 		KeyFromGrogo
 	};
 	
@@ -68,6 +71,8 @@ public class Game extends Canvas implements Runnable{
 			sprite_sheet.put("spinning", loader.loadImage("/spinning_povy.png"));
 			sprite_sheet.put("povy", loader.loadImage("/povy_board.png"));
 			sprite_sheet.put("povy2", loader.loadImage("/povy_board2.png"));
+			sprite_sheet.put("povyPurple", loader.loadImage("/povy_board_purple.png"));
+			sprite_sheet.put("povyPurple2", loader.loadImage("/povy_board_purple2.png"));
 			sprite_sheet.put("wasp", loader.loadImage("/wasp-Sheet.png"));
 			sprite_sheet.put("yeti", loader.loadImage("/yeti-Sheet.png"));
 			sprite_sheet.put("werewolf", loader.loadImage("/werewolf-Sheet.png"));
@@ -90,8 +95,9 @@ public class Game extends Canvas implements Runnable{
 			sprite_sheet.put("transition", loader.loadImage("/Transition.png"));
 			sprite_sheet.put("health", loader.loadImage("/heart_animated_2.png"));
 			sprite_sheet.put("menuActions", loader.loadImage("/attackMenu.png"));
-			sprite_sheet.put("menuActionsRight", loader.loadImage("/attackMenuRight.png"));
+			sprite_sheet.put("purpleOutfit", loader.loadImage("/purpleOutfitOnMap.png"));
 			sprite_sheet.put("pauseMenu", loader.loadImage("/pauseMenu.png"));
+			sprite_sheet.put("attireMenu", loader.loadImage("/attireMenu.png"));
 			sprite_sheet.put("itemMenu", loader.loadImage("/itemScreen.png"));
 			sprite_sheet.put("smallHP", loader.loadImage("/Items/SmallHealth.png"));
 			sprite_sheet.put("largeHP", loader.loadImage("/Items/largeHealth.png"));
@@ -102,6 +108,7 @@ public class Game extends Canvas implements Runnable{
 			sprite_sheet.put("itemCover", loader.loadImage("/Items/itemCover.png"));
 			sprite_sheet.put("itemOption", loader.loadImage("/selectItemChoice.png"));
 			sprite_sheet.put("crystalAttack", loader.loadImage("/CrystalAttack1.png"));
+			sprite_sheet.put("gameOverMenu", loader.loadImage("/GameOverMenu.png"));
 			
 			sprite_sheet.put("expBar", loader.loadImage("/expBar.png"));
 			sprite_sheet.put("healthBar", loader.loadImage("/healthBar.png"));
@@ -142,6 +149,8 @@ public class Game extends Canvas implements Runnable{
 		cc = new CrystalCutscene(handler);
 		menu = new Menu(this, handler, hud);
 		itemPouch = new ItemPouch();
+		costumePouch = new CostumePouch(handler);
+		costumePouch.addCostume(new Costume(0, 0, ID.NonEnemy, "blue", handler));
 		this.addMouseListener(menu);
 		this.addKeyListener(new KeyInput(handler, this));
 		this.addKeyListener(ktp);
@@ -151,7 +160,10 @@ public class Game extends Canvas implements Runnable{
 		w = new Window(WIDTH, HEIGHT, "Povy the Alien", this);
 		
 		
+		
 	}
+	
+	
 
 	@Override
 	/**
@@ -314,6 +326,13 @@ public class Game extends Canvas implements Runnable{
 			map.render(g);
 			pause.render(g);
 			expBarTracker.render(g);
+		}
+		else if(gameState == STATE.Dead) {
+			map.render(g);
+			hud.render(g);
+		}
+		else if(gameState == STATE.GameOver) {
+			pause.render(g);
 		}
 		
 		g.dispose();

@@ -31,12 +31,11 @@ public class Gate extends GameObject{
 	 */
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
-		g.drawString(Integer.toString(gateNum), (int)x, (int)y-20);
 		if(!opened) {
 			g.drawImage(Game.dungeonTiles.get(215), (int)x, (int)y, null);
 			g.drawImage(Game.dungeonTiles.get(215), (int)x+32, (int)y, null);
 		}
-		g.drawRect((int)x, (int)y-32, 64, 96);
+		
 		
 	}
 	@Override

@@ -494,6 +494,17 @@ public class ElephantGuard extends GameObject{
 				g.drawImage(die.get(7), (int)x, (int)y, null);
 				
 			}
+			else if(Battle.battleState == Battle.BATTLESTATE.PlayerDies) {
+				g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
+				changeCount++;
+				if(changeCount % 20 == 0) {
+					idleCount++;
+				}
+				if(idleCount == 4) {
+					idleCount = 0;
+					changeCount = 0;
+				}
+			}
 			else {
 				g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
 				changeCount++;
@@ -519,12 +530,6 @@ public class ElephantGuard extends GameObject{
 			}
 		}
 		
-		if(Game.gameState == Game.STATE.Battle) {
-			g.drawRect((int)x + 50, (int)y + 130, 113, 30);
-		}
-		if(Game.gameState == Game.STATE.Game) {
-			g.drawRect((int)x, (int)y, 600, 160);
-		}
 	}
 
 	@Override

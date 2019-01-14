@@ -16,6 +16,8 @@ import javax.imageio.ImageIO;
 
 
 
+
+
 /**
  * Povy is the main character of the game, the user controls him with the arrow keys and tries
  * to save the universe
@@ -32,6 +34,7 @@ public class Povy extends GameObject{
 	private int speedControl = 0, crystalSpeedControl = 0, idleControl = 0, crystalCount = 0, crystalAttackCount = 0;
 	private ArrayList<BufferedImage> moving;
 	private ArrayList<BufferedImage> movingUp;
+	private ArrayList<BufferedImage> facingLeftIdle;
 	private ArrayList<BufferedImage> movingDown;
 	private ArrayList<BufferedImage> movingLeft;
 	private ArrayList<BufferedImage> movingUpLeft;
@@ -52,6 +55,8 @@ public class Povy extends GameObject{
 	private int hitWait = 0, hitSpeed = 0, hitCount = 0;
 	private int pummelTotal = 0;
 	private boolean invincible = false;
+	private String suitColor;
+	private int curDirection;
 	
 	/**
 	 * creates a new Povy
@@ -60,25 +65,12 @@ public class Povy extends GameObject{
 	 * @param id
 	 * @param handler
 	 */
-	public Povy(float x, float y, ID id, Handler handler){
+	public Povy(float x, float y, ID id, Handler handler, String suitColor){
 		super(x, y, id);
 		this.height = 64;
 		this.handler = handler;
 		SpriteSheet ss = new SpriteSheet(Game.sprite_sheet);
-		idle = new ArrayList<BufferedImage>();
-		moving = new ArrayList<BufferedImage>();
-		movingUp = new ArrayList<BufferedImage>();
-		movingDown = new ArrayList<BufferedImage>();
-		movingLeft = new ArrayList<BufferedImage>();
-		movingUpLeft = new ArrayList<BufferedImage>();
-		movingDownLeft = new ArrayList<BufferedImage>();
-		rotation = new ArrayList<BufferedImage>();
-		hurt = new ArrayList<BufferedImage>();
-		pummel = new ArrayList<BufferedImage>();
-		itemTake = new ArrayList<BufferedImage>();
-		laserBlaster = new ArrayList<BufferedImage>();
-		die = new ArrayList<BufferedImage>();
-		rise = new ArrayList<BufferedImage>();
+		this.suitColor = suitColor;
 		crystalAttack = new ArrayList<BufferedImage>();
 		actualCrystal = new ArrayList<BufferedImage>();
 		laser = null;
@@ -88,152 +80,6 @@ public class Povy extends GameObject{
 	    	e.printStackTrace();
 	    }
 		
-		idle.add(ss.grabImage(1, 1, 64, 64,"povy"));
-		idle.add(ss.grabImage(1, 2, 64, 64,"povy"));
-		idle.add(ss.grabImage(1, 3, 64, 64,"povy"));
-		idle.add(ss.grabImage(1, 4, 64, 64,"povy"));
-		idle.add(ss.grabImage(2, 1, 64, 64,"povy"));
-		
-		moving.add(ss.grabImage(2, 2, 64, 64,"povy"));
-		moving.add(ss.grabImage(2, 3, 64, 64,"povy"));
-		moving.add(ss.grabImage(2, 4, 64, 64,"povy"));
-		moving.add(ss.grabImage(3, 1, 64, 64,"povy"));
-		moving.add(ss.grabImage(3, 2, 64, 64,"povy"));
-		moving.add(ss.grabImage(3, 3, 64, 64,"povy"));
-		moving.add(ss.grabImage(3, 4, 64, 64,"povy"));
-		moving.add(ss.grabImage(4, 1, 64, 64,"povy"));
-		moving.add(ss.grabImage(4, 2, 64, 64,"povy"));
-		
-		
-		movingUp.add(ss.grabImage(4, 3, 64, 64,"povy"));
-		movingUp.add(ss.grabImage(4, 4, 64, 64,"povy"));
-		movingUp.add(ss.grabImage(5, 1, 64, 64,"povy"));
-		movingUp.add(ss.grabImage(5, 2, 64, 64,"povy"));
-		movingUp.add(ss.grabImage(5, 3, 64, 64,"povy"));
-		movingUp.add(ss.grabImage(5, 4, 64, 64,"povy"));
-		movingUp.add(ss.grabImage(6, 1, 64, 64,"povy"));
-		movingUp.add(ss.grabImage(6, 2, 64, 64,"povy"));
-		movingUp.add(ss.grabImage(6, 3, 64, 64,"povy"));
-		
-		movingDown.add(ss.grabImage(6, 4, 64, 64,"povy"));
-		movingDown.add(ss.grabImage(7, 1, 64, 64,"povy"));
-		movingDown.add(ss.grabImage(7, 2, 64, 64,"povy"));
-		movingDown.add(ss.grabImage(7, 3, 64, 64,"povy"));
-		movingDown.add(ss.grabImage(7, 4, 64, 64,"povy"));
-		movingDown.add(ss.grabImage(8, 1, 64, 64,"povy"));
-		movingDown.add(ss.grabImage(8, 2, 64, 64,"povy"));
-		movingDown.add(ss.grabImage(8, 3, 64, 64,"povy"));
-		movingDown.add(ss.grabImage(8, 4, 64, 64,"povy"));
-		
-		movingLeft.add(ss.grabImage(2, 2, 48, 64,"povy2"));
-		movingLeft.add(ss.grabImage(2, 3, 48, 64,"povy2"));
-		movingLeft.add(ss.grabImage(2, 4, 48, 64,"povy2"));
-		movingLeft.add(ss.grabImage(3, 1, 48, 64,"povy2"));
-		movingLeft.add(ss.grabImage(3, 2, 48, 64,"povy2"));
-		movingLeft.add(ss.grabImage(3, 3, 48, 64,"povy2"));
-		movingLeft.add(ss.grabImage(3, 4, 48, 64,"povy2"));
-		movingLeft.add(ss.grabImage(4, 1, 48, 64,"povy2"));
-		movingLeft.add(ss.grabImage(4, 2, 48, 64,"povy2"));
-		
-		movingUpLeft.add(ss.grabImage(4, 3, 48, 64,"povy2"));
-		movingUpLeft.add(ss.grabImage(4, 4, 48, 64,"povy2"));
-		movingUpLeft.add(ss.grabImage(5, 1, 48, 64,"povy2"));
-		movingUpLeft.add(ss.grabImage(5, 2, 48, 64,"povy2"));
-		movingUpLeft.add(ss.grabImage(5, 3, 48, 64,"povy2"));
-		movingUpLeft.add(ss.grabImage(5, 4, 48, 64,"povy2"));
-		movingUpLeft.add(ss.grabImage(6, 1, 48, 64,"povy2"));
-		movingUpLeft.add(ss.grabImage(6, 2, 48, 64,"povy2"));
-		movingUpLeft.add(ss.grabImage(6, 3, 48, 64,"povy2"));
-		
-		movingDownLeft.add(ss.grabImage(6, 4, 48, 64,"povy2"));
-		movingDownLeft.add(ss.grabImage(7, 1, 48, 64,"povy2"));
-		movingDownLeft.add(ss.grabImage(7, 2, 48, 64,"povy2"));
-		movingDownLeft.add(ss.grabImage(7, 3, 48, 64,"povy2"));
-		movingDownLeft.add(ss.grabImage(7, 4, 48, 64,"povy2"));
-		movingDownLeft.add(ss.grabImage(8, 1, 48, 64,"povy2"));
-		movingDownLeft.add(ss.grabImage(8, 2, 48, 64,"povy2"));
-		movingDownLeft.add(ss.grabImage(8, 3, 48, 64,"povy2"));
-		movingDownLeft.add(ss.grabImage(8, 4, 48, 64,"povy2"));
-		
-		
-		rotation.add(ss.grabImage(7, 3, 150, 140,"spinning"));
-		rotation.add(ss.grabImage(7, 4, 150, 140,"spinning"));
-		rotation.add(ss.grabImage(8, 1, 150, 140,"spinning"));
-		rotation.add(ss.grabImage(8, 2, 150, 140,"spinning"));
-		rotation.add(ss.grabImage(8, 3, 150, 140,"spinning"));
-		rotation.add(ss.grabImage(8, 4, 150, 140,"spinning"));
-		rotation.add(ss.grabImage(9, 1, 150, 140,"spinning"));
-		rotation.add(ss.grabImage(9, 2, 150, 140,"spinning"));
-		rotation.add(ss.grabImage(9, 3, 150, 140,"spinning"));
-		rotation.add(ss.grabImage(9, 4, 150, 140,"spinning"));
-		rotation.add(ss.grabImage(10, 1, 150, 140,"spinning"));
-		rotation.add(ss.grabImage(10, 2, 150, 140,"spinning"));
-		rotation.add(ss.grabImage(10, 3, 150, 140,"spinning"));
-		
-		hurt.add(ss.grabImage(9, 1, 64, 64,"povy"));
-		hurt.add(ss.grabImage(9, 2, 64, 64,"povy"));
-		
-		pummel.add(ss.grabImage(13, 1, 64, 64,"povy"));
-		pummel.add(ss.grabImage(13, 2, 64, 64,"povy"));
-		pummel.add(ss.grabImage(13, 3, 64, 64,"povy"));
-		pummel.add(ss.grabImage(13, 4, 64, 64,"povy"));
-		pummel.add(ss.grabImage(14, 1, 64, 64,"povy"));
-		pummel.add(ss.grabImage(14, 2, 64, 64,"povy"));
-		pummel.add(ss.grabImage(14, 3, 64, 64,"povy"));
-		pummel.add(ss.grabImage(14, 4, 64, 64,"povy"));
-		pummel.add(ss.grabImage(15, 1, 64, 64,"povy"));
-		pummel.add(ss.grabImage(15, 2, 64, 64,"povy"));
-		pummel.add(ss.grabImage(15, 3, 64, 64,"povy"));
-		pummel.add(ss.grabImage(15, 4, 64, 64,"povy"));
-		pummel.add(ss.grabImage(16, 1, 64, 64,"povy"));
-		pummel.add(ss.grabImage(16, 2, 64, 64,"povy"));
-		pummel.add(ss.grabImage(16, 3, 64, 64,"povy"));
-		
-		itemTake.add(ss.grabImage(16, 4, 64, 64,"povy"));
-		itemTake.add(ss.grabImage(17, 1, 64, 64,"povy"));
-		itemTake.add(ss.grabImage(17, 2, 64, 64,"povy"));
-		itemTake.add(ss.grabImage(17, 3, 64, 64,"povy"));
-		itemTake.add(ss.grabImage(17, 4, 64, 64,"povy"));
-		itemTake.add(ss.grabImage(18, 1, 64, 64,"povy"));
-		itemTake.add(ss.grabImage(18, 2, 64, 64,"povy"));
-		itemTake.add(ss.grabImage(18, 3, 64, 64,"povy"));
-		itemTake.add(ss.grabImage(18, 4, 64, 64,"povy"));
-		
-		laserBlaster.add(ss.grabImage(9, 3, 64, 64,"povy"));
-		laserBlaster.add(ss.grabImage(9, 4, 64, 64,"povy"));
-		laserBlaster.add(ss.grabImage(10, 1, 64, 64,"povy"));
-		laserBlaster.add(ss.grabImage(10, 2, 64, 64,"povy"));
-		laserBlaster.add(ss.grabImage(10, 3, 64, 64,"povy"));
-		laserBlaster.add(ss.grabImage(10, 4, 64, 64,"povy"));
-		laserBlaster.add(ss.grabImage(11, 1, 64, 64,"povy"));
-		laserBlaster.add(ss.grabImage(11, 2, 64, 64,"povy"));
-		laserBlaster.add(ss.grabImage(11, 3, 64, 64,"povy"));
-		laserBlaster.add(ss.grabImage(11, 4, 64, 64,"povy"));
-		laserBlaster.add(ss.grabImage(12, 1, 64, 64,"povy"));
-		laserBlaster.add(ss.grabImage(12, 2, 64, 64,"povy"));
-		laserBlaster.add(ss.grabImage(12, 3, 64, 64,"povy"));
-		laserBlaster.add(ss.grabImage(12, 4, 64, 64,"povy"));
-		
-		die.add(ss.grabImage(19, 1, 64, 64,"povy"));
-		die.add(ss.grabImage(19, 2, 64, 64,"povy"));
-		die.add(ss.grabImage(19, 3, 64, 64,"povy"));
-		die.add(ss.grabImage(19, 4, 64, 64,"povy"));
-		die.add(ss.grabImage(20, 1, 64, 64,"povy"));
-		die.add(ss.grabImage(20, 2, 64, 64,"povy"));
-		
-		rise.add(ss.grabImage(20, 3, 64, 64,"povy"));
-		rise.add(ss.grabImage(20, 4, 64, 64,"povy"));
-		rise.add(ss.grabImage(21, 1, 64, 64,"povy"));
-		rise.add(ss.grabImage(21, 2, 64, 64,"povy"));
-		rise.add(ss.grabImage(21, 3, 64, 64,"povy"));
-		rise.add(ss.grabImage(21, 4, 64, 64,"povy"));
-		rise.add(ss.grabImage(22, 1, 64, 64,"povy"));
-		rise.add(ss.grabImage(22, 2, 64, 64,"povy"));
-		rise.add(ss.grabImage(22, 3, 64, 64,"povy"));
-		rise.add(ss.grabImage(22, 4, 64, 64,"povy"));
-		rise.add(ss.grabImage(23, 1, 64, 64,"povy"));
-		rise.add(ss.grabImage(23, 2, 64, 64,"povy"));
-		rise.add(ss.grabImage(23, 3, 64, 64,"povy"));
 		
 		crystalAttack.add(ss.grabImage(23, 4, 64, 64,"povy"));
 		crystalAttack.add(ss.grabImage(24, 1, 64, 64,"povy"));
@@ -252,14 +98,16 @@ public class Povy extends GameObject{
 		actualCrystal.add(ss.grabImage(2, 4, 480, 64,"crystalAttack"));
 		actualCrystal.add(ss.grabImage(3, 1, 480, 64,"crystalAttack"));
 		actualCrystal.add(ss.grabImage(3, 2, 480, 64,"crystalAttack"));
-
+		
+		changeOutfit(suitColor, ss);
+		
 	}
 	
 	/**
 	 * returns a copy of Povy
 	 */
 	public Povy copy() {
-		return new Povy(x, y, id, handler);
+		return new Povy(x, y, id, handler, suitColor);
 	}
 		
 	/**
@@ -278,9 +126,17 @@ public class Povy extends GameObject{
 			y += velY;
 			//x = Game.clamp((int)x, 0, Game.WIDTH-96);
 			//y = Game.clamp((int)y, 0, Game.HEIGHT-196);
-			if(!invincible) {
+			if(!invincible && Game.gameState == Game.STATE.Game) {
 				enemyCollision();
 				obstacleCollision();
+			}
+			
+			if(Game.gameState == Game.STATE.Game && HUD.HEALTH <= 0) {
+				Game.gameState = Game.STATE.Dead;
+				if(AudioPlayer.getMusic("dungeon").playing()) {
+					AudioPlayer.getMusic("dungeon").stop();
+					AudioPlayer.getSound("povyDies").play(1, (float).3);
+				}
 			}
 			
 			collision();
@@ -288,13 +144,28 @@ public class Povy extends GameObject{
 		if(Game.gameState == Game.STATE.Battle) {
 			x += velX;
 		}
+		if(velX > 0) {
+			curDirection = 1;
+		}
+		else if(velX < 0) {
+			curDirection = -1;
+		}
 		if(Game.battleReturn == true && Game.gameState == Game.STATE.Game) {
 			this.setVelX(0);
 			this.setVelY(0);
 			this.isInvincible();
 		}
 		
-		
+		for(int i = 0; i < handler.objects.size(); i++) {
+			if(handler.objects.get(i).id == ID.NonEnemy) {
+				if(this.getBounds().intersects(handler.objects.get(i).getBounds())) {
+					if(handler.objects.get(i) instanceof Costume) {
+						Costume temp = (Costume)handler.objects.get(i);
+						temp.get();
+					}
+				}
+			}
+		}
 		
 		
 	}
@@ -306,30 +177,30 @@ public class Povy extends GameObject{
 		Iterator<String> itr = Game.collisionTiles.get(new Integer(0)).keySet().iterator();
 		while(itr.hasNext()) {
 			String cur = itr.next();
-			if(!cur.contains("281") && !cur.contains("300")) {
+			if(!cur.contains("281") && !cur.contains("300") && !cur.contains("282") && !cur.contains("283")) {
 				for(int i = 0; i < Game.collisionTiles.get(new Integer(0)).get(cur).size(); i+=2) {
 					if(getBoundsLeft().intersects(new Rectangle(Game.collisionTiles.get(new Integer(0)).get(cur).get(i), Game.collisionTiles.get(new Integer(0)).get(cur).get(i+1),
 							32, 32))) {
 						x = Game.clampUpLeft((int)x, Game.collisionTiles.get(new Integer(0)).get(cur).get(i)+26);
-						break;
+						
 							
 					}
 					if(getBoundsRight().intersects(new Rectangle(Game.collisionTiles.get(new Integer(0)).get(cur).get(i), Game.collisionTiles.get(new Integer(0)).get(cur).get(i+1),
 							32, 32))) {	
 						
 						x = Game.clampDownRight((int)x, Game.collisionTiles.get(new Integer(0)).get(cur).get(i)-42);
-						break;
+						
 					}
 					if(getBoundsUp().intersects(new Rectangle(Game.collisionTiles.get(new Integer(0)).get(cur).get(i), Game.collisionTiles.get(new Integer(0)).get(cur).get(i+1),
 							32, 32))) {
 						y = Game.clampUpLeft((int)y, Game.collisionTiles.get(new Integer(0)).get(cur).get(i+1)-15);
-						break;
+						
 					}
 					if(getBoundsDown().intersects(new Rectangle(Game.collisionTiles.get(new Integer(0)).get(cur).get(i), Game.collisionTiles.get(new Integer(0)).get(cur).get(i+1),
 							32, 32))) {
 						
 						y = Game.clampDownRight((int)y, Game.collisionTiles.get(new Integer(0)).get(cur).get(i+1)-64);
-						break;
+						
 					}
 				}
 			}
@@ -373,10 +244,10 @@ public class Povy extends GameObject{
 		Iterator<String> itr = Game.collisionTiles.get(new Integer(0)).keySet().iterator();
 		while(itr.hasNext()) {
 			String cur = itr.next();
-			if(cur.contains("281")) {
+			if(cur.contains("281") || cur.contains("282") || cur.contains("283")) {
 				if(hit == true) {
 					hitSpeed++;
-					if(hitSpeed % 20 == 0) {
+					if(hitSpeed % 80 == 0) {
 						hitWait++;
 					}
 					
@@ -388,11 +259,32 @@ public class Povy extends GameObject{
 				for(int i = 0; i < Game.collisionTiles.get(new Integer(0)).get(cur).size(); i+=2) {
 					if(hit == false && getBounds().intersects(new Rectangle(Game.collisionTiles.get(new Integer(0)).get(cur).get(i), Game.collisionTiles.get(new Integer(0)).get(cur).get(i+1),
 							32, 32))) {
-						if(Game.animationDungeonCounter.get("floorTrap") == Game.animationDungeon.get("floorTrap").size()-1) {
-							AudioPlayer.getSound("hit").play(1, (float).1);
-							HUD.HEALTH -= 4;
-							hit = true;
+						if(cur.contains("281")) {
+							if(Game.animationDungeonCounter.get("floorTrap") == Game.animationDungeon.get("floorTrap").size()-2) {
+								AudioPlayer.getSound("hit").play(1, (float).1);
+								HUD.HEALTH -= 4;
+								hit = true;
+							}
 						}
+						else if(cur.contains("282")) {
+							if(Game.animationDungeonCounter.get("floorTrapA") == Game.animationDungeon.get("floorTrap").size()-2) {
+								AudioPlayer.getSound("hit").play(1, (float).1);
+								HUD.HEALTH -= 4;
+								hit = true;
+							}
+						}
+						else if(cur.contains("283")) {
+							if(Game.animationDungeonCounter.get("floorTrapB") == Game.animationDungeon.get("floorTrap").size()-2) {
+								AudioPlayer.getSound("hit").play(1, (float).1);
+								HUD.HEALTH -= 4;
+								hit = true;
+							}
+						}
+						/**
+						if(HUD.HEALTH <= 0) {
+							hit = false;
+						}
+						**/
 					}
 				}
 			}
@@ -463,7 +355,7 @@ public class Povy extends GameObject{
 				}
 			}
 		}
-		if(hit && hitWait < 3) {
+		if(hit && hitWait < 3 && Game.gameState == Game.STATE.Game) {
 			g.drawImage(hurt.get(hitCount), (int)x, (int)y, null);
 			
 			speedControl++;
@@ -477,16 +369,18 @@ public class Povy extends GameObject{
 			return;
 		}
 		if(Game.gameState == Game.STATE.KeyFromGrogo) {
-			g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
-			
+	
+			g.drawImage(facingLeftIdle.get(idleCount), (int)x, (int)y, null);
 			speedControl++;
-			if(speedControl % 20 == 0) {
+			if(speedControl % 2 == 0) {
 				idleCount++;
 			}
-			
 			if(idleCount == 5) {
 				idleCount = 0;
+				speedControl = 0;
 			}
+			return;
+			
 			
 		}
 		if(Game.gameState == Game.STATE.Game) {
@@ -602,7 +496,18 @@ public class Povy extends GameObject{
 					}
 				}
 			}
-			
+			if(curDirection < 0) {
+				g.drawImage(facingLeftIdle.get(idleCount), (int)x, (int)y, null);
+				speedControl++;
+				if(speedControl % 5 == 0) {
+					idleCount++;
+				}
+				if(idleCount == 5) {
+					idleCount = 0;
+					speedControl = 0;
+				}
+				return;
+			}
 			
 			g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
 			
@@ -828,6 +733,26 @@ public class Povy extends GameObject{
 				g.setColor(Color.green);
 				g.drawRect((int)(x+8), (int)(y+51), 31, 13);
 			}
+			else if(Battle.battleState == Battle.BATTLESTATE.PlayerDies) {
+				if(dieCount != 6) {
+					g.drawImage(die.get(dieCount), (int)x, (int)y, null);
+					speedControl++;
+					if(speedControl % 2 == 0) {
+						dieCount++;
+					}
+					if(dieCount == 5) {
+						AudioPlayer.getSound("povyHittingGroundThud").play(1, (float).1);
+						if(AudioPlayer.getMusic("dungeonFight").playing()) {
+							AudioPlayer.getMusic("dungeonFight").stop();
+							AudioPlayer.getSound("povyDies").play(1, (float).3);
+						}
+					}
+				}
+				else {
+					
+					g.drawImage(die.get(5), (int)x, (int)y, null);
+				}
+			}
 			else if(Battle.battleState == Battle.BATTLESTATE.ZatolibWins) {
 				g.drawImage(die.get(dieCount), (int)x, (int)y, null);
 				speedControl++;
@@ -936,6 +861,19 @@ public class Povy extends GameObject{
 			
 		}
 		if(Game.gameState == Game.STATE.Transition || Game.gameState == Game.STATE.Paused) {
+			
+			if(curDirection < 0) {
+				g.drawImage(facingLeftIdle.get(idleCount), (int)x, (int)y, null);
+				speedControl++;
+				if(speedControl % 20 == 0) {
+					idleCount++;
+				}
+				if(idleCount == 5) {
+					idleCount = 0;
+					speedControl = 0;
+				}
+				return;
+			}
 			g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
 			
 			speedControl++;
@@ -946,11 +884,330 @@ public class Povy extends GameObject{
 			if(idleCount == 5) {
 				idleCount = 0;
 			}
-			g.setColor(Color.green);
-			g.drawRect((int)(x+8), (int)(y+51), 31, 13);
+			
+		}
+		if(Game.gameState == Game.STATE.Dead) {
+			if(dieCount != 6) {
+				g.drawImage(die.get(dieCount), (int)x, (int)y, null);
+				speedControl++;
+				if(speedControl % 1 == 0) {
+					dieCount++;
+				}
+				if(dieCount == 5) {
+					AudioPlayer.getSound("povyHittingGroundThud").play(1, (float).1);
+					
+				}
+			}
+			else {
+				
+				g.drawImage(die.get(5), (int)x, (int)y, null);
+			}
 		}
 		
 		
+	}
+	
+	public void changeOutfit(String name, SpriteSheet ss) {
+		suitColor = name;
+		idle = new ArrayList<BufferedImage>();
+		moving = new ArrayList<BufferedImage>();
+		movingUp = new ArrayList<BufferedImage>();
+		movingDown = new ArrayList<BufferedImage>();
+		movingLeft = new ArrayList<BufferedImage>();
+		movingUpLeft = new ArrayList<BufferedImage>();
+		movingDownLeft = new ArrayList<BufferedImage>();
+		rotation = new ArrayList<BufferedImage>();
+		hurt = new ArrayList<BufferedImage>();
+		pummel = new ArrayList<BufferedImage>();
+		itemTake = new ArrayList<BufferedImage>();
+		laserBlaster = new ArrayList<BufferedImage>();
+		die = new ArrayList<BufferedImage>();
+		facingLeftIdle = new ArrayList<BufferedImage>();
+		rise = new ArrayList<BufferedImage>();
+		
+		if(name.contains("purple")) {
+			
+			idle.add(ss.grabImage(1, 1, 64, 64,"povyPurple"));
+			idle.add(ss.grabImage(1, 2, 64, 64,"povyPurple"));
+			idle.add(ss.grabImage(1, 3, 64, 64,"povyPurple"));
+			idle.add(ss.grabImage(1, 4, 64, 64,"povyPurple"));
+			idle.add(ss.grabImage(2, 1, 64, 64,"povyPurple"));
+			
+			facingLeftIdle.add(ss.grabImage(1, 1, 48, 64,"povyPurple2"));
+			facingLeftIdle.add(ss.grabImage(1, 2, 48, 64,"povyPurple2"));
+			facingLeftIdle.add(ss.grabImage(1, 3, 48, 64,"povyPurple2"));
+			facingLeftIdle.add(ss.grabImage(1, 4, 48, 64,"povyPurple2"));
+			facingLeftIdle.add(ss.grabImage(2, 1, 48, 64,"povyPurple2"));
+			
+			moving.add(ss.grabImage(2, 2, 64, 64,"povyPurple"));
+			moving.add(ss.grabImage(2, 3, 64, 64,"povyPurple"));
+			moving.add(ss.grabImage(2, 4, 64, 64,"povyPurple"));
+			moving.add(ss.grabImage(3, 1, 64, 64,"povyPurple"));
+			moving.add(ss.grabImage(3, 2, 64, 64,"povyPurple"));
+			moving.add(ss.grabImage(3, 3, 64, 64,"povyPurple"));
+			moving.add(ss.grabImage(3, 4, 64, 64,"povyPurple"));
+			moving.add(ss.grabImage(4, 1, 64, 64,"povyPurple"));
+			moving.add(ss.grabImage(4, 2, 64, 64,"povyPurple"));
+			
+			
+			movingUp.add(ss.grabImage(4, 3, 64, 64,"povyPurple"));
+			movingUp.add(ss.grabImage(4, 4, 64, 64,"povyPurple"));
+			movingUp.add(ss.grabImage(5, 1, 64, 64,"povyPurple"));
+			movingUp.add(ss.grabImage(5, 2, 64, 64,"povyPurple"));
+			movingUp.add(ss.grabImage(5, 3, 64, 64,"povyPurple"));
+			movingUp.add(ss.grabImage(5, 4, 64, 64,"povyPurple"));
+			movingUp.add(ss.grabImage(6, 1, 64, 64,"povyPurple"));
+			movingUp.add(ss.grabImage(6, 2, 64, 64,"povyPurple"));
+			movingUp.add(ss.grabImage(6, 3, 64, 64,"povyPurple"));
+			
+			movingDown.add(ss.grabImage(6, 4, 64, 64,"povyPurple"));
+			movingDown.add(ss.grabImage(7, 1, 64, 64,"povyPurple"));
+			movingDown.add(ss.grabImage(7, 2, 64, 64,"povyPurple"));
+			movingDown.add(ss.grabImage(7, 3, 64, 64,"povyPurple"));
+			movingDown.add(ss.grabImage(7, 4, 64, 64,"povyPurple"));
+			movingDown.add(ss.grabImage(8, 1, 64, 64,"povyPurple"));
+			movingDown.add(ss.grabImage(8, 2, 64, 64,"povyPurple"));
+			movingDown.add(ss.grabImage(8, 3, 64, 64,"povyPurple"));
+			movingDown.add(ss.grabImage(8, 4, 64, 64,"povyPurple"));
+			
+			movingLeft.add(ss.grabImage(2, 2, 48, 64,"povyPurple2"));
+			movingLeft.add(ss.grabImage(2, 3, 48, 64,"povyPurple2"));
+			movingLeft.add(ss.grabImage(2, 4, 48, 64,"povyPurple2"));
+			movingLeft.add(ss.grabImage(3, 1, 48, 64,"povyPurple2"));
+			movingLeft.add(ss.grabImage(3, 2, 48, 64,"povyPurple2"));
+			movingLeft.add(ss.grabImage(3, 3, 48, 64,"povyPurple2"));
+			movingLeft.add(ss.grabImage(3, 4, 48, 64,"povyPurple2"));
+			movingLeft.add(ss.grabImage(4, 1, 48, 64,"povyPurple2"));
+			movingLeft.add(ss.grabImage(4, 2, 48, 64,"povyPurple2"));
+			
+			movingUpLeft.add(ss.grabImage(4, 3, 48, 64,"povyPurple2"));
+			movingUpLeft.add(ss.grabImage(4, 4, 48, 64,"povyPurple2"));
+			movingUpLeft.add(ss.grabImage(5, 1, 48, 64,"povyPurple2"));
+			movingUpLeft.add(ss.grabImage(5, 2, 48, 64,"povyPurple2"));
+			movingUpLeft.add(ss.grabImage(5, 3, 48, 64,"povyPurple2"));
+			movingUpLeft.add(ss.grabImage(5, 4, 48, 64,"povyPurple2"));
+			movingUpLeft.add(ss.grabImage(6, 1, 48, 64,"povyPurple2"));
+			movingUpLeft.add(ss.grabImage(6, 2, 48, 64,"povyPurple2"));
+			movingUpLeft.add(ss.grabImage(6, 3, 48, 64,"povyPurple2"));
+			
+			movingDownLeft.add(ss.grabImage(6, 4, 48, 64,"povyPurple2"));
+			movingDownLeft.add(ss.grabImage(7, 1, 48, 64,"povyPurple2"));
+			movingDownLeft.add(ss.grabImage(7, 2, 48, 64,"povyPurple2"));
+			movingDownLeft.add(ss.grabImage(7, 3, 48, 64,"povyPurple2"));
+			movingDownLeft.add(ss.grabImage(7, 4, 48, 64,"povyPurple2"));
+			movingDownLeft.add(ss.grabImage(8, 1, 48, 64,"povyPurple2"));
+			movingDownLeft.add(ss.grabImage(8, 2, 48, 64,"povyPurple2"));
+			movingDownLeft.add(ss.grabImage(8, 3, 48, 64,"povyPurple2"));
+			movingDownLeft.add(ss.grabImage(8, 4, 48, 64,"povyPurple2"));
+			
+			hurt.add(ss.grabImage(9, 1, 64, 64,"povyPurple"));
+			hurt.add(ss.grabImage(9, 2, 64, 64,"povyPurple"));
+			
+			pummel.add(ss.grabImage(13, 1, 64, 64,"povyPurple"));
+			pummel.add(ss.grabImage(13, 2, 64, 64,"povyPurple"));
+			pummel.add(ss.grabImage(13, 3, 64, 64,"povyPurple"));
+			pummel.add(ss.grabImage(13, 4, 64, 64,"povyPurple"));
+			pummel.add(ss.grabImage(14, 1, 64, 64,"povyPurple"));
+			pummel.add(ss.grabImage(14, 2, 64, 64,"povyPurple"));
+			pummel.add(ss.grabImage(14, 3, 64, 64,"povyPurple"));
+			pummel.add(ss.grabImage(14, 4, 64, 64,"povyPurple"));
+			pummel.add(ss.grabImage(15, 1, 64, 64,"povyPurple"));
+			pummel.add(ss.grabImage(15, 2, 64, 64,"povyPurple"));
+			pummel.add(ss.grabImage(15, 3, 64, 64,"povyPurple"));
+			pummel.add(ss.grabImage(15, 4, 64, 64,"povyPurple"));
+			pummel.add(ss.grabImage(16, 1, 64, 64,"povyPurple"));
+			pummel.add(ss.grabImage(16, 2, 64, 64,"povyPurple"));
+			pummel.add(ss.grabImage(16, 3, 64, 64,"povyPurple"));
+			
+			itemTake.add(ss.grabImage(16, 4, 64, 64,"povyPurple"));
+			itemTake.add(ss.grabImage(17, 1, 64, 64,"povyPurple"));
+			itemTake.add(ss.grabImage(17, 2, 64, 64,"povyPurple"));
+			itemTake.add(ss.grabImage(17, 3, 64, 64,"povyPurple"));
+			itemTake.add(ss.grabImage(17, 4, 64, 64,"povyPurple"));
+			itemTake.add(ss.grabImage(18, 1, 64, 64,"povyPurple"));
+			itemTake.add(ss.grabImage(18, 2, 64, 64,"povyPurple"));
+			itemTake.add(ss.grabImage(18, 3, 64, 64,"povyPurple"));
+			itemTake.add(ss.grabImage(18, 4, 64, 64,"povyPurple"));
+			
+			laserBlaster.add(ss.grabImage(9, 3, 64, 64,"povyPurple"));
+			laserBlaster.add(ss.grabImage(9, 4, 64, 64,"povyPurple"));
+			laserBlaster.add(ss.grabImage(10, 1, 64, 64,"povyPurple"));
+			laserBlaster.add(ss.grabImage(10, 2, 64, 64,"povyPurple"));
+			laserBlaster.add(ss.grabImage(10, 3, 64, 64,"povyPurple"));
+			laserBlaster.add(ss.grabImage(10, 4, 64, 64,"povyPurple"));
+			laserBlaster.add(ss.grabImage(11, 1, 64, 64,"povyPurple"));
+			laserBlaster.add(ss.grabImage(11, 2, 64, 64,"povyPurple"));
+			laserBlaster.add(ss.grabImage(11, 3, 64, 64,"povyPurple"));
+			laserBlaster.add(ss.grabImage(11, 4, 64, 64,"povyPurple"));
+			laserBlaster.add(ss.grabImage(12, 1, 64, 64,"povyPurple"));
+			laserBlaster.add(ss.grabImage(12, 2, 64, 64,"povyPurple"));
+			laserBlaster.add(ss.grabImage(12, 3, 64, 64,"povyPurple"));
+			laserBlaster.add(ss.grabImage(12, 4, 64, 64,"povyPurple"));
+			
+			die.add(ss.grabImage(19, 1, 64, 64,"povyPurple"));
+			die.add(ss.grabImage(19, 2, 64, 64,"povyPurple"));
+			die.add(ss.grabImage(19, 3, 64, 64,"povyPurple"));
+			die.add(ss.grabImage(19, 4, 64, 64,"povyPurple"));
+			die.add(ss.grabImage(20, 1, 64, 64,"povyPurple"));
+			die.add(ss.grabImage(20, 2, 64, 64,"povyPurple"));
+			
+			rise.add(ss.grabImage(20, 3, 64, 64,"povyPurple"));
+			rise.add(ss.grabImage(20, 4, 64, 64,"povyPurple"));
+			rise.add(ss.grabImage(21, 1, 64, 64,"povyPurple"));
+			rise.add(ss.grabImage(21, 2, 64, 64,"povyPurple"));
+			rise.add(ss.grabImage(21, 3, 64, 64,"povyPurple"));
+			rise.add(ss.grabImage(21, 4, 64, 64,"povyPurple"));
+			rise.add(ss.grabImage(22, 1, 64, 64,"povyPurple"));
+			rise.add(ss.grabImage(22, 2, 64, 64,"povyPurple"));
+			rise.add(ss.grabImage(22, 3, 64, 64,"povyPurple"));
+			rise.add(ss.grabImage(22, 4, 64, 64,"povyPurple"));
+			rise.add(ss.grabImage(23, 1, 64, 64,"povyPurple"));
+			rise.add(ss.grabImage(23, 2, 64, 64,"povyPurple"));
+			rise.add(ss.grabImage(23, 3, 64, 64,"povyPurple"));
+			
+		}
+		
+		if(name.contains("blue")) {
+			
+			idle.add(ss.grabImage(1, 1, 64, 64,"povy"));
+			idle.add(ss.grabImage(1, 2, 64, 64,"povy"));
+			idle.add(ss.grabImage(1, 3, 64, 64,"povy"));
+			idle.add(ss.grabImage(1, 4, 64, 64,"povy"));
+			idle.add(ss.grabImage(2, 1, 64, 64,"povy"));
+			
+			facingLeftIdle.add(ss.grabImage(1, 1, 48, 64,"povy2"));
+			facingLeftIdle.add(ss.grabImage(1, 2, 48, 64,"povy2"));
+			facingLeftIdle.add(ss.grabImage(1, 3, 48, 64,"povy2"));
+			facingLeftIdle.add(ss.grabImage(1, 4, 48, 64,"povy2"));
+			facingLeftIdle.add(ss.grabImage(2, 1, 48, 64,"povy2"));
+			
+			moving.add(ss.grabImage(2, 2, 64, 64,"povy"));
+			moving.add(ss.grabImage(2, 3, 64, 64,"povy"));
+			moving.add(ss.grabImage(2, 4, 64, 64,"povy"));
+			moving.add(ss.grabImage(3, 1, 64, 64,"povy"));
+			moving.add(ss.grabImage(3, 2, 64, 64,"povy"));
+			moving.add(ss.grabImage(3, 3, 64, 64,"povy"));
+			moving.add(ss.grabImage(3, 4, 64, 64,"povy"));
+			moving.add(ss.grabImage(4, 1, 64, 64,"povy"));
+			moving.add(ss.grabImage(4, 2, 64, 64,"povy"));
+			
+			
+			movingUp.add(ss.grabImage(4, 3, 64, 64,"povy"));
+			movingUp.add(ss.grabImage(4, 4, 64, 64,"povy"));
+			movingUp.add(ss.grabImage(5, 1, 64, 64,"povy"));
+			movingUp.add(ss.grabImage(5, 2, 64, 64,"povy"));
+			movingUp.add(ss.grabImage(5, 3, 64, 64,"povy"));
+			movingUp.add(ss.grabImage(5, 4, 64, 64,"povy"));
+			movingUp.add(ss.grabImage(6, 1, 64, 64,"povy"));
+			movingUp.add(ss.grabImage(6, 2, 64, 64,"povy"));
+			movingUp.add(ss.grabImage(6, 3, 64, 64,"povy"));
+			
+			movingDown.add(ss.grabImage(6, 4, 64, 64,"povy"));
+			movingDown.add(ss.grabImage(7, 1, 64, 64,"povy"));
+			movingDown.add(ss.grabImage(7, 2, 64, 64,"povy"));
+			movingDown.add(ss.grabImage(7, 3, 64, 64,"povy"));
+			movingDown.add(ss.grabImage(7, 4, 64, 64,"povy"));
+			movingDown.add(ss.grabImage(8, 1, 64, 64,"povy"));
+			movingDown.add(ss.grabImage(8, 2, 64, 64,"povy"));
+			movingDown.add(ss.grabImage(8, 3, 64, 64,"povy"));
+			movingDown.add(ss.grabImage(8, 4, 64, 64,"povy"));
+			
+			movingLeft.add(ss.grabImage(2, 2, 48, 64,"povy2"));
+			movingLeft.add(ss.grabImage(2, 3, 48, 64,"povy2"));
+			movingLeft.add(ss.grabImage(2, 4, 48, 64,"povy2"));
+			movingLeft.add(ss.grabImage(3, 1, 48, 64,"povy2"));
+			movingLeft.add(ss.grabImage(3, 2, 48, 64,"povy2"));
+			movingLeft.add(ss.grabImage(3, 3, 48, 64,"povy2"));
+			movingLeft.add(ss.grabImage(3, 4, 48, 64,"povy2"));
+			movingLeft.add(ss.grabImage(4, 1, 48, 64,"povy2"));
+			movingLeft.add(ss.grabImage(4, 2, 48, 64,"povy2"));
+			
+			movingUpLeft.add(ss.grabImage(4, 3, 48, 64,"povy2"));
+			movingUpLeft.add(ss.grabImage(4, 4, 48, 64,"povy2"));
+			movingUpLeft.add(ss.grabImage(5, 1, 48, 64,"povy2"));
+			movingUpLeft.add(ss.grabImage(5, 2, 48, 64,"povy2"));
+			movingUpLeft.add(ss.grabImage(5, 3, 48, 64,"povy2"));
+			movingUpLeft.add(ss.grabImage(5, 4, 48, 64,"povy2"));
+			movingUpLeft.add(ss.grabImage(6, 1, 48, 64,"povy2"));
+			movingUpLeft.add(ss.grabImage(6, 2, 48, 64,"povy2"));
+			movingUpLeft.add(ss.grabImage(6, 3, 48, 64,"povy2"));
+			
+			movingDownLeft.add(ss.grabImage(6, 4, 48, 64,"povy2"));
+			movingDownLeft.add(ss.grabImage(7, 1, 48, 64,"povy2"));
+			movingDownLeft.add(ss.grabImage(7, 2, 48, 64,"povy2"));
+			movingDownLeft.add(ss.grabImage(7, 3, 48, 64,"povy2"));
+			movingDownLeft.add(ss.grabImage(7, 4, 48, 64,"povy2"));
+			movingDownLeft.add(ss.grabImage(8, 1, 48, 64,"povy2"));
+			movingDownLeft.add(ss.grabImage(8, 2, 48, 64,"povy2"));
+			movingDownLeft.add(ss.grabImage(8, 3, 48, 64,"povy2"));
+			movingDownLeft.add(ss.grabImage(8, 4, 48, 64,"povy2"));
+			
+			hurt.add(ss.grabImage(9, 1, 64, 64,"povy"));
+			hurt.add(ss.grabImage(9, 2, 64, 64,"povy"));
+			
+			pummel.add(ss.grabImage(13, 1, 64, 64,"povy"));
+			pummel.add(ss.grabImage(13, 2, 64, 64,"povy"));
+			pummel.add(ss.grabImage(13, 3, 64, 64,"povy"));
+			pummel.add(ss.grabImage(13, 4, 64, 64,"povy"));
+			pummel.add(ss.grabImage(14, 1, 64, 64,"povy"));
+			pummel.add(ss.grabImage(14, 2, 64, 64,"povy"));
+			pummel.add(ss.grabImage(14, 3, 64, 64,"povy"));
+			pummel.add(ss.grabImage(14, 4, 64, 64,"povy"));
+			pummel.add(ss.grabImage(15, 1, 64, 64,"povy"));
+			pummel.add(ss.grabImage(15, 2, 64, 64,"povy"));
+			pummel.add(ss.grabImage(15, 3, 64, 64,"povy"));
+			pummel.add(ss.grabImage(15, 4, 64, 64,"povy"));
+			pummel.add(ss.grabImage(16, 1, 64, 64,"povy"));
+			pummel.add(ss.grabImage(16, 2, 64, 64,"povy"));
+			pummel.add(ss.grabImage(16, 3, 64, 64,"povy"));
+			
+			itemTake.add(ss.grabImage(16, 4, 64, 64,"povy"));
+			itemTake.add(ss.grabImage(17, 1, 64, 64,"povy"));
+			itemTake.add(ss.grabImage(17, 2, 64, 64,"povy"));
+			itemTake.add(ss.grabImage(17, 3, 64, 64,"povy"));
+			itemTake.add(ss.grabImage(17, 4, 64, 64,"povy"));
+			itemTake.add(ss.grabImage(18, 1, 64, 64,"povy"));
+			itemTake.add(ss.grabImage(18, 2, 64, 64,"povy"));
+			itemTake.add(ss.grabImage(18, 3, 64, 64,"povy"));
+			itemTake.add(ss.grabImage(18, 4, 64, 64,"povy"));
+			
+			laserBlaster.add(ss.grabImage(9, 3, 64, 64,"povy"));
+			laserBlaster.add(ss.grabImage(9, 4, 64, 64,"povy"));
+			laserBlaster.add(ss.grabImage(10, 1, 64, 64,"povy"));
+			laserBlaster.add(ss.grabImage(10, 2, 64, 64,"povy"));
+			laserBlaster.add(ss.grabImage(10, 3, 64, 64,"povy"));
+			laserBlaster.add(ss.grabImage(10, 4, 64, 64,"povy"));
+			laserBlaster.add(ss.grabImage(11, 1, 64, 64,"povy"));
+			laserBlaster.add(ss.grabImage(11, 2, 64, 64,"povy"));
+			laserBlaster.add(ss.grabImage(11, 3, 64, 64,"povy"));
+			laserBlaster.add(ss.grabImage(11, 4, 64, 64,"povy"));
+			laserBlaster.add(ss.grabImage(12, 1, 64, 64,"povy"));
+			laserBlaster.add(ss.grabImage(12, 2, 64, 64,"povy"));
+			laserBlaster.add(ss.grabImage(12, 3, 64, 64,"povy"));
+			laserBlaster.add(ss.grabImage(12, 4, 64, 64,"povy"));
+			
+			die.add(ss.grabImage(19, 1, 64, 64,"povy"));
+			die.add(ss.grabImage(19, 2, 64, 64,"povy"));
+			die.add(ss.grabImage(19, 3, 64, 64,"povy"));
+			die.add(ss.grabImage(19, 4, 64, 64,"povy"));
+			die.add(ss.grabImage(20, 1, 64, 64,"povy"));
+			die.add(ss.grabImage(20, 2, 64, 64,"povy"));
+			
+			rise.add(ss.grabImage(20, 3, 64, 64,"povy"));
+			rise.add(ss.grabImage(20, 4, 64, 64,"povy"));
+			rise.add(ss.grabImage(21, 1, 64, 64,"povy"));
+			rise.add(ss.grabImage(21, 2, 64, 64,"povy"));
+			rise.add(ss.grabImage(21, 3, 64, 64,"povy"));
+			rise.add(ss.grabImage(21, 4, 64, 64,"povy"));
+			rise.add(ss.grabImage(22, 1, 64, 64,"povy"));
+			rise.add(ss.grabImage(22, 2, 64, 64,"povy"));
+			rise.add(ss.grabImage(22, 3, 64, 64,"povy"));
+			rise.add(ss.grabImage(22, 4, 64, 64,"povy"));
+			rise.add(ss.grabImage(23, 1, 64, 64,"povy"));
+			rise.add(ss.grabImage(23, 2, 64, 64,"povy"));
+			rise.add(ss.grabImage(23, 3, 64, 64,"povy"));
+			
+		}
 	}
 	
 	

@@ -33,6 +33,7 @@ public class Golem extends GameObject{
 	private int hurtCount = 0;
 	private int maxHealth = 0;
 	private GolemType golemState;
+	private int curDirection;
 	
 	public enum GolemType{
 		firstGolem,
@@ -71,14 +72,13 @@ public class Golem extends GameObject{
 		maxHealth = health;
 		
 		SpriteSheet ss = new SpriteSheet(Game.sprite_sheet);
-		if(g == GolemType.treasureGuard) {
-			facingRightIdle = new ArrayList<BufferedImage>();
-			facingRightIdle.add(ss.grabImage(1, 6, 164, 126,"golem1"));
-			facingRightIdle.add(ss.grabImage(1, 5, 164, 126,"golem1"));
-			facingRightIdle.add(ss.grabImage(1, 4, 164, 126,"golem1"));
-			facingRightIdle.add(ss.grabImage(1, 3, 164, 126,"golem1"));
-			facingRightIdle.add(ss.grabImage(1, 2, 164, 126,"golem1"));
-		}
+		facingRightIdle = new ArrayList<BufferedImage>();
+		facingRightIdle.add(ss.grabImage(1, 6, 164, 126,"golem1"));
+		facingRightIdle.add(ss.grabImage(1, 5, 164, 126,"golem1"));
+		facingRightIdle.add(ss.grabImage(1, 4, 164, 126,"golem1"));
+		facingRightIdle.add(ss.grabImage(1, 3, 164, 126,"golem1"));
+		facingRightIdle.add(ss.grabImage(1, 2, 164, 126,"golem1"));
+		
 		idle = new ArrayList<BufferedImage>();
 		idle.add(ss.grabImage(1, 1, 164, 126,"golem"));
 		idle.add(ss.grabImage(1, 2, 164, 126,"golem"));
@@ -172,6 +172,12 @@ public class Golem extends GameObject{
 				y += velY;
 			}
 			
+			if(velX > 0) {
+				curDirection = 1;
+			}
+			else if(velX < 0) {
+				curDirection = -1;
+			}
 			//x = Game.clamp((int)x, 0, Game.WIDTH-56);
 			//y = Game.clamp((int)y, 0, Game.HEIGHT-76);
 			collision();
@@ -450,6 +456,17 @@ public class Golem extends GameObject{
 					Battle.battleState = Battle.BATTLESTATE.BackToGame;
 				}
 			}
+			else if(Battle.battleState == Battle.BATTLESTATE.PlayerDies) {
+				g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
+				changeCount++;
+				if(changeCount % 20 == 0) {
+					idleCount++;
+				}
+				if(idleCount == 5) {
+					idleCount = 0;
+					changeCount = 0;
+				}
+			}
 			else if(Battle.battleState == Battle.BATTLESTATE.BackToGame) {
 				g.drawImage(die.get(8), (int)x, (int)y, null);
 				
@@ -468,6 +485,30 @@ public class Golem extends GameObject{
 		}
 		
 		else if(Game.gameState == Game.STATE.Transition || Game.gameState == Game.STATE.Paused) {
+			if(curDirection > 0) {
+				g.drawImage(facingRightIdle.get(idleCount), (int)x, (int)y, null);
+				changeCount++;
+				if(changeCount % 2 == 0) {
+					idleCount++;
+				}
+				if(idleCount == 5) {
+					idleCount = 0;
+					changeCount = 0;
+				}
+				return;
+			}
+			if(golemState == GolemType.treasureGuard) {
+				g.drawImage(facingRightIdle.get(idleCount), (int)x, (int)y, null);
+				changeCount++;
+				if(changeCount % 2 == 0) {
+					idleCount++;
+				}
+				if(idleCount == 5) {
+					idleCount = 0;
+					changeCount = 0;
+				}
+				return;
+			}
 			g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
 			changeCount++;
 			if(changeCount % 5 == 0) {
@@ -479,13 +520,7 @@ public class Golem extends GameObject{
 			}
 		}
 		
-		if(Game.gameState == Game.STATE.Battle) {
-			g.drawRect((int)x + 40, (int)y + 96, 108, 30);
-		}
-		if(Game.gameState == Game.STATE.Game) {
-			if(golemState == GolemType.firstGolem || golemState == GolemType.treasureGuard) g.drawRect((int)x + 40, (int)y - 130, 108, 370);
-			else g.drawRect((int)x + 40, (int)y + 96, 108, 30);
-		}
+		
 	}
 
 	@Override

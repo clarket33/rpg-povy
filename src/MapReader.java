@@ -17,6 +17,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+
 /**
  * MapReader takes in a xml file and draws the surrounding map using this file
  * @author clarkt5
@@ -27,11 +29,13 @@ public class MapReader {
 	private ArrayList<String> layers;
 	private Handler handler;
 	private int torchCounter = 0;
-	private int trapCounter = 0;
+	private int trapCounter = 0, trapCounterA = 0, trapCounterB = 0;
 	private ArrayList<BufferedImage> transition;
 	private BufferedImage grogoShip;
 	private int changeCount = 0;
 	private int idleCount = 0;
+	private int animationHold = 0, animationHoldA = 0, animationHoldB = 0;
+	private boolean doLeft = true;
 	
 	/**
 	 * loads in the xml files and stores information about the map and tiles in various structures
@@ -49,7 +53,11 @@ public class MapReader {
 		Game.animationDungeon.put("torch", new ArrayList<String>());
 		Game.animationDungeon.put("chest", new ArrayList<String>());
 		Game.animationDungeon.put("lever", new ArrayList<String>());
-		Game.animationDungeonCounter.put("floorTrap", new Integer(0));
+		Game.animationDungeon.put("floorTrapB", new ArrayList<String>());
+		Game.animationDungeon.put("floorTrapA", new ArrayList<String>());
+		Game.animationDungeonCounter.put("floorTrap", new Integer(1));
+		Game.animationDungeonCounter.put("floorTrapB", new Integer(0));
+		Game.animationDungeonCounter.put("floorTrapA", new Integer(0));
 		Game.animationDungeonCounter.put("gate", new Integer(0));
 		Game.animationDungeonCounter.put("torch", new Integer(0));
 		Game.animationDungeonCounter.put("chest", new Integer(0));
@@ -135,7 +143,7 @@ public class MapReader {
 			doc.getDocumentElement().normalize();
 			nList = doc.getElementsByTagName("tile");
 			NodeList nList1 = doc.getElementsByTagName("frame");
-			 
+			//System.out.println(nList1.getLength());
 			 for (int temp = 0; temp < nList.getLength(); temp++) {
 		            Node nNode = nList.item(temp);
 		            
@@ -186,7 +194,21 @@ public class MapReader {
 	 	       	 }
 	 		}
 	 		
-		         
+	 		
+	 		Game.animationDungeon.get("floorTrap").add("282");
+	 		Game.animationDungeon.get("floorTrap").add("284");
+	 		Game.animationDungeon.get("floorTrap").add("283");
+	 		Game.animationDungeon.get("floorTrap").add("284");
+	 		
+	 		Game.animationDungeon.get("floorTrapA").add("282");
+	 		Game.animationDungeon.get("floorTrapA").add("284");
+	 		Game.animationDungeon.get("floorTrapA").add("283");
+	 		Game.animationDungeon.get("floorTrapA").add("284");
+	 		
+	 		Game.animationDungeon.get("floorTrapB").add("282");
+	 		Game.animationDungeon.get("floorTrapB").add("284");
+	 		Game.animationDungeon.get("floorTrapB").add("283");
+	 		Game.animationDungeon.get("floorTrapB").add("284");
 		
 		 
 			 for (int temp = 0; temp < nList1.getLength(); temp++) {
@@ -201,6 +223,7 @@ public class MapReader {
 		            	   cur1 = String.valueOf(cur);
 		            	   Game.animationDungeon.get("gate").add(eElement.getAttribute("tileid"));
 		               }
+		               /**
 		               else if(eElement.getAttribute("tileid").contains("281") ||  eElement.getAttribute("tileid").contains("283") || 
 		            		   eElement.getAttribute("tileid").contains("282")) {
 		            	   cur = Integer.parseInt(eElement.getAttribute("tileid"));
@@ -210,6 +233,7 @@ public class MapReader {
 		            	   Game.animationDungeon.get("floorTrap").add(cur1);
 		            	   
 		               }
+		               **/
 		               else if(eElement.getAttribute("tileid").contains("300") || eElement.getAttribute("tileid").contains("301") || 
 		            		   eElement.getAttribute("tileid").contains("302") || eElement.getAttribute("tileid").contains("303")) {
 		            	   cur = Integer.parseInt(eElement.getAttribute("tileid"));
@@ -254,6 +278,7 @@ public class MapReader {
 	 */
 	public void render(Graphics g) {
 		
+		
 		for(int i = 0; i< handler.objects.size();i++) {
 			if(handler.objects.get(i).id == ID.Povy) {
 				followPlayer(g, handler.objects.get(i).getX(), handler.objects.get(i).getY());
@@ -291,21 +316,48 @@ public class MapReader {
 	       				}
 	       				
 	       			}
-	       			else if(Game.animationDungeon.get("floorTrap").contains(cur[j])) {
+	       			else if(cur[j].contains("282")) {
 	       				if(Game.gameState != Game.STATE.Paused) {
-		       				g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("floorTrap").get(Game.animationDungeonCounter.get("floorTrap")))), x, y, null);
-		       				trapCounter++;
-		       				if(trapCounter == 11000) {
-		       					
-		       					Game.animationDungeonCounter.put("floorTrap", Game.animationDungeonCounter.get("floorTrap") + 1);
-		       					trapCounter = 0;
+	       					if(animationHold == 0) {
+	       						trapCounter++;
+	       					}
+		       				if(trapCounter == 10000 || animationHold != 0) {
+		       					if(Game.animationDungeonCounter.get("floorTrap") == 0 || Game.animationDungeonCounter.get("floorTrap") == 2) {
+			       					Game.animationDungeonCounter.put("floorTrap", Game.animationDungeonCounter.get("floorTrap") + 1);
+			       					trapCounter = 0;
+		       					}
 		       					if(Game.animationDungeonCounter.get("floorTrap") == 1) {
 		       						g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("floorTrap").get(Game.animationDungeonCounter.get("floorTrap")))), x, y, null);
-		       						Game.animationDungeonCounter.put("floorTrap", Game.animationDungeonCounter.get("floorTrap") + 1);
+		       						if(animationHold == 0) {
+		       							animationHold++;
+		       						}
+		       						else {
+		       							animationHold++;
+		       							if(animationHold == 200) {
+		       								animationHold = 0;
+		       								Game.animationDungeonCounter.put("floorTrap", Game.animationDungeonCounter.get("floorTrap") + 1);
+		       								trapCounter = 0;
+		       							}
+		       						}
 		       					}
-		       					if(Game.animationDungeonCounter.get("floorTrap") == Game.animationDungeon.get("floorTrap").size()) {
-			       					Game.animationDungeonCounter.put("floorTrap", new Integer(0));
-			       				}
+		       					else if(Game.animationDungeonCounter.get("floorTrap") == 3) {
+		       						g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("floorTrap").get(Game.animationDungeonCounter.get("floorTrap")))), x, y, null);
+		       						if(animationHold == 0) {
+		       							animationHold++;
+		       						}
+		       						else {
+		       							animationHold++;
+		       							if(animationHold == 200) {
+		       								animationHold = 0;
+		       								Game.animationDungeonCounter.put("floorTrap", new Integer(0));
+		       								trapCounter = 0;
+		       							}
+		       						}
+		       					}
+		       					
+		       				}
+		       				else {
+		       					g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("floorTrap").get(Game.animationDungeonCounter.get("floorTrap")))), x, y, null);
 		       				}
 	       				
 	       				}
@@ -313,6 +365,135 @@ public class MapReader {
 	       					g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("floorTrap").get(Game.animationDungeonCounter.get("floorTrap")))), x, y, null);
 	       				}
 	       			}
+	       			
+	       			
+	       			else if(cur[j].contains("283")) {
+	       				if(doLeft) {
+		       				if(Game.gameState != Game.STATE.Paused) {
+		       					if(animationHoldA == 0) {
+		       						trapCounterA++;
+		       					}
+			       				if(trapCounterA == 1500 || animationHoldA != 0) {
+			       					if(Game.animationDungeonCounter.get("floorTrapA") == 0 || Game.animationDungeonCounter.get("floorTrapA") == 2) {
+				       					Game.animationDungeonCounter.put("floorTrapA", Game.animationDungeonCounter.get("floorTrapA") + 1);
+				       					trapCounterA = 0;
+			       					}
+			       					if(Game.animationDungeonCounter.get("floorTrapA") == 1) {
+			       						g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("floorTrapA").get(Game.animationDungeonCounter.get("floorTrapA")))), x, y, null);
+			       						if(animationHoldA == 0) {
+			       							animationHoldA++;
+			       						}
+			       						else {
+			       							animationHoldA++;
+			       							if(animationHoldA == 200) {
+			       								animationHoldA = 0;
+			       								Game.animationDungeonCounter.put("floorTrapA", Game.animationDungeonCounter.get("floorTrapA") + 1);
+			       								trapCounterA = 0;
+			       							}
+			       						}
+			       					}
+			       					else if(Game.animationDungeonCounter.get("floorTrapA") == 3) {
+			       						g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("floorTrapA").get(Game.animationDungeonCounter.get("floorTrapA")))), x, y, null);
+			       						if(animationHoldA == 0) {
+			       							animationHoldA++;
+			       						}
+			       						else {
+			       							animationHoldA++;
+			       							if(animationHoldA == 200) {
+			       								animationHoldA = 0;
+			       								Game.animationDungeonCounter.put("floorTrapA", new Integer(0));
+			       								trapCounterA = 0;
+			       								doLeft = false;
+			       							}
+			       						}
+			       					}
+			       					
+			       				}
+			       				else {
+			       					g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("floorTrapA").get(Game.animationDungeonCounter.get("floorTrapA")))), x, y, null);
+			       				}
+		       				
+		       				}
+		       				else {
+		       					g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("floorTrapA").get(Game.animationDungeonCounter.get("floorTrapA")))), x, y, null);
+		       				}
+	       				}
+	       				else {
+	       					g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("floorTrapA").get(Game.animationDungeonCounter.get("floorTrapA")))), x, y, null);
+	       				}
+	       			}
+	       			
+	       			
+	       			
+	       			
+	       			
+	       			else if(cur[j].contains("284")) {
+	       				if(!doLeft) {
+		       				if(Game.gameState != Game.STATE.Paused) {
+		       					if(animationHoldB == 0) {
+		       						trapCounterB++;
+		       					}
+			       				if(trapCounterB == 1500 || animationHoldB != 0) {
+			       					if(Game.animationDungeonCounter.get("floorTrapB") == 0 || Game.animationDungeonCounter.get("floorTrapB") == 2) {
+				       					Game.animationDungeonCounter.put("floorTrapB", Game.animationDungeonCounter.get("floorTrapB") + 1);
+				       					trapCounterB = 0;
+			       					}
+			       					if(Game.animationDungeonCounter.get("floorTrapB") == 1) {
+			       						g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("floorTrapB").get(Game.animationDungeonCounter.get("floorTrapB")))), x, y, null);
+			       						if(animationHoldB == 0) {
+			       							animationHoldB++;
+			       						}
+			       						else {
+			       							animationHoldB++;
+			       							if(animationHoldB == 200) {
+			       								animationHoldB = 0;
+			       								Game.animationDungeonCounter.put("floorTrapB", Game.animationDungeonCounter.get("floorTrapB") + 1);
+			       								trapCounterB = 0;
+			       							}
+			       						}
+			       					}
+			       					else if(Game.animationDungeonCounter.get("floorTrapB") == 3) {
+			       						g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("floorTrapB").get(Game.animationDungeonCounter.get("floorTrapB")))), x, y, null);
+			       						if(animationHoldB == 0) {
+			       							animationHoldB++;
+			       						}
+			       						else {
+			       							animationHoldB++;
+			       							if(animationHoldB == 200) {
+			       								animationHoldB = 0;
+			       								Game.animationDungeonCounter.put("floorTrapB", new Integer(0));
+			       								trapCounterB = 0;
+			       								doLeft = true;
+			       							}
+			       						}
+			       					}
+			       					
+			       				}
+			       				else {
+			       					g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("floorTrapB").get(Game.animationDungeonCounter.get("floorTrapB")))), x, y, null);
+			       				}
+		       				
+		       				}
+		       				else {
+		       					g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("floorTrapB").get(Game.animationDungeonCounter.get("floorTrapB")))), x, y, null);
+		       				}
+	       				}
+	       				else {
+	       					g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("floorTrapB").get(Game.animationDungeonCounter.get("floorTrapB")))), x, y, null);
+	       				}
+	       			}
+	       			
+	       			
+	       			
+	       			
+	       			
+	       			
+	       			
+	       			
+	       			
+	       			
+	       			
+	       			
 	       			else {
 	       				/**
 	       				if(Game.collisionTiles.get(new Integer(0)).containsKey(stringCur)) {
@@ -346,6 +527,19 @@ public class MapReader {
 					Game.camX = 0;
 					Game.camY = 0;
 					Game.gameState = Game.STATE.Battle;
+				}
+			}
+	       	if(i == layers.size()-1 && Game.gameState == Game.STATE.Dead) {
+	       		g.drawImage(transition.get(idleCount), Game.camX, Game.camY, null);
+	       		
+				changeCount++;
+				if(changeCount % 4 == 0) {
+					idleCount++;
+				}
+				
+				if(idleCount == 15) {
+					AudioPlayer.getMusic("gameOver").loop();
+					Game.gameState = Game.STATE.GameOver;
 				}
 			}
 	       	if(Game.gameState == Game.STATE.PostBattle) {
