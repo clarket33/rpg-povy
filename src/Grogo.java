@@ -146,7 +146,7 @@ public class Grogo extends GameObject{
 					else {
 						Battle.contact = false;
 					}
-					if((fireAnimation >= 7 && fireAnimation <= 17) && changeCount % 15 == 0) {
+					if((fireAnimation >= 7 && fireAnimation <= 20) && changeCount % 15 == 0) {
 						Battle.takeDamage = true;
 						AudioPlayer.getSound("fire").play(1, (float).1);
 					}

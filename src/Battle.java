@@ -314,73 +314,61 @@ public class Battle{
 							if(enemy.getID() == ID.Golem) {
 								damage = damageMaker.nextInt(30);
 								if(lgABoost) {
-									if(damage <= 20) enemy.takeDamage((4 + (2*ExperienceBar.laserLevel))*3);
-									else if(damage <=26)enemy.takeDamage((10 + (2*ExperienceBar.laserLevel))*3);
-									else enemy.takeDamage((15 + (2*ExperienceBar.laserLevel))*3);
+									if(damage <= 17) enemy.takeDamage((4 + (ExperienceBar.laserLevel *2))*2);
+									else enemy.takeDamage((14 + (ExperienceBar.laserLevel*4))*2);
 								}
 								else if(smABoost) {
-									if(damage <= 20) enemy.takeDamage((4 + (2*ExperienceBar.laserLevel))*2);
-									else if(damage <=26)enemy.takeDamage((10 + (2*ExperienceBar.laserLevel))*2);
-									else enemy.takeDamage((15 + (2*ExperienceBar.laserLevel))*2);
+									if(damage <= 17) enemy.takeDamage(4 + ((ExperienceBar.laserLevel+1) *2));
+									else enemy.takeDamage(14 + ((ExperienceBar.laserLevel+1)*4));
 								}
 								else {
-									if(damage <= 20) enemy.takeDamage(4 + (2*ExperienceBar.laserLevel));
-									else if(damage <=26)enemy.takeDamage(10 + (2*ExperienceBar.laserLevel));
-									else enemy.takeDamage(15 + (2*ExperienceBar.laserLevel));
+									if(damage <= 17) enemy.takeDamage(4 + (ExperienceBar.laserLevel *2));
+									else enemy.takeDamage(14 + (ExperienceBar.laserLevel*4));
 								}
 							}
 							if(enemy.getID() == ID.Rat) {
 								damage = damageMaker.nextInt(30);
 								if(lgABoost) {
-									if(damage <= 22) enemy.takeDamage((6 + (2*ExperienceBar.laserLevel))*4);
-									else if(damage <=28)enemy.takeDamage((12 + (2*ExperienceBar.laserLevel))*4);
-									else enemy.takeDamage((17 + (2*ExperienceBar.laserLevel))*4);
+									if(damage <= 15) enemy.takeDamage((6 + (ExperienceBar.laserLevel *2))*2);
+									else enemy.takeDamage((16 + (ExperienceBar.laserLevel*4))*2);
 								}
 								else if(smABoost) {
-									if(damage <= 22) enemy.takeDamage((6 + (2*ExperienceBar.laserLevel))*2);
-									else if(damage <=28)enemy.takeDamage((12 + (2*ExperienceBar.laserLevel))*2);
-									else enemy.takeDamage((17 + (2*ExperienceBar.laserLevel))*2);
+									if(damage <= 15) enemy.takeDamage(6 + ((ExperienceBar.laserLevel+1) *2));
+									else enemy.takeDamage(16 + ((ExperienceBar.laserLevel+1)*4));
 								}
 								else {
-									if(damage <= 20) enemy.takeDamage(6 + (2*ExperienceBar.laserLevel));
-									else if(damage <=28)enemy.takeDamage(12 + (2*ExperienceBar.laserLevel));
-									else enemy.takeDamage(17 + (2*ExperienceBar.laserLevel));
+									if(damage <= 15) enemy.takeDamage(6 + (ExperienceBar.laserLevel *2));
+									else enemy.takeDamage(16 + (ExperienceBar.laserLevel*4));
 								}
 							}
 							if(enemy.getID() == ID.ElephantGuard) {
 								damage = damageMaker.nextInt(30);
 								if(lgABoost) {
-									if(damage <= 22) enemy.takeDamage((4 + (2*ExperienceBar.laserLevel))*4);
-									else if(damage <=28)enemy.takeDamage((12 + (2*ExperienceBar.laserLevel))*4);
-									else enemy.takeDamage((17 + (2*ExperienceBar.laserLevel))*4);
+									if(damage <= 21) enemy.takeDamage((4 + (ExperienceBar.laserLevel *2))*2);
+									else enemy.takeDamage((14 + (ExperienceBar.laserLevel*4))*2);
 								}
 								else if(smABoost) {
-									if(damage <= 22) enemy.takeDamage((4 + (2*ExperienceBar.laserLevel))*2);
-									else if(damage <=28)enemy.takeDamage((12 + (2*ExperienceBar.laserLevel))*2);
-									else enemy.takeDamage((17 + (2*ExperienceBar.laserLevel))*2);
+									if(damage <= 21) enemy.takeDamage(4 + ((ExperienceBar.laserLevel+1) *2));
+									else enemy.takeDamage(14 + ((ExperienceBar.laserLevel+1)*4));
 								}
 								else {
-									if(damage <= 22) enemy.takeDamage(4 + (2*ExperienceBar.laserLevel));
-									else if(damage <=28)enemy.takeDamage(12 + (2*ExperienceBar.laserLevel));
-									else enemy.takeDamage(17 + (2*ExperienceBar.laserLevel));
+									if(damage <= 21) enemy.takeDamage(4 + (ExperienceBar.laserLevel *2));
+									else enemy.takeDamage(14 + (ExperienceBar.laserLevel*4));
 								}
 							}
 							if(enemy.getID() == ID.Zatolib) {
 								damage = damageMaker.nextInt(30);
 								if(lgABoost) {
-									if(damage <= 22) enemy.takeDamage((2 + (2*ExperienceBar.laserLevel))*4);
-									else if(damage <=28)enemy.takeDamage((8 + (2*ExperienceBar.laserLevel))*4);
-									else enemy.takeDamage((12 + (2*ExperienceBar.laserLevel))*4);
+									if(damage <= 25) enemy.takeDamage((2 + (ExperienceBar.laserLevel *2))*2);
+									else enemy.takeDamage((12 + (ExperienceBar.laserLevel*4))*2);
 								}
 								else if(smABoost) {
-									if(damage <= 22) enemy.takeDamage((2 + (2*ExperienceBar.laserLevel))*2);
-									else if(damage <=28)enemy.takeDamage((8 * + (2*ExperienceBar.laserLevel))*2);
-									else enemy.takeDamage((12 + (2*ExperienceBar.laserLevel))*2);
+									if(damage <= 25) enemy.takeDamage(2 + ((ExperienceBar.laserLevel+1) *2));
+									else enemy.takeDamage(12 + ((ExperienceBar.laserLevel+1)*4));
 								}
 								else {
-									if(damage <= 22) enemy.takeDamage(2 + (2*ExperienceBar.laserLevel));
-									else if(damage <=28)enemy.takeDamage(8 + (2*ExperienceBar.laserLevel));
-									else enemy.takeDamage(12 + (2*ExperienceBar.laserLevel));
+									if(damage <= 25) enemy.takeDamage(2 + (ExperienceBar.laserLevel *2));
+									else enemy.takeDamage(12 + (ExperienceBar.laserLevel*4));
 								}
 							}
 							player.setVelX(-3);
@@ -709,14 +697,14 @@ public class Battle{
 					if(enemy.getID() == ID.Golem) {
 						damage = damageMaker.nextInt(20);
 						if(smABoost) {
+							if(damage <= 12) enemy.takeDamage(2 + ExperienceBar.pummelLevel + 1);
+							else if(damage <=18)enemy.takeDamage(3 + ExperienceBar.pummelLevel + 1);
+							else enemy.takeDamage(4 + ExperienceBar.pummelLevel + 1);
+						}
+						else if(lgABoost) {
 							if(damage <= 12) enemy.takeDamage((2 + ExperienceBar.pummelLevel)*2);
 							else if(damage <=18)enemy.takeDamage((3 + ExperienceBar.pummelLevel)*2);
 							else enemy.takeDamage((4 + ExperienceBar.pummelLevel)*2);
-						}
-						else if(lgABoost) {
-							if(damage <= 12) enemy.takeDamage((2 + ExperienceBar.pummelLevel)*3);
-							else if(damage <=18)enemy.takeDamage((3 + ExperienceBar.pummelLevel)*3);
-							else enemy.takeDamage((4 + ExperienceBar.pummelLevel)*3);
 						}
 						else {
 							if(damage <= 12) enemy.takeDamage(2 + ExperienceBar.pummelLevel);
@@ -728,14 +716,14 @@ public class Battle{
 					if(enemy.getID() == ID.Rat) {
 						damage = damageMaker.nextInt(20);
 						if(smABoost) {
-							if(damage <= 12) enemy.takeDamage((3 + ExperienceBar.pummelLevel)*2);
-							else if(damage <=18)enemy.takeDamage((4 + ExperienceBar.pummelLevel)*2);
-							else enemy.takeDamage((5+ ExperienceBar.pummelLevel)*2);
+							if(damage <= 12) enemy.takeDamage(3 + ExperienceBar.pummelLevel + 1);
+							else if(damage <=18)enemy.takeDamage(4 + ExperienceBar.pummelLevel + 1);
+							else enemy.takeDamage(5 + ExperienceBar.pummelLevel + 1);
 						}
 						else if(lgABoost) {
-							if(damage <= 12) enemy.takeDamage((3 + ExperienceBar.pummelLevel)*3);
-							else if(damage <=18)enemy.takeDamage((4 + ExperienceBar.pummelLevel)*3);
-							else enemy.takeDamage((5 + ExperienceBar.pummelLevel)*3);
+							if(damage <= 12) enemy.takeDamage((3 + ExperienceBar.pummelLevel)*2);
+							else if(damage <=18)enemy.takeDamage((4 + ExperienceBar.pummelLevel)*2);
+							else enemy.takeDamage((5 + ExperienceBar.pummelLevel)*2);
 						}
 						else {
 							if(damage <= 12) enemy.takeDamage(3 + ExperienceBar.pummelLevel);
@@ -747,32 +735,35 @@ public class Battle{
 					if(enemy.getID() == ID.ElephantGuard) {
 						damage = damageMaker.nextInt(20);
 						if(smABoost) {
-							if(damage <= 12) enemy.takeDamage((2 + ExperienceBar.pummelLevel)*2);
-							else enemy.takeDamage((3 + ExperienceBar.pummelLevel)*2);
+							if(damage <= 14) enemy.takeDamage(2 + ExperienceBar.pummelLevel + 1);
+							else if(damage <=18)enemy.takeDamage(3 + ExperienceBar.pummelLevel + 1);
+							else enemy.takeDamage(4 + ExperienceBar.pummelLevel + 1);
 						}
 						else if(lgABoost) {
-							if(damage <= 12) enemy.takeDamage((2 + ExperienceBar.pummelLevel)*3);
-							else enemy.takeDamage((3 + ExperienceBar.pummelLevel)*3);
+							if(damage <= 14) enemy.takeDamage((2 + ExperienceBar.pummelLevel)*2);
+							else if(damage <=18)enemy.takeDamage((3 + ExperienceBar.pummelLevel)*2);
+							else enemy.takeDamage((4 + ExperienceBar.pummelLevel)*2);
 						}
 						else {
-							if(damage <= 12) enemy.takeDamage(2 + ExperienceBar.pummelLevel);
-							else enemy.takeDamage(3 + ExperienceBar.pummelLevel);
+							if(damage <= 14) enemy.takeDamage(2 + ExperienceBar.pummelLevel);
+							else if(damage <=18)enemy.takeDamage(3 + ExperienceBar.pummelLevel);
+							else enemy.takeDamage(4 + ExperienceBar.pummelLevel);
 						}
 					}
 					
 					if(enemy.getID() == ID.Zatolib) {
 						damage = damageMaker.nextInt(20);
 						if(smABoost) {
-							if(damage <= 12) enemy.takeDamage((1 + ExperienceBar.pummelLevel)*2);
-							else enemy.takeDamage((2 + ExperienceBar.pummelLevel)*2);
+							if(damage <= 16) enemy.takeDamage(2 + ExperienceBar.pummelLevel + 1);
+							else enemy.takeDamage(3 + ExperienceBar.pummelLevel + 1);
 						}
 						else if(lgABoost) {
-							if(damage <= 12) enemy.takeDamage((1 + ExperienceBar.pummelLevel)*3);
-							else enemy.takeDamage((2 + ExperienceBar.pummelLevel)*3);
+							if(damage <= 16) enemy.takeDamage((2 + ExperienceBar.pummelLevel)*2);
+							else enemy.takeDamage((3 + ExperienceBar.pummelLevel)*2);
 						}
 						else {
-							if(damage <= 12) enemy.takeDamage(1 + ExperienceBar.pummelLevel);
-							else enemy.takeDamage(2 + ExperienceBar.pummelLevel);
+							if(damage <= 16) enemy.takeDamage(2 + ExperienceBar.pummelLevel);
+							else enemy.takeDamage(3 + ExperienceBar.pummelLevel);
 						}
 					}
 					
@@ -780,25 +771,90 @@ public class Battle{
 				//ally
 				else if(menuPosition == 4) {
 					if(ally.getID() == ID.Grogo) {
-						if(enemy.getID() == ID.Golem) {
-							damage = damageMaker.nextInt(20);
-							if(damage <= 12) enemy.takeDamage(1);
-							else if(damage <=19)enemy.takeDamage(2);
+						if(ExperienceBar.allyLevel == 0) {
+							if(enemy.getID() == ID.Golem) {
+								damage = damageMaker.nextInt(20);
+								if(damage <= 15) enemy.takeDamage(1);
+								else if(damage <=19)enemy.takeDamage(2);
+							}
+							if(enemy.getID() == ID.Rat) {
+								damage = damageMaker.nextInt(20);
+								if(damage <= 10) enemy.takeDamage(1);
+								else if(damage <=19)enemy.takeDamage(2);
+							}
+							if(enemy.getID() == ID.ElephantGuard) {
+								damage = damageMaker.nextInt(20);
+								if(damage <= 17) enemy.takeDamage(1);
+								else if(damage <=19)enemy.takeDamage(2);
+							}
+							if(enemy.getID() == ID.Zatolib) {
+								damage = damageMaker.nextInt(20);
+								if(damage <= 18) enemy.takeDamage(1);
+								else if(damage <=19)enemy.takeDamage(2);
+							}
 						}
-						if(enemy.getID() == ID.Rat) {
-							damage = damageMaker.nextInt(20);
-							if(damage <= 10) enemy.takeDamage(2);
-							else if(damage <=19)enemy.takeDamage(3);
+						else if(ExperienceBar.allyLevel == 1) {
+							if(enemy.getID() == ID.Golem) {
+								damage = damageMaker.nextInt(20);
+								if(damage <= 10) enemy.takeDamage(1);
+								else if(damage <=19)enemy.takeDamage(2);
+							}
+							if(enemy.getID() == ID.Rat) {
+								damage = damageMaker.nextInt(20);
+								if(damage <= 5) enemy.takeDamage(1);
+								else if(damage <=19)enemy.takeDamage(2);
+							}
+							if(enemy.getID() == ID.ElephantGuard) {
+								damage = damageMaker.nextInt(20);
+								if(damage <= 12) enemy.takeDamage(1);
+								else if(damage <=19)enemy.takeDamage(2);
+							}
+							if(enemy.getID() == ID.Zatolib) {
+								damage = damageMaker.nextInt(20);
+								if(damage <= 15) enemy.takeDamage(1);
+								else if(damage <=19)enemy.takeDamage(2);
+							}
 						}
-						if(enemy.getID() == ID.ElephantGuard) {
-							damage = damageMaker.nextInt(20);
-							if(damage <= 10) enemy.takeDamage(1);
-							else if(damage <=19)enemy.takeDamage(2);
+						else if(ExperienceBar.allyLevel == 2) {
+							if(enemy.getID() == ID.Golem) {
+								damage = damageMaker.nextInt(20);
+								if(damage <= 5) enemy.takeDamage(1);
+								else if(damage <=19)enemy.takeDamage(2);
+							}
+							if(enemy.getID() == ID.Rat) {
+								damage = damageMaker.nextInt(20);
+								enemy.takeDamage(2);
+							}
+							if(enemy.getID() == ID.ElephantGuard) {
+								damage = damageMaker.nextInt(20);
+								if(damage <= 7) enemy.takeDamage(1);
+								else if(damage <=19)enemy.takeDamage(2);
+							}
+							if(enemy.getID() == ID.Zatolib) {
+								damage = damageMaker.nextInt(20);
+								if(damage <= 10) enemy.takeDamage(1);
+								else if(damage <=19)enemy.takeDamage(2);
+							}
 						}
-						if(enemy.getID() == ID.Zatolib) {
-							damage = damageMaker.nextInt(20);
-							if(damage <= 17) enemy.takeDamage(1);
-							else if(damage <=19)enemy.takeDamage(2);
+						else if(ExperienceBar.allyLevel == 3) {
+							if(enemy.getID() == ID.Golem) {
+								enemy.takeDamage(2);
+							}
+							if(enemy.getID() == ID.Rat) {
+								damage = damageMaker.nextInt(20);
+								if(damage <= 15) enemy.takeDamage(2);
+								else if(damage <=19)enemy.takeDamage(3);
+							}
+							if(enemy.getID() == ID.ElephantGuard) {
+								damage = damageMaker.nextInt(20);
+								if(damage <= 2) enemy.takeDamage(1);
+								else if(damage <=19)enemy.takeDamage(2);
+							}
+							if(enemy.getID() == ID.Zatolib) {
+								damage = damageMaker.nextInt(20);
+								if(damage <= 4) enemy.takeDamage(1);
+								else if(damage <=19)enemy.takeDamage(2);
+							}
 						}
 					}
 				}
@@ -1232,20 +1288,22 @@ public class Battle{
 					Game.firstBattle = false;
 					Battle.contact = false;
 					HUD.HEALTH = HUD.maxHealth;
-					if(enemy.getID() == ID.Zatolib) {
-						for(int j = 0; j < handler.objects.size(); j++) {
-							if(handler.objects.get(j).getID() == ID.Povy) {
-								handler.objects.get(j).setX(1520*2);
-								handler.objects.get(j).setY(1058*2);
-							}
-							
-							if(handler.objects.get(j).getID() == ID.Zatolib) {
-								handler.objects.get(j).setX(1550*2);
-								handler.objects.get(j).setY(1058*2);
-							}
-							//handler.addObject(new Grogo(1460*2, 1058*2, ID.Grogo, handler));
+					handler.removeObject(enemy);
+					for(int j = 0; j < handler.objects.size(); j++) {
+						if(handler.objects.get(j).getID() == ID.Povy) {
+							handler.objects.get(j).setX(1520*2);
+							handler.objects.get(j).setY(1058*2);
 						}
+						/**
+						if(handler.objects.get(j).getID() == ID.Zatolib) {
+							handler.objects.get(j).setX(1550*2);
+							handler.objects.get(j).setY(1058*2);
+						}
+						//handler.addObject(new Grogo(1460*2, 1058*2, ID.Grogo, handler));
+						  **/
+						 
 					}
+					
 					return;
 				}
 				animationCount = 0;

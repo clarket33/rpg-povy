@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
 /**
  * 
  * @author clarkt5
- * AllyPouch stores all of Povy's current allies in a linked list
+ * CostumePouch stores all of Povy's current costumes in a linked list
  */
 public class CostumePouch {
 	

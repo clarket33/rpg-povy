@@ -219,14 +219,7 @@ public class Povy extends GameObject{
 					AudioPlayer.getMusic("dungeon").stop();
 					AudioPlayer.getSound("fightStart").play(1, (float).1);
 					Game.gameState = Game.STATE.Transition;
-					/**
-						Battle.menuPosition = 0;
-						Battle.menuChange = 0;
-						Battle.takeDamage = false;
-						Battle.left = true;
-						Battle.itemSelected = false;
-						Battle.contact = false;
-					**/
+					
 					Battle.battleState = null;
 					Game.battle = new Battle(handler, this.copy(), handler.objects.get(i));
 					
@@ -520,8 +513,7 @@ public class Povy extends GameObject{
 			if(idleCount == 5) {
 				idleCount = 0;
 			}
-			g.setColor(Color.green);
-			g.drawRect((int)(x+8), (int)(y+51), 31, 13);
+			
 			
 		}
 		
@@ -537,8 +529,7 @@ public class Povy extends GameObject{
 				if(idleCount == 5) {
 					idleCount = 0;
 				}
-				g.setColor(Color.green);
-				g.drawRect((int)(x+8), (int)(y+51), 31, 13);
+				
 			}
 			else if(Battle.battleState == Battle.BATTLESTATE.PlayerTurnAction) {
 				//attack chosen is pummel
@@ -730,8 +721,7 @@ public class Povy extends GameObject{
 				if(idleCount == 5) {
 					idleCount = 0;
 				}
-				g.setColor(Color.green);
-				g.drawRect((int)(x+8), (int)(y+51), 31, 13);
+				
 			}
 			else if(Battle.battleState == Battle.BATTLESTATE.PlayerDies) {
 				if(dieCount != 6) {
