@@ -67,8 +67,8 @@ public class CostumePouch {
 				
 				g.drawString("Attire: Original Blue", Game.camX + 185, Game.camY + 435);
 				g.drawString("Description: Povy's original", Game.camX + 185,  Game.camY + 455);
-				g.drawString("suit", Game.camX + 185,  Game.camY + 475);
-				//g.drawString("b", Game.camX + 185,  Game.camY + 495);
+				g.drawString("suit given to him as", Game.camX + 185,  Game.camY + 475);
+				g.drawString("child", Game.camX + 185,  Game.camY + 495);
 				
 				if(equipped.contains("blue")) {
 					g.setFont(new Font("arial", 1, 25));
