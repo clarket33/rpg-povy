@@ -1,7 +1,7 @@
 # Povy the Alien
 Povy the Alien is a science fiction, 2D Top-down RPG I am currently developing that incorporates turn-based fighting and is developed in Java. <br />
 
-[GameplaySampleVideo](https://youtu.be/hTzfcD_ereA)
+[Gameplay-Sample-Video](https://youtu.be/hTzfcD_ereA)
 
 # Motivation
 I began work on this project in the summer of 2018 as I am very intrigued by the world of game development. I originally wrote the story for the game in elementary school, which is part of the reason I've been so dedicated to developing this project. My goal for the project is to create a game that is enjoyable and that I am proud of, as well as to learn different aspects of game development and help kickstart a career in games!
