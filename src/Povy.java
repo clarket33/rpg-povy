@@ -219,10 +219,13 @@ public class Povy extends GameObject{
 					AudioPlayer.getMusic("dungeon").stop();
 					AudioPlayer.getSound("fightStart").play(1, (float).1);
 					Game.gameState = Game.STATE.Transition;
-					
+					hit = false;
 					Battle.battleState = null;
 					Game.battle = new Battle(handler, this.copy(), handler.objects.get(i));
-					
+					KeyInput.keyDown[0] = false;
+					KeyInput.keyDown[1] = false;
+					KeyInput.keyDown[2] = false;
+					KeyInput.keyDown[3] = false;
 					return true;
 				}
 			}

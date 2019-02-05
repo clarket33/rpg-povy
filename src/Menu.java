@@ -66,7 +66,7 @@ public class Menu extends MouseAdapter{
 				Game.map = new MapReader(handler);
 				AudioPlayer.getMusic("dungeon").loop(1, (float).1);
 				
-				//handler.addObject(new Povy(1000*2, 940*2, ID.Povy, handler, "blue"));
+				//handler.addObject(new Povy(2848, 224, ID.Povy, handler, "blue"));
 				handler.addObject(new Povy(255*2, 40*2, ID.Povy, handler, "blue"));
 				//handler.addObject(new Povy(2000*2, 864*2, ID.Povy, handler, "blue"));
 				
@@ -88,7 +88,7 @@ public class Menu extends MouseAdapter{
 				handler.addObject(new Zatolib(1550*2, 1058*2, ID.Zatolib, handler));
 				
 				
-				handler.addObject(new ElephantGuard(192*2, 1024*2, ID.ElephantGuard, handler));
+				handler.addObject(new ElephantGuard(192*2, 1010*2, ID.ElephantGuard, handler));
 				
 				handler.addObject(new Costume(920*2, 165*2, ID.NonEnemy, "purple", handler));
 				

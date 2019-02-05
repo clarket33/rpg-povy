@@ -535,12 +535,12 @@ public class Battle{
 				if(enemy.getID() == ID.Golem) {
 					damage = damageMaker.nextInt(5);
 					if(smDBoost) {
-						if(damage == 0 || damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 0;
+						if(damage == 0 || damage == 1) HUD.HEALTH -= 0;
 						else HUD.HEALTH -= 4;
 					}
 					else if(lgDBoost) {
-						if(damage == 0 || damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 0;
-						else HUD.HEALTH -= 0;
+						if(damage == 0 || damage == 1 || damage == 2) HUD.HEALTH -= 0;
+						else HUD.HEALTH -= 4;
 					}
 					else {
 						if(damage == 0 || damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 4;
@@ -561,20 +561,17 @@ public class Battle{
 				if(enemy.getID() == ID.ElephantGuard) {
 					ElephantGuard e = (ElephantGuard) enemy;
 					int attack = e.getAttackDam();
-					if(attack == 2) {
+					if(attack == 0) {
 						damage = damageMaker.nextInt(5);
 						if(smDBoost) {
-							if(damage == 0) {
-								HUD.HEALTH -= 0;
-							}
+							if(damage == 0) HUD.HEALTH -= 0;
 							else if(damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 4;
 							else HUD.HEALTH -= 8;
 						}
 						else if(lgDBoost) {
-							if(damage == 0) {
+							if(damage == 0 || damage == 1) {
 								HUD.HEALTH -= 0;
 							}
-							else if(damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 0;
 							else HUD.HEALTH -= 4;
 						}
 						else {
@@ -592,7 +589,7 @@ public class Battle{
 							else HUD.HEALTH -= 8;
 						}
 						else if(lgDBoost) {
-							if(damage == 0 || damage == 1 || damage == 2) HUD.HEALTH -= 0;
+							if(damage == 0) HUD.HEALTH -= 0;
 							else HUD.HEALTH -= 4;
 						}
 						else {
@@ -610,10 +607,10 @@ public class Battle{
 							else HUD.HEALTH -= 4;
 						}
 						else if(lgDBoost) {
-							if(damage == 0) {
+							if(damage == 0 || damage == 1 || damage == 2) {
 								HUD.HEALTH -= 0;
 							}
-							else HUD.HEALTH -= 0;
+							else HUD.HEALTH -= 4;
 						}
 						else {
 							if(damage == 0) {
@@ -628,27 +625,23 @@ public class Battle{
 				if(enemy.getID() == ID.Zatolib) {
 					Zatolib z = (Zatolib) enemy;
 					int attack = z.getAttackDam();
+					//eye laser
 					if(attack == 2) {
 						damage = damageMaker.nextInt(5);
 						if(smDBoost) {
-							if(damage == 0) {
-								HUD.HEALTH -= 8;
-							}
-							else if(damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 12;
-							else HUD.HEALTH -= 16;
+							if(damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 8;
+							else HUD.HEALTH -= 12;
 						}
 						else if(lgDBoost) {
-							if(damage == 0) {
-								HUD.HEALTH -= 4;
-							}
-							else if(damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 8;
-							else HUD.HEALTH -= 12;
+							if(damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 4;
+							else HUD.HEALTH -= 8;
 						}
 						else {
 							if(damage == 0 || damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 12;
 							else HUD.HEALTH -= 16;
 						}
 					}
+					//blaster
 					else if(attack == 1) {
 						damage = damageMaker.nextInt(5);
 						if(smDBoost) {
@@ -665,6 +658,7 @@ public class Battle{
 						}
 						
 					}
+					//hair whip
 					else {
 						damage = damageMaker.nextInt(5);
 						if(smDBoost) {
@@ -1285,8 +1279,13 @@ public class Battle{
 					Game.gameState = Game.STATE.Game;
 					HUD.allyCount = 0;
 					Battle.useAlly = false;
-					Game.firstBattle = false;
 					Battle.contact = false;
+					smABoost = false;
+					lgABoost = false;
+					smDBoost = false;
+					lgDBoost = false;
+					attackCount = 0;
+					defenseCount = 0;
 					HUD.HEALTH = HUD.maxHealth;
 					handler.removeObject(enemy);
 					for(int j = 0; j < handler.objects.size(); j++) {
@@ -1335,6 +1334,13 @@ public class Battle{
 				handler.removeObject(enemy);
 				HUD.allyCount = 0;
 				Battle.useAlly = false;
+				Battle.contact = false;
+				smABoost = false;
+				lgABoost = false;
+				smDBoost = false;
+				lgDBoost = false;
+				attackCount = 0;
+				defenseCount = 0;
 				Game.gameState = Game.STATE.PostBattle;
 				if(enemy.getID() == ID.ElephantGuard) {
 					for(int i = 0; i < handler.objects.size(); i++) {
@@ -1375,6 +1381,12 @@ public class Battle{
 				enemy.setY((int)enemyY);
 				enemy.setVelX((int)velX);
 				enemy.setVelY((int)velY);
+				
+				Battle.contact = false;
+				smABoost = false;
+				lgABoost = false;
+				smDBoost = false;
+				lgDBoost = false;
 				escaped = 0;
 				HUD.allyCount = 0;
 				Battle.useAlly = false;

@@ -9,7 +9,7 @@ import java.util.LinkedList;
 public class Handler {
 	LinkedList<GameObject> objects = new LinkedList<GameObject>();
 	Game game;
-	public static int spd = 3;
+	public int spd = 3;
 	public Handler(Game game) {
 		this.game = game;
 	}
@@ -41,6 +41,21 @@ public class Handler {
 		}
 	
 	}
+	
+	/**
+	 * aids in render for Povy to appear behind and in front of certain objects
+	 * @param g
+	 */
+	public void livingRender(Graphics g) {
+		objects.sort(new SortbyY());
+	
+		
+		for(int i = 0; i < objects.size(); i++) {
+			if(objects.get(i).id != ID.NonEnemy) objects.get(i).render(g);
+		}
+	}
+	
+	
 	/**
 	 * 
 	 * @param object

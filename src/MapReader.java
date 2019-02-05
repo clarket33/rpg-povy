@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilder;
@@ -17,6 +18,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+
 
 
 /**
@@ -36,6 +39,7 @@ public class MapReader {
 	private int idleCount = 0;
 	private int animationHold = 0, animationHoldA = 0, animationHoldB = 0;
 	private boolean doLeft = true;
+	private Map<Integer, ArrayList<Integer>> unusedTiles;
 	
 	/**
 	 * loads in the xml files and stores information about the map and tiles in various structures
@@ -46,6 +50,7 @@ public class MapReader {
 		SpriteSheet ss = new SpriteSheet(Game.sprite_sheet);
 		layers = new ArrayList<String>();
 		Game.dungeonTiles = new ArrayList<BufferedImage>();
+		unusedTiles = new HashMap<Integer, ArrayList<Integer>>();
 		Game.dungeonTiles.add(null);
 		Game.collisionTiles.put(new Integer(0), new HashMap<String, ArrayList<Integer>>());
 		Game.animationDungeon.put("floorTrap", new ArrayList<String>());
@@ -289,10 +294,72 @@ public class MapReader {
 		int x, y;
 		int curID = 0;
 		for(int i = 0; i < layers.size(); i++) {
+			//layer where Povy will appear above some objects and below others
 			if(i == 2) {
-				//System.out.println(Game.gameState);
-				handler.render(g);
+
+				for(int m = 0; m< handler.objects.size();m++) {
+	    			if(handler.objects.get(m).id == ID.NonEnemy) {
+	    				handler.objects.get(m).render(g);
+	    			}
+				}
+				cur = layers.get(i).split(",");
+				int thisX = 0;
+		     	int thisY = 0;
+				for(int k = 0; k < cur.length; k++) {
+		       		curID = Integer.parseInt(cur[k].replace("\n", ""));
+		       		if(curID != 0) {
+			       		for(int m = 0; m< handler.objects.size();m++) {
+			    			if(handler.objects.get(m).id == ID.Povy) {
+			    				Povy p = (Povy)(handler.objects.get(m));
+			    				if(curID >= 241 && curID <= 246) {
+			    					if(unusedTiles.get(curID)== null) unusedTiles.put(curID, new ArrayList<Integer>());
+			    					unusedTiles.get(curID).add(thisX);
+			    					unusedTiles.get(curID).add(thisY);
+			    					continue;
+			    				}
+			    				if(curID >= 261 && curID <= 266) {
+			    					if(unusedTiles.get(curID)== null) unusedTiles.put(curID, new ArrayList<Integer>());
+			    					unusedTiles.get(curID).add(thisX);
+			    					unusedTiles.get(curID).add(thisY);
+			    					continue;
+			    				}
+			    				if(p.getY()>(thisY)) {
+			    					
+			    					g.drawImage(Game.dungeonTiles.get(curID), thisX, thisY, null);
+			    				}
+			    				else {
+			    					if(unusedTiles.get(curID)== null) unusedTiles.put(curID, new ArrayList<Integer>());
+			    					unusedTiles.get(curID).add(thisX);
+			    					unusedTiles.get(curID).add(thisY);
+			    					
+			    				}
+			    					
+			    			}
+			    		}
+		       		}
+		       		thisX += 32;
+		       		if(thisX == 5120) {
+		       			thisX = 0;
+		       			thisY += 32;
+		       		}
+		    	}
+		       		
+				handler.livingRender(g);
+				
+				Iterator<Integer> itr = unusedTiles.keySet().iterator();
+				while(itr.hasNext()) {
+					int curNum = itr.next();
+					for(int m = 0; m < unusedTiles.get(curNum).size(); m+= 2) {
+						
+						g.drawImage(Game.dungeonTiles.get(curNum), unusedTiles.get(curNum).get(m), unusedTiles.get(curNum).get(m+1), null);
+					}
+				}
+				
+				unusedTiles.clear();
+				
+				
 				g.drawImage(grogoShip, 1650*2, 1180*2, null);
+				
 			}
 		
 	       	cur = layers.get(i).split(",");
@@ -314,7 +381,6 @@ public class MapReader {
 		       					Game.animationDungeonCounter.put("torch", new Integer(0));
 		       				}
 	       				}
-	       				
 	       			}
 	       			else if(cur[j].contains("282")) {
 	       				if(Game.gameState != Game.STATE.Paused) {
@@ -501,8 +567,10 @@ public class MapReader {
 	       					g.drawRect(x, y, 32, 32);
 	       				}
 	       				**/
-	       				if(curID != 335 && curID != 215 && curID != 381) {
+	       				if(curID != 335 && curID != 215 && curID != 381 && i != 2) {
+	       					
 	       					g.drawImage(Game.dungeonTiles.get(curID), x, y, null);
+	       					
 	       				}
 	       			}
 	       		}
@@ -548,7 +616,7 @@ public class MapReader {
 	       			if(ExperienceBar.exp == ExperienceBar.expToUpgrade) {
 	       				AudioPlayer.getSound("levelUp").play(1, (float).1);
 	       				ExperienceBar.exp = 0;
-	       				ExperienceBar.expToUpgrade += 25;
+	       				ExperienceBar.expToUpgrade *= 2;
 	       				ExperienceBar.levelUp = true;
 	       			}
 	       			Battle.expToBeAdded -= 1;
@@ -591,39 +659,7 @@ public class MapReader {
 	       	}
 		}
 		
-		/**Check Collision
-		for(int i = 0; i < layers.size(); i++) {
 		
-			if(i == 1) {
-				break;
-			}
-			
-			cur = layers.get(i).split(",");
-			for(int j = 0; j < cur.length; j++) {
-	       		String stringCur = cur[j].replace("\n", "");
-	       		int theID = Integer.parseInt(stringCur) - 1;
- 	       		stringCur = String.valueOf(theID);
-				if(Game.collisionTiles.get(new Integer(0)).containsKey(stringCur)) {
-					for(int k = 0; k < Game.collisionTiles.get(new Integer(0)).get(stringCur).size(); k+=2) {
-						g.setColor(Color.green);
-	   					g.drawRect(Game.collisionTiles.get(new Integer(0)).get(stringCur).get(k), Game.collisionTiles.get(new Integer(0)).get(stringCur).get(k+1),
-	   							32, 32);
-					}	
-				}
-			}
-		}
-		**/
-		/**
-		Iterator<String> itr = Game.collisionTiles.get(new Integer(0)).keySet().iterator();
-		while(itr.hasNext()) {
-			String currr = itr.next();
-				
-			for(int i = 0; i < Game.collisionTiles.get(new Integer(0)).get(currr).size(); i+=2) {
-				g.setColor(Color.green);
-				g.drawRect(Game.collisionTiles.get(new Integer(0)).get(currr).get(i), Game.collisionTiles.get(new Integer(0)).get(currr).get(i+1),32,32);
-			}
-		}
-		**/
 	    
 	}
 	
