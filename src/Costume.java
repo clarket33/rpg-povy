@@ -45,6 +45,7 @@ public class Costume extends GameObject{
 			gotten = true;
 		}
 		
+		
 		purpleCost.add(ss.grabImage(1, 1, 96, 96,"purpleOutfit"));
 		purpleCost.add(ss.grabImage(1, 2, 96, 96,"purpleOutfit"));
 		purpleCost.add(ss.grabImage(1, 3, 96, 96,"purpleOutfit"));
@@ -80,7 +81,7 @@ public class Costume extends GameObject{
 	 * returns the bounds that the player can be within to obtain the costume
 	 */
 	public Rectangle getBounds() {
-		return new Rectangle((int)x, (int)y, 32, 32);
+		return new Rectangle((int)x, (int)y, 96, 96);
 	}
 	@Override
 	public GameObject copy() {

@@ -34,7 +34,7 @@ public class CostumePouch {
 	    } catch (IOException e) {
 	    	e.printStackTrace();
 	    }
-		SpriteSheet ss = new SpriteSheet(Game.sprite_sheet);
+		//SpriteSheet ss = new SpriteSheet(Game.sprite_sheet);
 		
 		
 		
@@ -43,11 +43,20 @@ public class CostumePouch {
 	
 	/**
 	 * 
-	 * @param g
+	 * @param costume c
 	 * adds a costume to the costume linked list
 	 */
 	public void addCostume(Costume c) {
 		costumes.add(c);
+	}
+	
+	/**
+	 * 
+	 * @param 
+	 * returns the amount of Costumes Povy has
+	 */
+	public int getCostumeAmount() {
+		return costumes.size();
 	}
 	
 	/**

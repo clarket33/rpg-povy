@@ -14,6 +14,7 @@ public enum ID {
 	ElephantGuard(),
 	Rat(),
 	Zatolib(),
+	SpaceShip(),
 	NonEnemy();
 	
 }

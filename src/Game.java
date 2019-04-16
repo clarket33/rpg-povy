@@ -103,10 +103,7 @@ public class Game extends Canvas implements Runnable{
 			sprite_sheet.put("smallHP", loader.loadImage("/Items/SmallHealth.png"));
 			sprite_sheet.put("largeHP", loader.loadImage("/Items/largeHealth.png"));
 			sprite_sheet.put("maxHP", loader.loadImage("/Items/maxHealth.png"));
-			sprite_sheet.put("smallBP", loader.loadImage("/Items/smallBattlePoints.png"));
-			sprite_sheet.put("largeBP", loader.loadImage("/Items/LargeBattlePoints.png"));
-			sprite_sheet.put("maxBP", loader.loadImage("/Items/maxBP.png"));
-			sprite_sheet.put("itemCover", loader.loadImage("/Items/itemCover.png"));
+			sprite_sheet.put("itemCover", loader.loadImage("/Items/itembg.png"));
 			sprite_sheet.put("itemOption", loader.loadImage("/selectItemChoice.png"));
 			sprite_sheet.put("crystalAttack", loader.loadImage("/CrystalAttack1.png"));
 			sprite_sheet.put("gameOverMenu", loader.loadImage("/GameOverMenu.png"));
@@ -130,10 +127,14 @@ public class Game extends Canvas implements Runnable{
 			sprite_sheet.put("allyMenu", loader.loadImage("/allyMenu.png"));
 			sprite_sheet.put("allyMeter", loader.loadImage("/allyMeter.png"));
 			
-			sprite_sheet.put("smallAttackBoost", loader.loadImage("/smallAttackBoost.png"));
-			sprite_sheet.put("smallDefenseBoost", loader.loadImage("/smallDefenseBoost.png"));
-			sprite_sheet.put("largeAttackBoost", loader.loadImage("/LargeAttackBoost.png"));
-			sprite_sheet.put("largeDefenseBoost", loader.loadImage("/largeDefenseBoost.png"));
+			sprite_sheet.put("smallAttackBoost", loader.loadImage("/Items/smallAttackBoost.png"));
+			sprite_sheet.put("smallDefenseBoost", loader.loadImage("/Items/smallDefenseBoost.png"));
+			sprite_sheet.put("largeAttackBoost", loader.loadImage("/Items/LargeAttackBoost.png"));
+			sprite_sheet.put("largeDefenseBoost", loader.loadImage("/Items/largeDefenseBoost.png"));
+			
+			sprite_sheet.put("sparkle", loader.loadImage("/sparkle.png"));
+			sprite_sheet.put("menuButtons", loader.loadImage("/MenuOptions.png"));
+			
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -157,6 +158,7 @@ public class Game extends Canvas implements Runnable{
 		this.addKeyListener(ktp);
 		this.addKeyListener(cc);
 		this.addMouseMotionListener(pause);
+		this.addMouseMotionListener(menu);
 		this.addMouseListener(pause);
 		w = new Window(WIDTH, HEIGHT, "Povy the Alien", this);
 		

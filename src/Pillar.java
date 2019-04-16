@@ -56,7 +56,7 @@ public class Pillar extends GameObject{
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
 			g.drawImage(Game.dungeonTiles.get(num), (int)x, (int)y, null);
-			g.drawRect((int)x, (int)y-32, 32, 96);
+			g.drawRect((int)x, (int)y-48, 48, 144);
 			if(Game.pillarOrder != 4) {
 				//draw select button above pillars
 			}
@@ -68,7 +68,7 @@ public class Pillar extends GameObject{
 	 * returns the bounds that the player can be within to select a pillar
 	 */
 	public Rectangle getBounds() {
-		return new Rectangle((int)x, (int)y-32, 32, 96);
+		return new Rectangle((int)x, (int)y-48, 48, 144);
 	}
 	@Override
 	public GameObject copy() {

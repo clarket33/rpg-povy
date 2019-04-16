@@ -36,9 +36,9 @@ public class CrystalCutscene extends KeyAdapter{
 	    this.handler = handler;
 		
 	    text = new ArrayList<BufferedImage>();
-	    text.add(ss.grabImage(1, 1, 680, 150,"dialogue"));
-		text.add(ss.grabImage(1, 2, 680, 150,"dialogue"));
-		text.add(ss.grabImage(1, 3, 680, 150,"dialogue"));
+	    text.add(ss.grabImage(1, 1, 1080, 285,"dialogue"));
+		text.add(ss.grabImage(1, 2, 1080, 285,"dialogue"));
+		text.add(ss.grabImage(1, 3, 1080, 285,"dialogue"));
 		
 		done = false;
 		
@@ -125,20 +125,20 @@ public class CrystalCutscene extends KeyAdapter{
 					buffer -=1;
 					if(buffer <= 0) buffer = 0;
 				}
-				Font fo = new Font("System Bold", 1, 15);
-				g.setColor(Color.WHITE);
+				Font fo = new Font("verdana", 1, 40);
+				g.setColor(new Color(106, 215, 48));
 				g.setFont(fo);
 				if(!done) {
-					g.drawImage(text.get(0), Game.camX + 300, Game.camY + 745, null);
+					g.drawImage(text.get(0), Game.camX + 120, Game.camY + 625, null);
 					handleScene(doneCount,g);
 					
 				}
 				else if(done && buffer > 0) {
-					g.drawImage(text.get(0), Game.camX + 300, Game.camY + 745, null);
+					g.drawImage(text.get(0), Game.camX + 120, Game.camY + 625, null);
 					handleScene(doneCount,g);
 				}
 				else {
-					g.drawImage(text.get(animate), Game.camX + 300, Game.camY + 745, null);
+					g.drawImage(text.get(animate), Game.camX + 120, Game.camY + 625, null);
 					
 					changeCount++;
 					if(changeCount % 30 == 0) {
@@ -167,14 +167,14 @@ public class CrystalCutscene extends KeyAdapter{
 		if(count == dialogue.get(new Integer(sceneNumber)).length) {
 			done = true;
 			
-			g.drawChars(copy, 0, copy.length, Game.camX + 400, Game.camY + 800);
+			g.drawChars(copy, 0, copy.length, Game.camX + 300, Game.camY + 770);
 		}
 		else {
 			copy[count] = dialogue.get(new Integer(sceneNumber))[count];
 			AudioPlayer.getSound("type").play(1, (float).3);
 			count++;
 			
-			g.drawChars(copy, 0, copy.length, Game.camX + 400, Game.camY + 800);
+			g.drawChars(copy, 0, copy.length, Game.camX + 300, Game.camY + 770);
 		}
 	}
 

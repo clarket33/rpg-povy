@@ -375,7 +375,7 @@ public class MapReader {
 				unusedTiles.clear();
 				
 				
-				g.drawImage(grogoShip, 1650*2, 1180*2, null);
+				
 				
 			}
 		
@@ -383,153 +383,7 @@ public class MapReader {
 	        x = 0;
 	     	y = 0;
 	       	for(int j = 0; j < cur.length; j++) {
-	       		String stringCur = cur[j].replace("\n", "");
-	       		curID = Integer.parseInt(cur[j].replace("\n", ""));
 	       		if(!Game.shouldRender(x, y)) {
-	       			if(Game.animationDungeon.get("torch").contains(cur[j])) {
-	       				torchCounter++;
-	       				if(torchCounter == 96) {
-	       					
-	       					Game.animationDungeonCounter.put("torch", Game.animationDungeonCounter.get("torch") + 1);
-	       					torchCounter = 0;
-	       					if(Game.animationDungeonCounter.get("torch") == Game.animationDungeon.get("torch").size()) {
-		       					
-		       					Game.animationDungeonCounter.put("torch", new Integer(0));
-		       				}
-	       				}
-	       			}
-	       			else if(cur[j].contains("282")) {
-	       				if(Game.gameState != Game.STATE.Paused) {
-	       					if(animationHold == 0) {
-	       						trapCounter++;
-	       					}
-		       				if(trapCounter == 10000 || animationHold != 0) {
-		       					if(Game.animationDungeonCounter.get("floorTrap") == 0 || Game.animationDungeonCounter.get("floorTrap") == 2) {
-			       					Game.animationDungeonCounter.put("floorTrap", Game.animationDungeonCounter.get("floorTrap") + 1);
-			       					trapCounter = 0;
-		       					}
-		       					if(Game.animationDungeonCounter.get("floorTrap") == 1) {
-		       						if(animationHold == 0) {
-		       							animationHold++;
-		       						}
-		       						else {
-		       							animationHold++;
-		       							if(animationHold == 200) {
-		       								animationHold = 0;
-		       								Game.animationDungeonCounter.put("floorTrap", Game.animationDungeonCounter.get("floorTrap") + 1);
-		       								trapCounter = 0;
-		       							}
-		       						}
-		       					}
-		       					else if(Game.animationDungeonCounter.get("floorTrap") == 3) {
-		       						if(animationHold == 0) {
-		       							animationHold++;
-		       						}
-		       						else {
-		       							animationHold++;
-		       							if(animationHold == 200) {
-		       								animationHold = 0;
-		       								Game.animationDungeonCounter.put("floorTrap", new Integer(0));
-		       								trapCounter = 0;
-		       							}
-		       						}
-		       					}
-		       					
-		       				}
-	       				}
-	       			}
-
-	       			else if(cur[j].contains("283")) {
-	       				if(doLeft) {
-		       				if(Game.gameState != Game.STATE.Paused) {
-		       					if(animationHoldA == 0) {
-		       						trapCounterA++;
-		       					}
-			       				if(trapCounterA == 1500 || animationHoldA != 0) {
-			       					if(Game.animationDungeonCounter.get("floorTrapA") == 0 || Game.animationDungeonCounter.get("floorTrapA") == 2) {
-				       					Game.animationDungeonCounter.put("floorTrapA", Game.animationDungeonCounter.get("floorTrapA") + 1);
-				       					trapCounterA = 0;
-			       					}
-			       					if(Game.animationDungeonCounter.get("floorTrapA") == 1) {
-			       						//g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("floorTrapA").get(Game.animationDungeonCounter.get("floorTrapA")))), x, y, null);
-			       						if(animationHoldA == 0) {
-			       							animationHoldA++;
-			       						}
-			       						else {
-			       							animationHoldA++;
-			       							if(animationHoldA == 200) {
-			       								animationHoldA = 0;
-			       								Game.animationDungeonCounter.put("floorTrapA", Game.animationDungeonCounter.get("floorTrapA") + 1);
-			       								trapCounterA = 0;
-			       							}
-			       						}
-			       					}
-			       					else if(Game.animationDungeonCounter.get("floorTrapA") == 3) {
-			       						//g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("floorTrapA").get(Game.animationDungeonCounter.get("floorTrapA")))), x, y, null);
-			       						if(animationHoldA == 0) {
-			       							animationHoldA++;
-			       						}
-			       						else {
-			       							animationHoldA++;
-			       							if(animationHoldA == 200) {
-			       								animationHoldA = 0;
-			       								Game.animationDungeonCounter.put("floorTrapA", new Integer(0));
-			       								trapCounterA = 0;
-			       								doLeft = false;
-			       							}
-			       						}
-			       					}
-			       					
-			       				}
-		       				}
-			       				
-	       				}
-	       			}
-       				else if(cur[j].contains("284")) {
-	       				if(!doLeft) {
-		       				if(Game.gameState != Game.STATE.Paused) {
-		       					if(animationHoldB == 0) {
-		       						trapCounterB++;
-		       					}
-			       				if(trapCounterB == 1500 || animationHoldB != 0) {
-			       					if(Game.animationDungeonCounter.get("floorTrapB") == 0 || Game.animationDungeonCounter.get("floorTrapB") == 2) {
-				       					Game.animationDungeonCounter.put("floorTrapB", Game.animationDungeonCounter.get("floorTrapB") + 1);
-				       					trapCounterB = 0;
-			       					}
-			       					if(Game.animationDungeonCounter.get("floorTrapB") == 1) {
-			       						//g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("floorTrapB").get(Game.animationDungeonCounter.get("floorTrapB")))), x, y, null);
-			       						if(animationHoldB == 0) {
-			       							animationHoldB++;
-			       						}
-			       						else {
-			       							animationHoldB++;
-			       							if(animationHoldB == 200) {
-			       								animationHoldB = 0;
-			       								Game.animationDungeonCounter.put("floorTrapB", Game.animationDungeonCounter.get("floorTrapB") + 1);
-			       								trapCounterB = 0;
-			       							}
-			       						}
-			       					}
-			       					else if(Game.animationDungeonCounter.get("floorTrapB") == 3) {
-			       						//g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("floorTrapB").get(Game.animationDungeonCounter.get("floorTrapB")))), x, y, null);
-			       						if(animationHoldB == 0) {
-			       							animationHoldB++;
-			       						}
-			       						else {
-			       							animationHoldB++;
-			       							if(animationHoldB == 200) {
-			       								animationHoldB = 0;
-			       								Game.animationDungeonCounter.put("floorTrapB", new Integer(0));
-			       								trapCounterB = 0;
-			       								doLeft = true;
-			       							}
-			       						}
-			       					}
-			       					
-			       				}
-		       				}
-	       				}
-	       			}
 		       				
 	       			x += 48;
 		       		if(x == 7680) {
@@ -538,6 +392,7 @@ public class MapReader {
 		       		}
 	       			continue;
 	       		}
+	       		curID = Integer.parseInt(cur[j].replace("\n", ""));
 	       		if(curID != 0) {
 	       			if(Game.animationDungeon.get("torch").contains(cur[j])) {
 	       				g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("torch").get(Game.animationDungeonCounter.get("torch")))), x, y, null);

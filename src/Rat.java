@@ -44,19 +44,19 @@ public class Rat extends GameObject{
 	 */
 	public Rat(float x, float y, ID id, Handler handler, int idt){
 		super(x, y, id);
-		this.height = 52;
+		this.height = 78;
 		this.handler = handler;
 		this.idt = idt;
 		healthGenerator = new Random();
 		health = healthGenerator.nextInt(3);
 		if(health == 0) {
-			health = 10;
+			health = 15;
 		}
 		else if(health == 1) {
-			health = 10;
+			health = 17;
 		}
 		else if(health == 2) {
-			health = 10;
+			health = 19;
 		}
 	
 		maxHealth = health;
@@ -64,51 +64,51 @@ public class Rat extends GameObject{
 		SpriteSheet ss = new SpriteSheet(Game.sprite_sheet);
 		
 		idle = new ArrayList<BufferedImage>();
-		idle.add(ss.grabImage(1, 1, 150, 78,"rat"));
-		idle.add(ss.grabImage(1, 2, 150, 78,"rat"));
-		idle.add(ss.grabImage(1, 3, 150, 78,"rat"));
-		idle.add(ss.grabImage(1, 4, 150, 78,"rat"));
+		idle.add(ss.grabImage(1, 1, 150, 85,"rat"));
+		idle.add(ss.grabImage(1, 2, 150, 85,"rat"));
+		idle.add(ss.grabImage(1, 3, 150, 85,"rat"));
+		idle.add(ss.grabImage(1, 4, 150, 85,"rat"));
 		
 		facingRightIdle = new ArrayList<BufferedImage>();
-		facingRightIdle.add(ss.grabImage(1, 1, 150, 78,"rat1"));
-		facingRightIdle.add(ss.grabImage(1, 2, 150, 78,"rat1"));
-		facingRightIdle.add(ss.grabImage(1, 3, 150, 78,"rat1"));
-		facingRightIdle.add(ss.grabImage(1, 4, 150, 78,"rat1"));
+		facingRightIdle.add(ss.grabImage(1, 1, 150, 85,"rat1"));
+		facingRightIdle.add(ss.grabImage(1, 2, 150, 85,"rat1"));
+		facingRightIdle.add(ss.grabImage(1, 3, 150, 85,"rat1"));
+		facingRightIdle.add(ss.grabImage(1, 4, 150, 85,"rat1"));
 		
 		
 		movingLeft = new ArrayList<BufferedImage>();
-		movingLeft.add(ss.grabImage(1, 5, 150, 78,"rat"));
-		movingLeft.add(ss.grabImage(1, 6, 150, 78,"rat"));
-		movingLeft.add(ss.grabImage(2, 1, 150, 78,"rat"));
-		movingLeft.add(ss.grabImage(2, 2, 150, 78,"rat"));
+		movingLeft.add(ss.grabImage(1, 5, 150, 85,"rat"));
+		movingLeft.add(ss.grabImage(1, 6, 150, 85,"rat"));
+		movingLeft.add(ss.grabImage(2, 1, 150, 85,"rat"));
+		movingLeft.add(ss.grabImage(2, 2, 150, 85,"rat"));
 		
 		
 		attack1 = new ArrayList<BufferedImage>();
-		attack1.add(ss.grabImage(2, 3, 150, 78,"rat"));
-		attack1.add(ss.grabImage(2, 4, 150, 78,"rat"));
-		attack1.add(ss.grabImage(2, 5, 150, 78,"rat"));
-		attack1.add(ss.grabImage(2, 6, 150, 78,"rat"));
-		attack1.add(ss.grabImage(3, 1, 150, 78,"rat"));
-		attack1.add(ss.grabImage(3, 2, 150, 78,"rat"));
+		attack1.add(ss.grabImage(2, 3, 150, 85,"rat"));
+		attack1.add(ss.grabImage(2, 4, 150, 85,"rat"));
+		attack1.add(ss.grabImage(2, 5, 150, 85,"rat"));
+		attack1.add(ss.grabImage(2, 6, 150, 85,"rat"));
+		attack1.add(ss.grabImage(3, 1, 150, 85,"rat"));
+		attack1.add(ss.grabImage(3, 2, 150, 85,"rat"));
 		
 		hurt = new ArrayList<BufferedImage>();
-		hurt.add(ss.grabImage(3, 3, 150, 78,"rat"));
-		hurt.add(ss.grabImage(3, 4, 150, 78,"rat"));
-		hurt.add(ss.grabImage(3, 5, 150, 78,"rat"));
+		hurt.add(ss.grabImage(3, 3, 150, 85,"rat"));
+		hurt.add(ss.grabImage(3, 4, 150, 85,"rat"));
+		hurt.add(ss.grabImage(3, 5, 150, 85,"rat"));
 		
 		movingRight = new ArrayList<BufferedImage>();
-		movingRight.add(ss.grabImage(1, 5, 150, 78,"rat1"));
-		movingRight.add(ss.grabImage(1, 6, 150, 78,"rat1"));
-		movingRight.add(ss.grabImage(2, 1, 150, 78,"rat1"));
-		movingRight.add(ss.grabImage(2, 2, 150, 78,"rat1"));
+		movingRight.add(ss.grabImage(1, 5, 150, 85,"rat1"));
+		movingRight.add(ss.grabImage(1, 6, 150, 85,"rat1"));
+		movingRight.add(ss.grabImage(2, 1, 150, 85,"rat1"));
+		movingRight.add(ss.grabImage(2, 2, 150, 85,"rat1"));
 		
 		
 		die = new ArrayList<BufferedImage>();
-		die.add(ss.grabImage(3, 6, 150, 78,"rat"));
-		die.add(ss.grabImage(4, 1, 150, 78,"rat"));
-		die.add(ss.grabImage(4, 2, 150, 78,"rat"));
-		die.add(ss.grabImage(4, 3, 150, 78,"rat"));
-		die.add(ss.grabImage(4, 4, 150, 78,"rat"));
+		die.add(ss.grabImage(3, 6, 150, 85,"rat"));
+		die.add(ss.grabImage(4, 1, 150, 85,"rat"));
+		die.add(ss.grabImage(4, 2, 150, 85,"rat"));
+		die.add(ss.grabImage(4, 3, 150, 85,"rat"));
+		die.add(ss.grabImage(4, 4, 150, 85,"rat"));
 		
 		
 		velX = -4;
@@ -199,8 +199,8 @@ public class Rat extends GameObject{
 	 */
 	public Rectangle getBounds() {
 		if(Game.gameState == Game.STATE.Battle) {
-			if(Battle.menuPosition == 0 && Game.gameState == Game.STATE.Battle && Battle.battleState == Battle.BATTLESTATE.PlayerTurnAction)
-				return new Rectangle((int)x - 10,(int)y+10,104, 49);
+			//if(Battle.menuPosition == 0 && Game.gameState == Game.STATE.Battle && Battle.battleState == Battle.BATTLESTATE.PlayerTurnAction)
+				//return new Rectangle((int)x - 10,(int)y+10,104, 49);
 			return new Rectangle((int)x + 23, (int)y + 30, 110, 43);
 		}
 		
@@ -315,12 +315,12 @@ public class Rat extends GameObject{
 				else if(velX==0) {
 					
 					g.drawImage(attack1.get(attack1Count), (int)x, (int)y, null);
-					
+					System.out.println("huh");
 					changeCount++;
 					if(changeCount % 10 == 0) {
 						attack1Count++;
 					}
-					if(attack1Count == 4 && changeCount % 20 == 0) {
+					if(attack1Count == 4 && changeCount % 10 == 0) {
 						AudioPlayer.getSound("ratHit").play(1, (float).5);
 						Battle.takeDamage = true;
 						if(HUD.allyCount != 3) HUD.allyCount += 1;

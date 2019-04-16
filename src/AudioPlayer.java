@@ -65,6 +65,7 @@ public class AudioPlayer {
 			soundMap.put("risingCrystal1", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Collect Item/PP_Special_Item.wav"));
 			soundMap.put("crystalPath", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Magic_Portal_Loop.wav"));
 			musicMap.put("gameOver", new Music("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/Stingers_Jingles/Fantasy/TD_Game_Over_Slow_Loop.wav"));
+			soundMap.put("starClick", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Stinger/LQ_Correct_Answer_04.wav"));
 			
 		} catch(SlickException e) {
 			e.printStackTrace();

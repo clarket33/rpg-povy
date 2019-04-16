@@ -49,13 +49,13 @@ public class KeyToPovy extends KeyAdapter{
 	    }
 	    
 	    grogoEmblem = new ArrayList<BufferedImage>();
-	    grogoEmblem.add(ss.grabImage(1, 1, 104, 104,"grogoTalking"));
-		grogoEmblem.add(ss.grabImage(1, 2, 104, 104,"grogoTalking"));
+	    grogoEmblem.add(ss.grabImage(1, 1, 130, 130,"grogoTalking"));
+		grogoEmblem.add(ss.grabImage(1, 2, 130, 130,"grogoTalking"));
 		
 	    text = new ArrayList<BufferedImage>();
-	    text.add(ss.grabImage(1, 1, 680, 150,"dialogue"));
-		text.add(ss.grabImage(1, 2, 680, 150,"dialogue"));
-		text.add(ss.grabImage(1, 3, 680, 150,"dialogue"));
+	    text.add(ss.grabImage(1, 1, 1080, 285,"dialogue"));
+		text.add(ss.grabImage(1, 2, 1080, 285,"dialogue"));
+		text.add(ss.grabImage(1, 3, 1080, 285,"dialogue"));
 		
 		done = false;
 		
@@ -154,7 +154,7 @@ public class KeyToPovy extends KeyAdapter{
 								p.setVelY(0);
 							}
 						}
-						Grogo temp = new Grogo(360, 367, ID.Grogo, handler);
+						Grogo temp = new Grogo(3*96, 3*125, ID.Grogo, handler);
 						Game.allies.addAlly(temp);
 						temp.originalSpot();
 						
@@ -187,14 +187,14 @@ public class KeyToPovy extends KeyAdapter{
 			g.setColor(Color.WHITE);
 			g.setFont(fo);
 			if(!done) {
-				g.drawImage(text.get(0), Game.camX + 300, Game.camY + 745, null);
+				g.drawImage(text.get(0), Game.camX + 120, Game.camY + 625, null);
 				handleScene(doneCount,g);
 				if(doneCount == 7) {
-					g.drawImage(dungeonKey, Game.camX + 330, Game.camY + 770, null);
+					g.drawImage(dungeonKey, Game.camX + 210, Game.camY + 700, null);
 				}
 				else {
 					if(doneCount != 12) {
-						g.drawImage(grogoEmblem.get(talkCount), Game.camX + 330, Game.camY + 770, null);
+						g.drawImage(grogoEmblem.get(talkCount), Game.camX + 210, Game.camY + 700, null);
 						changeCount++;
 						if(changeCount % 2 == 0) {
 							talkCount++;
@@ -207,7 +207,7 @@ public class KeyToPovy extends KeyAdapter{
 				}
 			}
 			else {
-				g.drawImage(text.get(animate), Game.camX + 300, Game.camY + 745, null);
+				g.drawImage(text.get(animate), Game.camX + 120, Game.camY + 625, null);
 				
 				changeCount++;
 				if(changeCount % 10 == 0) {
@@ -222,10 +222,10 @@ public class KeyToPovy extends KeyAdapter{
 				
 	
 				if(doneCount == 7) {
-					g.drawImage(dungeonKey, Game.camX + 330, Game.camY + 770, null);
+					g.drawImage(dungeonKey, Game.camX + 210, Game.camY + 700, null);
 				}
 				else if(doneCount != 12){
-					g.drawImage(grogoEmblem.get(0), Game.camX + 330, Game.camY + 770, null);
+					g.drawImage(grogoEmblem.get(0), Game.camX + 210, Game.camY + 700, null);
 				}
 			}
 		}
@@ -260,8 +260,8 @@ public class KeyToPovy extends KeyAdapter{
 					}
 				}
 			}
-			g.drawChars(copy, 0, copy.length, Game.camX + 440, Game.camY + 800);
-			g.drawChars(copy2, 0, copy2.length, Game.camX + 440, Game.camY + 820);
+			g.drawChars(copy, 0, copy.length, Game.camX + 350, Game.camY + 740);
+			g.drawChars(copy2, 0, copy2.length, Game.camX + 350, Game.camY + 760);
 		}
 		else {
 			if(speedChanged) {
@@ -279,7 +279,7 @@ public class KeyToPovy extends KeyAdapter{
 				AudioPlayer.getSound("type").play(1, (float).3);
 				count++;
 			}
-			g.drawChars(copy, 0, copy.length, Game.camX + 440, Game.camY + 800);
+			g.drawChars(copy, 0, copy.length, Game.camX + 350, Game.camY + 740);
 		}
 	}
 

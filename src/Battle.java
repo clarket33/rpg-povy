@@ -58,6 +58,7 @@ public class Battle{
 	public static boolean smDBoost=false, lgDBoost=false, smABoost=false, lgABoost=false;
 	public static int defenseCount = 0, attackCount = 0;
 	private int speedControl = 0, setSpeed = 0, setSpeedEnemy = 0, originalX, enemyOriginalX;
+	public static boolean itemAllyRet = false;
 	private int deadCount = 0;
 
 	public enum BATTLESTATE{
@@ -291,7 +292,7 @@ public class Battle{
 					player.setVelX(3);
 					setSpeed++;
 				}
-				if((player.getX() <= enemy.getX()-100)) {
+				if((player.getX() <= enemy.getX()-150)) {
 					player.tick();
 					enemy.tick();
 				}
@@ -308,7 +309,7 @@ public class Battle{
 							setLaser = true;
 						}
 						//taking damage for an enemy for laser blast
-						if(Povy.laserBulletX >= enemy.getBounds().x) {
+						if(Povy.laserBulletX >= enemy.getBounds().x+25) {
 							Battle.contact = true;
 							AudioPlayer.getSound("laserHit").play(1, (float).1);
 							if(enemy.getID() == ID.Golem) {
@@ -418,10 +419,11 @@ public class Battle{
 					}	
 				}
 				if(ally.getVelX() == -3) {
-					if(ally.getX() <= originalX - 160) {
+					if(ally.getX() <= originalX) {
 						ally.setVelX(0);
 						battleState = BATTLESTATE.EnemyTurn;
-						ally.setX(360);
+						ally.setX(3*96);
+						ally.setY(3*125);
 						if(lgABoost || smABoost) {
 							attackCount += 1;
 							if(attackCount == 3) {
@@ -866,16 +868,16 @@ public class Battle{
 				if(battleState == BATTLESTATE.PlayerTurnAction) {
 					enemy.render(g);
 					if(lgABoost) {
-						g.drawImage(new Item(Item.ItemType.LargeAttackBoost).getImage(), (int)player.getX()-16, (int)player.getY()-32, null);
+						g.drawImage(new Item(Item.ItemType.LargeAttackBoost).getImage(), (int)player.getX()-39, (int)player.getY()-78, null);
 					}
 					else if(smABoost) {
-						g.drawImage(new Item(Item.ItemType.SmallAttackBoost).getImage(), (int)player.getX()-16, (int)player.getY()-32, null);
+						g.drawImage(new Item(Item.ItemType.SmallAttackBoost).getImage(), (int)player.getX()-39, (int)player.getY()-78, null);
 					}
 					if(smDBoost) {
-						g.drawImage(new Item(Item.ItemType.SmallDefenseBoost).getImage(), (int)player.getX()+16, (int)player.getY()-32, null);
+						g.drawImage(new Item(Item.ItemType.SmallDefenseBoost).getImage(), (int)player.getX()+39, (int)player.getY()-78, null);
 					}
 					else if(lgDBoost) {
-						g.drawImage(new Item(Item.ItemType.LargeDefenseBoost).getImage(), (int)player.getX()+16, (int)player.getY()-32, null);
+						g.drawImage(new Item(Item.ItemType.LargeDefenseBoost).getImage(), (int)player.getX()+39, (int)player.getY()-78, null);
 					}
 					player.render(g);
 					if(menuPosition == 4) {
@@ -885,16 +887,16 @@ public class Battle{
 				else {
 					player.render(g);
 					if(lgABoost) {
-						g.drawImage(new Item(Item.ItemType.LargeAttackBoost).getImage(), (int)player.getX()-16, (int)player.getY()-32, null);
+						g.drawImage(new Item(Item.ItemType.LargeAttackBoost).getImage(), (int)player.getX()-39, (int)player.getY()-78, null);
 					}
 					else if(smABoost) {
-						g.drawImage(new Item(Item.ItemType.SmallAttackBoost).getImage(), (int)player.getX()-16, (int)player.getY()-32, null);
+						g.drawImage(new Item(Item.ItemType.SmallAttackBoost).getImage(), (int)player.getX()-39, (int)player.getY()-78, null);
 					}
 					if(smDBoost) {
-						g.drawImage(new Item(Item.ItemType.SmallDefenseBoost).getImage(), (int)player.getX()+16, (int)player.getY()-32, null);
+						g.drawImage(new Item(Item.ItemType.SmallDefenseBoost).getImage(), (int)player.getX()+39, (int)player.getY()-78, null);
 					}
 					else if(lgDBoost) {
-						g.drawImage(new Item(Item.ItemType.LargeDefenseBoost).getImage(), (int)player.getX()+16, (int)player.getY()-32, null);
+						g.drawImage(new Item(Item.ItemType.LargeDefenseBoost).getImage(), (int)player.getX()+39, (int)player.getY()-78, null);
 					}
 					enemy.render(g);
 				}
@@ -928,10 +930,10 @@ public class Battle{
 	       				g.drawImage(Game.dungeonTiles.get(curID), x, y, null);
 	       			}
 	       		}
-	       		x += 32;
-	       		if(x == 1280) {
+	       		x += 48;
+	       		if(x == 1296) {
 	       			x = 0;
-	       			y += 32;
+	       			y += 48;
 	       		}
 	       		
 	       	 }
@@ -965,9 +967,10 @@ public class Battle{
        		/**
        		 * draw the option screen to pick an attack
        		 */
-       		Font fo = new Font("Bodoni MT", 1, 20);
-			g.setColor(Color.WHITE);
+       		Font fo = new Font("verdana", 1, 20);
+       		g.setColor(new Color(106, 215, 48));
 			g.setFont(fo);
+			//System.out.println("Item selected: " + itemSelected);
        		if(!itemSelected && !allySelected) {
 	       		if(left) {
 	       			//laser blaster
@@ -983,8 +986,8 @@ public class Battle{
 		       				menuChange = -15;
 		       			}
 		       			else {
-							g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
-							g.drawString("Hits opponent with a laser blast. Current Level: " + ExperienceBar.laserLevel, Game.camX + 420, Game.camY + 800);
+							g.drawImage(text, Game.camX + 120, Game.camY + 645, null);
+							g.drawString("Hits opponent with a laser blast. Current Level: " + ExperienceBar.laserLevel, Game.camX + 390, Game.camY + 800);
 		       			}
 		       			
 		       		}
@@ -998,7 +1001,7 @@ public class Battle{
 		       				}
 		       			}
 		       			else {
-		       				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+		       				g.drawImage(text, Game.camX + 120, Game.camY + 645, null);
 							g.drawString("View Items", Game.camX + 590, Game.camY + 800);
 		       			}
 		       		}
@@ -1012,7 +1015,7 @@ public class Battle{
 		       				}
 		       			}
 		       			else {
-		       				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+		       				g.drawImage(text, Game.camX + 120, Game.camY + 645, null);
 							g.drawString("???", Game.camX + 620, Game.camY + 800);
 		       			}
 		       		}
@@ -1026,15 +1029,15 @@ public class Battle{
 		       				}
 		       			}
 		       			else {
-		       				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
-							g.drawString("Attempt Escape from battle", Game.camX + 530, Game.camY + 800);
+		       				g.drawImage(text, Game.camX + 120, Game.camY + 645, null);
+							g.drawString("Attempt Escape from battle", Game.camX + 510, Game.camY + 780);
 							if(canRun) {
 								g.setColor(Color.green);
-								g.drawString("Can attempt Escape", Game.camX + 545, Game.camY + 850);
+								g.drawString("Can attempt Escape", Game.camX + 535, Game.camY + 820);
 							}
 							else {
 								g.setColor(Color.red);
-								g.drawString("Cannot attempt Escape", Game.camX + 545, Game.camY + 850);
+								g.drawString("Cannot attempt Escape", Game.camX + 530, Game.camY + 820);
 							}
 		       			}
 		       		}
@@ -1048,7 +1051,7 @@ public class Battle{
 		       				}
 		       			}
 		       			else {
-		       				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+		       				g.drawImage(text, Game.camX + 120, Game.camY + 645, null);
 		       				String ready = "";
 		       				Color c;
 		       				if(Battle.useAlly) {
@@ -1059,9 +1062,9 @@ public class Battle{
 		       					c = Color.red;
 		       					ready = "Not Ready";
 		       				}
-							g.drawString("Summon an Ally", Game.camX + 565, Game.camY + 800);
+							g.drawString("Summon an Ally", Game.camX + 550, Game.camY + 780);
 							g.setColor(c);
-							g.drawString(ready, Game.camX + 590, Game.camY + 850);
+							g.drawString(ready, Game.camX + 585, Game.camY + 820);
 		       			}
 		       		}
 		       		//pummel
@@ -1074,7 +1077,7 @@ public class Battle{
 		       				}
 		       			}
 		       			else {
-		       				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+		       				g.drawImage(text, Game.camX + 120, Game.camY + 645, null);
 							g.drawString("Pummel the opponent. Current Level: " + ExperienceBar.pummelLevel, Game.camX + 450, Game.camY + 800);
 		       			}
 		       		}
@@ -1092,8 +1095,8 @@ public class Battle{
 		       				menuChange = -15;
 		       			}
 		       			else {
-							g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
-							g.drawString("Hits opponent with a laser blast. Current Level: " + ExperienceBar.laserLevel, Game.camX + 420, Game.camY + 800);
+							g.drawImage(text, Game.camX + 120, Game.camY + 645, null);
+							g.drawString("Hits opponent with a laser blast. Current Level: " + ExperienceBar.laserLevel, Game.camX + 390, Game.camY + 800);
 		       			}
 		       		}
 		       		if(menuPosition == 1) {
@@ -1105,7 +1108,7 @@ public class Battle{
 		       				}
 		       			}
 		       			else {
-		       				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+		       				g.drawImage(text, Game.camX + 120, Game.camY + 645, null);
 							g.drawString("View Items", Game.camX + 590, Game.camY + 800);
 		       			}
 		       		}
@@ -1118,7 +1121,7 @@ public class Battle{
 		       				}
 		       			}
 		       			else {
-		       				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+		       				g.drawImage(text, Game.camX + 120, Game.camY + 645, null);
 							g.drawString("???", Game.camX + 620, Game.camY + 800);
 		       			}
 		       		}
@@ -1131,15 +1134,15 @@ public class Battle{
 		       				}
 		       			}
 		       			else {
-		       				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
-							g.drawString("Attempt Escape from battle", Game.camX + 530, Game.camY + 800);
+		       				g.drawImage(text, Game.camX + 120, Game.camY + 645, null);
+							g.drawString("Attempt Escape from battle", Game.camX + 510, Game.camY + 780);
 							if(canRun) {
 								g.setColor(Color.green);
-								g.drawString("Can attempt Escape", Game.camX + 545, Game.camY + 850);
+								g.drawString("Can attempt Escape", Game.camX + 535, Game.camY + 820);
 							}
 							else {
 								g.setColor(Color.red);
-								g.drawString("Cannot attempt Escape", Game.camX + 545, Game.camY + 850);
+								g.drawString("Cannot attempt Escape", Game.camX + 530, Game.camY + 820);
 							}
 		       			}
 		       		}
@@ -1152,7 +1155,7 @@ public class Battle{
 		       				}
 		       			}
 		       			else {
-		       				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+		       				g.drawImage(text, Game.camX + 120, Game.camY + 645, null);
 		       				String ready = "";
 		       				Color c;
 		       				if(Battle.useAlly) {
@@ -1163,9 +1166,9 @@ public class Battle{
 		       					c = Color.red;
 		       					ready = "Not Ready";
 		       				}
-							g.drawString("Summon an Ally", Game.camX + 565, Game.camY + 800);
+							g.drawString("Summon an Ally", Game.camX + 550, Game.camY + 780);
 							g.setColor(c);
-							g.drawString(ready, Game.camX + 590, Game.camY + 850);
+							g.drawString(ready, Game.camX + 585, Game.camY + 820);
 		       			}
 		       		}
 		       		if(menuPosition == 5) {
@@ -1177,15 +1180,11 @@ public class Battle{
 		       				}
 		       			}
 		       			else {
-		       				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
+		       				g.drawImage(text, Game.camX + 120, Game.camY + 645, null);
 							g.drawString("Pummel the opponent. Current Level: " + ExperienceBar.pummelLevel, Game.camX + 450, Game.camY + 800);
 		       			}
 		       		}
 	       		}
-       		}
-       		else if(itemSelected){
-       			Game.pause.render(g);
-       			Game.itemPouch.render(g);
        		}
        		else {
        			Game.pause.render(g);
@@ -1208,16 +1207,16 @@ public class Battle{
 					animationCount++;
 				}
 				if(animationCount == 1 && changeCount % 4 == 0) {
-					player.setX(2*180);
-					player.setY(2*204);
+					player.setX(3*96);
+					player.setY(3*144);
 					originalX = (int)player.getX();
 					if(enemy.getID() == ID.Golem) {
 						enemyX = enemy.getX();
 						enemyY = enemy.getY();
 						velX = enemy.getVelX();
 						velY = enemy.getVelY();
-						enemy.setX(2*400);
-						enemy.setY(2*173);
+						enemy.setX(3*288);
+						enemy.setY(3*115);
 						enemyOriginalX = (int)enemy.getX();
 					}
 					if(enemy.getID() == ID.Rat) {
@@ -1225,8 +1224,8 @@ public class Battle{
 						enemyY = enemy.getY();
 						velX = enemy.getVelX();
 						velY = enemy.getVelY();
-						enemy.setX(2*410);
-						enemy.setY(2*210);
+						enemy.setX(3*288);
+						enemy.setY(3*149);
 						enemyOriginalX = (int)enemy.getX();
 					}
 					if(enemy.getID() == ID.ElephantGuard) {
@@ -1234,8 +1233,8 @@ public class Battle{
 						enemyY = enemy.getY();
 						velX = enemy.getVelX();
 						velY = enemy.getVelY();
-						enemy.setX(2*410);
-						enemy.setY(2*163);
+						enemy.setX(3*288);
+						enemy.setY(3*99);
 						enemyOriginalX = (int)enemy.getX();
 					}
 					if(enemy.getID() == ID.Zatolib) {
@@ -1243,8 +1242,8 @@ public class Battle{
 						enemyY = enemy.getY();
 						velX = enemy.getVelX();
 						velY = enemy.getVelY();
-						enemy.setX(2*400);
-						enemy.setY(2*173);
+						enemy.setX(3*288);
+						enemy.setY(3*112);
 						enemyOriginalX = (int)enemy.getX();
 					}
 				}
@@ -1290,8 +1289,8 @@ public class Battle{
 					handler.removeObject(enemy);
 					for(int j = 0; j < handler.objects.size(); j++) {
 						if(handler.objects.get(j).getID() == ID.Povy) {
-							handler.objects.get(j).setX(1520*2);
-							handler.objects.get(j).setY(1058*2);
+							handler.objects.get(j).setX(1520*3);
+							handler.objects.get(j).setY(1058*3);
 						}
 						/**
 						if(handler.objects.get(j).getID() == ID.Zatolib) {
@@ -1319,13 +1318,13 @@ public class Battle{
 					if(temp.type() == Golem.GolemType.firstGolem) {
 						for(int j = 0; j < handler.objects.size(); j++) {
 							if(handler.objects.get(j).getID() == ID.Povy) {
-								handler.objects.get(j).setX(115*2);
-								handler.objects.get(j).setY(183*2);
+								handler.objects.get(j).setX(115*3);
+								handler.objects.get(j).setY(183*3);
 							}
 							
 							if(handler.objects.get(j).getID() == ID.Grogo) {
-								handler.objects.get(j).setX(115*2);
-								handler.objects.get(j).setY(110*2);
+								handler.objects.get(j).setX(115*3);
+								handler.objects.get(j).setY(110*3);
 							}
 						
 						}

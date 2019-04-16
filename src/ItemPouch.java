@@ -15,6 +15,10 @@ public class ItemPouch {
 	
 	public ItemPouch() {
 		items = new LinkedHashMap<Item, Integer>();
+		//addItem(new Item(Item.ItemType.SmallHP));
+		
+		
+		
 	}
 	public Set<Item> getItems() {
 		return items.keySet();
@@ -71,6 +75,7 @@ public class ItemPouch {
 		while(itr.hasNext()) {
 			Item cur = itr.next();
 			if(count == num) {
+				//System.out.println(cur.toString());
 				return cur;
 			}
 			count++;
@@ -108,21 +113,23 @@ public class ItemPouch {
 	public void render(Graphics g) {
 		String s = "";
 		Iterator<Item> itr = items.keySet().iterator();
-		g.setFont(new Font("arial", 1, 25));
-		g.setColor(Color.ORANGE);
+		g.setFont(new Font("verdana", 1, 18));
+		g.setColor(new Color(106, 215, 48));
 		int imgY = 198;
-		int y = Game.camY + 225-g.getFontMetrics().getHeight();
+		int y = Game.camY + 245-g.getFontMetrics().getHeight();
 		while(itr.hasNext()) {
 			Item cur = itr.next();
+			//System.out.println(cur.toString());
 			s += cur.toString();
 			s+= " x";
 			s += items.get(cur).toString();
-			g.drawString(s, Game.camX + 532, y + g.getFontMetrics().getHeight());
-			g.drawImage(cur.getImage(), Game.camX+491, Game.camY+imgY, null);
-			y+=g.getFontMetrics().getHeight()+5;
-			imgY += 34;
+			g.drawString(s, Game.camX + 560, y + g.getFontMetrics().getHeight());
+			g.drawImage(cur.getImage(), Game.camX+482, Game.camY+imgY, null);
+			y+=g.getFontMetrics().getHeight()*3.6;
+			imgY += 82;
 			s = "";
 		}
+		//System.out.println();
 			
 	}
 

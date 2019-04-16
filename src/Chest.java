@@ -37,7 +37,7 @@ public class Chest extends GameObject{
 		
 		text = null;
 		try {
-	        text = ImageIO.read(new File("res/itembg.png"));
+	        text = ImageIO.read(new File("res/textbox.png"));
 	    } catch (IOException e) {
 	    	e.printStackTrace();
 	    }
@@ -67,30 +67,30 @@ public class Chest extends GameObject{
 		// TODO Auto-generated method stub
 		if(opened) {
 			g.drawImage(Game.dungeonTiles.get(336), (int)x, (int)y, null);
-			if(count <= 40) {
+			if(count <= 80) {
 				
 				count++;
-				Font fo = new Font("Cooper Black", 1, 40);
+				Font fo = new Font("verdana", 1, 40);
 				g.setColor(Color.CYAN);
 				g.setFont(fo);
-				g.drawImage(text, Game.camX + 300, Game.camY + 745, null);
-				if(item.toString().contains("SmallHP") || item.toString().contains("LargeHP") || item.toString().contains("MaxHP")) {
+				g.drawImage(text, Game.camX + 120, Game.camY + 625, null);
+				if(item.toString().contains("Small HP") || item.toString().contains("Large HP") || item.toString().contains("Max HP")) {
 					g.setColor(Color.GREEN);
-					g.drawString(item.toString(), Game.camX + 550, Game.camY + 825);
+					g.drawString(item.toString(), Game.camX + 550, Game.camY + 790);
 				}
-				else if(item.toString().contains("SmallAttackBoost") || item.toString().contains("LargeAttackBoost")) {
+				else if(item.toString().contains("Small Attack Boost") || item.toString().contains("Large Attack Boost")) {
 					g.setColor(Color.RED);
-					g.drawString(item.toString(), Game.camX + 470, Game.camY + 825);
+					g.drawString(item.toString(), Game.camX + 470, Game.camY + 790);
 				}
 				else {
 					g.setColor(Color.BLUE);
-					g.drawString(item.toString(), Game.camX + 470, Game.camY + 825);
+					g.drawString(item.toString(), Game.camX + 470, Game.camY + 790);
 				}
 				
 				
 					
 				
-				g.drawImage(item.getImage().getScaledInstance(140, 140, Image.SCALE_DEFAULT), Game.camX + 310, Game.camY + 745, null);
+				g.drawImage(item.getImage().getScaledInstance(140, 140, Image.SCALE_DEFAULT), Game.camX + 310, Game.camY + 700, null);
 			}
 		}
 		else {

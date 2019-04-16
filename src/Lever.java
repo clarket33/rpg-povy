@@ -51,7 +51,7 @@ public class Lever extends GameObject{
 	 * returns bounds that if the user is within, it can interact with it
 	 */
 	public Rectangle getBounds() {
-		return new Rectangle((int)x-32, (int)y-32, 96, 96);
+		return new Rectangle((int)x-48, (int)y-48, 144, 144);
 	}
 	@Override
 	public GameObject copy() {

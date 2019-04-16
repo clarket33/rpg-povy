@@ -18,25 +18,25 @@ public class Item {
 		this.it = it;
 		SpriteSheet ss = new SpriteSheet(Game.sprite_sheet);
 		if(it == ItemType.SmallHP) {
-			itemImage = ss.grabImage(1, 1, 32, 32, "smallHP");
+			itemImage = ss.grabImage(1, 1, 78, 78, "smallHP");
 		}
 		else if(it == ItemType.LargeHP) {
-			itemImage = ss.grabImage(1, 1, 32, 32, "largeHP");
+			itemImage = ss.grabImage(1, 1, 78, 78, "largeHP");
 		}
 		else if(it == ItemType.MaxHP) {
-			itemImage = ss.grabImage(1, 1, 32, 32, "maxHP");
+			itemImage = ss.grabImage(1, 1, 78, 78, "maxHP");
 		}
 		else if(it == ItemType.SmallAttackBoost) {
-			itemImage = ss.grabImage(1, 1, 32, 32, "smallAttackBoost");
+			itemImage = ss.grabImage(1, 1, 78, 78, "smallAttackBoost");
 		}
 		else if(it == ItemType.SmallDefenseBoost) {
-			itemImage = ss.grabImage(1, 1, 32, 32, "smallDefenseBoost");
+			itemImage = ss.grabImage(1, 1, 78, 78, "smallDefenseBoost");
 		}
 		else if(it == ItemType.LargeAttackBoost) {
-			itemImage = ss.grabImage(1, 1, 32, 32, "largeAttackBoost");
+			itemImage = ss.grabImage(1, 1, 78, 78, "largeAttackBoost");
 		}
 		else if(it == ItemType.LargeDefenseBoost) {
-			itemImage = ss.grabImage(1, 1, 32, 32, "largeDefenseBoost");
+			itemImage = ss.grabImage(1, 1, 78, 78, "largeDefenseBoost");
 		}
 		
 	}
@@ -59,6 +59,27 @@ public class Item {
 	 * returns string representation of the item
 	 */
 	public String toString() {
+		if(it == ItemType.SmallHP) {
+			return "Small HP";
+		}
+		else if(it == ItemType.LargeHP) {
+			return "Large HP";
+		}
+		else if(it == ItemType.MaxHP) {
+			return "Max HP";
+		}
+		else if(it == ItemType.SmallAttackBoost) {
+			return "Small Attack Boost";
+		}
+		else if(it == ItemType.SmallDefenseBoost) {
+			return "Small Defense Boost";
+		}
+		else if(it == ItemType.LargeAttackBoost) {
+			return "Large Attack Boost";
+		}
+		else if(it == ItemType.LargeDefenseBoost) {
+			return "Large Defense Boost";
+		}
 		return it.toString();
 	}
 	
@@ -71,15 +92,45 @@ public class Item {
 			if(HUD.HEALTH> HUD.maxHealth) {
 				HUD.HEALTH = HUD.maxHealth;
 			}
+			if(Game.gameState == Game.STATE.Battle) {
+				if(Battle.lgABoost || Battle.smABoost) {
+					Battle.attackCount += 1;
+					if(Battle.attackCount == 3) {
+						Battle.lgABoost = false;
+						Battle.smABoost = false;
+						Battle.attackCount = 0;
+					}
+				}
+			}
 		}
 		else if(it == ItemType.LargeHP) {
 			HUD.HEALTH += 32;
 			if(HUD.HEALTH> HUD.maxHealth) {
 				HUD.HEALTH = HUD.maxHealth;
 			}
+			if(Game.gameState == Game.STATE.Battle) {
+				if(Battle.lgABoost || Battle.smABoost) {
+					Battle.attackCount += 1;
+					if(Battle.attackCount == 3) {
+						Battle.lgABoost = false;
+						Battle.smABoost = false;
+						Battle.attackCount = 0;
+					}
+				}
+			}
 		}
 		else if(it == ItemType.MaxHP) {
 			HUD.HEALTH = HUD.maxHealth;
+			if(Game.gameState == Game.STATE.Battle) {
+				if(Battle.lgABoost || Battle.smABoost) {
+					Battle.attackCount += 1;
+					if(Battle.attackCount == 3) {
+						Battle.lgABoost = false;
+						Battle.smABoost = false;
+						Battle.attackCount = 0;
+					}
+				}
+			}
 		}
 		if(Game.gameState == Game.STATE.Battle) {
 			if(it == ItemType.SmallAttackBoost) {
@@ -91,6 +142,16 @@ public class Item {
 				Battle.smDBoost = true;
 				Battle.lgDBoost = false;
 				Battle.defenseCount = 0;
+				if(Game.gameState == Game.STATE.Battle) {
+					if(Battle.lgABoost || Battle.smABoost) {
+						Battle.attackCount += 1;
+						if(Battle.attackCount == 3) {
+							Battle.lgABoost = false;
+							Battle.smABoost = false;
+							Battle.attackCount = 0;
+						}
+					}
+				}
 			}
 			else if(it == ItemType.LargeAttackBoost) {
 				Battle.lgABoost = true;
@@ -101,6 +162,16 @@ public class Item {
 				Battle.lgDBoost = true;
 				Battle.smDBoost = false;
 				Battle.defenseCount = 0;
+				if(Game.gameState == Game.STATE.Battle) {
+					if(Battle.lgABoost || Battle.smABoost) {
+						Battle.attackCount += 1;
+						if(Battle.attackCount == 3) {
+							Battle.lgABoost = false;
+							Battle.smABoost = false;
+							Battle.attackCount = 0;
+						}
+					}
+				}
 			}
 		}
 		

@@ -22,11 +22,11 @@ public class AllyPouch {
 		
 		SpriteSheet ss = new SpriteSheet(Game.sprite_sheet);
 		grogoIdle = new ArrayList<BufferedImage>();
-		grogoIdle.add(toBufferedImage(ss.grabImage(1, 1, 216, 100,"grogo").getScaledInstance(358, 166, Image.SCALE_AREA_AVERAGING)));
-		grogoIdle.add(toBufferedImage(ss.grabImage(1, 2, 216, 100,"grogo").getScaledInstance(358, 166, Image.SCALE_AREA_AVERAGING)));
-		grogoIdle.add(toBufferedImage(ss.grabImage(1, 3, 216, 100,"grogo").getScaledInstance(358, 166, Image.SCALE_AREA_AVERAGING)));
-		grogoIdle.add(toBufferedImage(ss.grabImage(1, 4, 216, 100,"grogo").getScaledInstance(358, 166, Image.SCALE_AREA_AVERAGING)));
-		grogoIdle.add(toBufferedImage(ss.grabImage(1, 5, 216, 100,"grogo").getScaledInstance(358, 166, Image.SCALE_AREA_AVERAGING)));
+		grogoIdle.add(ss.grabImage(1, 1, 324, 160,"grogo"));
+		grogoIdle.add(ss.grabImage(1, 2, 324, 160,"grogo"));
+		grogoIdle.add(ss.grabImage(1, 3, 324, 160,"grogo"));
+		grogoIdle.add(ss.grabImage(1, 4, 324, 160,"grogo"));
+		grogoIdle.add(ss.grabImage(1, 5, 324, 160,"grogo"));
 		
 		
 	}
@@ -85,28 +85,14 @@ public class AllyPouch {
 	
 	/**
 	 * 
-	 * @param img
-	 * converts an image to a bufferedimage
-	 * @return a bufferedImage after taking in an image
+	 * @param 
+	 * returns amount of allies
 	 */
-	private static BufferedImage toBufferedImage(Image img)
-	{
-	    if (img instanceof BufferedImage)
-	    {
-	        return (BufferedImage) img;
-	    }
-
-	    // Create a buffered image with transparency
-	    BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-	    // Draw the image on to the buffered image
-	    Graphics2D bGr = bimage.createGraphics();
-	    bGr.drawImage(img, 0, 0, null);
-	    bGr.dispose();
-
-	    // Return the buffered image
-	    return bimage;
+	public int allyAmount() {
+		return allies.size();
 	}
 	
+	
+
 
 }

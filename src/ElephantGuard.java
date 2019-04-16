@@ -3,9 +3,13 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 /**
  * 
  * @author clarkt5
@@ -22,6 +26,7 @@ public class ElephantGuard extends GameObject{
 	private ArrayList<BufferedImage> attack2;
 	private ArrayList<BufferedImage> attack3;
 	private ArrayList<BufferedImage> die;
+	private BufferedImage shadow;
 	private Random attackOption, healthGenerator;
 	private int attackNum;
 	private int health = 0;
@@ -46,101 +51,105 @@ public class ElephantGuard extends GameObject{
 	 */
 	public ElephantGuard(float x, float y, ID id, Handler handler){
 		super(x, y, id);
-		this.height = 160;
+		this.height = 240;
 		this.handler = handler;
 		attackOption = new Random();
 		healthGenerator = new Random();
 		health = healthGenerator.nextInt(3);
-		health = 90;
+		health = 30;
 		maxHealth = health;
-		
+		try {
+			 shadow = ImageIO.read(new File("res/elePhantShadow.png"));
+		}catch(IOException e) {
+	    	e.printStackTrace();
+		}
 		SpriteSheet ss = new SpriteSheet(Game.sprite_sheet);
 		
 		idle = new ArrayList<BufferedImage>();
-		idle.add(ss.grabImage(1, 1, 255, 240,"elephantGuard"));
-		idle.add(ss.grabImage(1, 2, 255, 240,"elephantGuard"));
-		idle.add(ss.grabImage(1, 3, 255, 240,"elephantGuard"));
-		idle.add(ss.grabImage(1, 4, 255, 240,"elephantGuard"));
+		idle.add(ss.grabImage(1, 1, 255, 300,"elephantGuard"));
+		idle.add(ss.grabImage(1, 2, 255, 300,"elephantGuard"));
+		idle.add(ss.grabImage(1, 3, 255, 300,"elephantGuard"));
+		idle.add(ss.grabImage(1, 4, 255, 300,"elephantGuard"));
 		
 		movingLeft = new ArrayList<BufferedImage>();
-		movingLeft.add(ss.grabImage(1, 5, 255, 240,"elephantGuard"));
-		movingLeft.add(ss.grabImage(1, 6, 255, 240,"elephantGuard"));
-		movingLeft.add(ss.grabImage(2, 1, 255, 240,"elephantGuard"));
-		movingLeft.add(ss.grabImage(2, 2, 255, 240,"elephantGuard"));
+		movingLeft.add(ss.grabImage(1, 5, 255, 300,"elephantGuard"));
+		movingLeft.add(ss.grabImage(1, 6, 255, 300,"elephantGuard"));
+		movingLeft.add(ss.grabImage(2, 1, 255, 300,"elephantGuard"));
+		movingLeft.add(ss.grabImage(2, 2, 255, 300,"elephantGuard"));
 		
 		movingRight = new ArrayList<BufferedImage>();
-		movingRight.add(ss.grabImage(1, 2, 200, 240,"elephantGuard1"));
-		movingRight.add(ss.grabImage(1, 1, 200, 240,"elephantGuard1"));
-		movingRight.add(ss.grabImage(2, 6, 200, 240,"elephantGuard1"));
-		movingRight.add(ss.grabImage(2, 5, 200, 240,"elephantGuard1"));
+		movingRight.add(ss.grabImage(1, 5, 200, 255,"elephantGuard1"));
+		movingRight.add(ss.grabImage(1, 6, 200, 255,"elephantGuard1"));
+		movingRight.add(ss.grabImage(2, 1, 200, 255,"elephantGuard1"));
+		movingRight.add(ss.grabImage(2, 2, 200, 255,"elephantGuard1"));
 		
 		hurt = new ArrayList<BufferedImage>();
-		hurt.add(ss.grabImage(10, 2, 255, 240,"elephantGuard"));
-		hurt.add(ss.grabImage(10, 3, 255, 240,"elephantGuard"));
+		hurt.add(ss.grabImage(10, 2, 255, 300,"elephantGuard"));
+		hurt.add(ss.grabImage(10, 3, 255, 300,"elephantGuard"));
 		
 		attack1 = new ArrayList<BufferedImage>();
-		attack1.add(ss.grabImage(2, 3, 255, 240,"elephantGuard"));
-		attack1.add(ss.grabImage(2, 4, 255, 240,"elephantGuard"));
-		attack1.add(ss.grabImage(2, 5, 255, 240,"elephantGuard"));
-		attack1.add(ss.grabImage(2, 6, 255, 240,"elephantGuard"));
-		attack1.add(ss.grabImage(3, 1, 255, 240,"elephantGuard"));
-		attack1.add(ss.grabImage(3, 2, 255, 240,"elephantGuard"));
-		attack1.add(ss.grabImage(3, 3, 255, 240,"elephantGuard"));
-		attack1.add(ss.grabImage(3, 4, 255, 240,"elephantGuard"));
-		attack1.add(ss.grabImage(3, 5, 255, 240,"elephantGuard"));
-		attack1.add(ss.grabImage(3, 6, 255, 240,"elephantGuard"));
-		attack1.add(ss.grabImage(4, 1, 255, 240,"elephantGuard"));
-		attack1.add(ss.grabImage(4, 2, 255, 240,"elephantGuard"));
-		attack1.add(ss.grabImage(4, 3, 255, 240,"elephantGuard"));
-		attack1.add(ss.grabImage(4, 4, 255, 240,"elephantGuard"));
-		attack1.add(ss.grabImage(4, 5, 255, 240,"elephantGuard"));
-		attack1.add(ss.grabImage(4, 6, 255, 240,"elephantGuard"));
-		attack1.add(ss.grabImage(5, 1, 255, 240,"elephantGuard"));
-		attack1.add(ss.grabImage(5, 2, 255, 240,"elephantGuard"));
+		attack1.add(ss.grabImage(2, 3, 255, 300,"elephantGuard"));
+		attack1.add(ss.grabImage(2, 4, 255, 300,"elephantGuard"));
+		attack1.add(ss.grabImage(2, 5, 255, 300,"elephantGuard"));
+		attack1.add(ss.grabImage(2, 6, 255, 300,"elephantGuard"));
+		attack1.add(ss.grabImage(3, 1, 255, 300,"elephantGuard"));
+		attack1.add(ss.grabImage(3, 2, 255, 300,"elephantGuard"));
+		attack1.add(ss.grabImage(3, 3, 255, 300,"elephantGuard"));
+		attack1.add(ss.grabImage(3, 4, 255, 300,"elephantGuard"));
+		attack1.add(ss.grabImage(3, 5, 255, 300,"elephantGuard"));
+		attack1.add(ss.grabImage(3, 6, 255, 300,"elephantGuard"));
+		attack1.add(ss.grabImage(4, 1, 255, 300,"elephantGuard"));
+		attack1.add(ss.grabImage(4, 2, 255, 300,"elephantGuard"));
+		attack1.add(ss.grabImage(4, 3, 255, 300,"elephantGuard"));
+		attack1.add(ss.grabImage(4, 4, 255, 300,"elephantGuard"));
+		attack1.add(ss.grabImage(4, 5, 255, 300,"elephantGuard"));
+		attack1.add(ss.grabImage(4, 6, 255, 300,"elephantGuard"));
+		attack1.add(ss.grabImage(5, 1, 255, 300,"elephantGuard"));
+		attack1.add(ss.grabImage(5, 2, 255, 300,"elephantGuard"));
 		
 		attack2 = new ArrayList<BufferedImage>();
-		attack2.add(ss.grabImage(5, 3, 255, 240,"elephantGuard"));
-		attack2.add(ss.grabImage(5, 4, 255, 240,"elephantGuard"));
-		attack2.add(ss.grabImage(5, 5, 255, 240,"elephantGuard"));
-		attack2.add(ss.grabImage(5, 6, 255, 240,"elephantGuard"));
-		attack2.add(ss.grabImage(6, 1, 255, 240,"elephantGuard"));
-		attack2.add(ss.grabImage(6, 2, 255, 240,"elephantGuard"));
-		attack2.add(ss.grabImage(6, 3, 255, 240,"elephantGuard"));
-		attack2.add(ss.grabImage(6, 4, 255, 240,"elephantGuard"));
-		attack2.add(ss.grabImage(6, 5, 255, 240,"elephantGuard"));
-		attack2.add(ss.grabImage(6, 6, 255, 240,"elephantGuard"));
-		attack2.add(ss.grabImage(7, 1, 255, 240,"elephantGuard"));
-		attack2.add(ss.grabImage(7, 2, 255, 240,"elephantGuard"));
-		attack2.add(ss.grabImage(7, 3, 255, 240,"elephantGuard"));
+		attack2.add(ss.grabImage(5, 3, 255, 300,"elephantGuard"));
+		attack2.add(ss.grabImage(5, 4, 255, 300,"elephantGuard"));
+		attack2.add(ss.grabImage(5, 5, 255, 300,"elephantGuard"));
+		attack2.add(ss.grabImage(5, 6, 255, 300,"elephantGuard"));
+		attack2.add(ss.grabImage(6, 1, 255, 300,"elephantGuard"));
+		attack2.add(ss.grabImage(6, 2, 255, 300,"elephantGuard"));
+		attack2.add(ss.grabImage(6, 3, 255, 300,"elephantGuard"));
+		attack2.add(ss.grabImage(6, 4, 255, 300,"elephantGuard"));
+		attack2.add(ss.grabImage(6, 5, 255, 300,"elephantGuard"));
+		attack2.add(ss.grabImage(6, 6, 255, 300,"elephantGuard"));
+		attack2.add(ss.grabImage(7, 1, 255, 300,"elephantGuard"));
+		attack2.add(ss.grabImage(7, 2, 255, 300,"elephantGuard"));
+		attack2.add(ss.grabImage(7, 3, 255, 300,"elephantGuard"));
 		
 		attack3 = new ArrayList<BufferedImage>();
-		attack3.add(ss.grabImage(7, 4, 255, 240,"elephantGuard"));
-		attack3.add(ss.grabImage(7, 5, 255, 240,"elephantGuard"));
-		attack3.add(ss.grabImage(7, 6, 255, 240,"elephantGuard"));
-		attack3.add(ss.grabImage(8, 1, 255, 240,"elephantGuard"));
-		attack3.add(ss.grabImage(8, 2, 255, 240,"elephantGuard"));
-		attack3.add(ss.grabImage(8, 3, 255, 240,"elephantGuard"));
-		attack3.add(ss.grabImage(8, 4, 255, 240,"elephantGuard"));
-		attack3.add(ss.grabImage(8, 5, 255, 240,"elephantGuard"));
-		attack3.add(ss.grabImage(8, 6, 255, 240,"elephantGuard"));
-		attack3.add(ss.grabImage(9, 1, 255, 240,"elephantGuard"));
-		attack3.add(ss.grabImage(9, 2, 255, 240,"elephantGuard"));
-		attack3.add(ss.grabImage(9, 3, 255, 240,"elephantGuard"));
-		attack3.add(ss.grabImage(9, 4, 255, 240,"elephantGuard"));
-		attack3.add(ss.grabImage(9, 5, 255, 240,"elephantGuard"));
-		attack3.add(ss.grabImage(9, 6, 255, 240,"elephantGuard"));
-		attack3.add(ss.grabImage(10, 1, 255, 240,"elephantGuard"));
+		attack3.add(ss.grabImage(7, 4, 255, 300,"elephantGuard"));
+		attack3.add(ss.grabImage(7, 5, 255, 300,"elephantGuard"));
+		attack3.add(ss.grabImage(7, 6, 255, 300,"elephantGuard"));
+		attack3.add(ss.grabImage(8, 1, 255, 300,"elephantGuard"));
+		attack3.add(ss.grabImage(8, 2, 255, 300,"elephantGuard"));
+		attack3.add(ss.grabImage(8, 3, 255, 300,"elephantGuard"));
+		attack3.add(ss.grabImage(8, 4, 255, 300,"elephantGuard"));
+		attack3.add(ss.grabImage(8, 5, 255, 300,"elephantGuard"));
+		attack3.add(ss.grabImage(8, 6, 255, 300,"elephantGuard"));
+		attack3.add(ss.grabImage(9, 1, 255, 300,"elephantGuard"));
+		attack3.add(ss.grabImage(9, 2, 255, 300,"elephantGuard"));
+		attack3.add(ss.grabImage(9, 3, 255, 300,"elephantGuard"));
+		attack3.add(ss.grabImage(9, 4, 255, 300,"elephantGuard"));
+		attack3.add(ss.grabImage(9, 5, 255, 300,"elephantGuard"));
+		attack3.add(ss.grabImage(9, 6, 255, 300,"elephantGuard"));
+		attack3.add(ss.grabImage(10, 1, 255, 300,"elephantGuard"));
 		
 		
 		die = new ArrayList<BufferedImage>();
-		die.add(ss.grabImage(10, 4, 255, 240,"elephantGuard"));
-		die.add(ss.grabImage(10, 5, 255, 240,"elephantGuard"));
-		die.add(ss.grabImage(10, 6, 255, 240,"elephantGuard"));
-		die.add(ss.grabImage(11, 1, 255, 240,"elephantGuard"));
-		die.add(ss.grabImage(11, 2, 255, 240,"elephantGuard"));
-		die.add(ss.grabImage(11, 3, 255, 240,"elephantGuard"));
-		die.add(ss.grabImage(11, 4, 255, 240,"elephantGuard"));
-		die.add(ss.grabImage(11, 5, 255, 240,"elephantGuard"));
+		die.add(ss.grabImage(10, 4, 255, 300,"elephantGuard"));
+		die.add(ss.grabImage(10, 5, 255, 300,"elephantGuard"));
+		die.add(ss.grabImage(10, 6, 255, 300,"elephantGuard"));
+		die.add(ss.grabImage(11, 1, 255, 300,"elephantGuard"));
+		die.add(ss.grabImage(11, 2, 255, 300,"elephantGuard"));
+		die.add(ss.grabImage(11, 3, 255, 300,"elephantGuard"));
+		die.add(ss.grabImage(11, 4, 255, 300,"elephantGuard"));
+		die.add(ss.grabImage(11, 5, 255, 300,"elephantGuard"));
 		
 		
 		
@@ -221,9 +230,9 @@ public class ElephantGuard extends GameObject{
 	 */
 	public Rectangle getBounds() {
 		if(Game.gameState == Game.STATE.Battle) {
-			if(Battle.menuPosition == 0 && Game.gameState == Game.STATE.Battle && Battle.battleState == Battle.BATTLESTATE.PlayerTurnAction)
-				return new Rectangle((int)x-70,(int)y+188, 170, 53);
-			return new Rectangle((int)x+81, (int)y+188, 170, 53);
+			//if(Battle.menuPosition == 0 && Game.gameState == Game.STATE.Battle && Battle.battleState == Battle.BATTLESTATE.PlayerTurnAction)
+				//return new Rectangle((int)x-70,(int)y+188, 170, 53);
+			return new Rectangle((int)x+95, (int)y+188, 170, 53);
 		}
 		return new Rectangle((int)x-550, (int)y+90, 1400, 160);
 	}
@@ -349,6 +358,7 @@ public class ElephantGuard extends GameObject{
 				}
 				else if(velX==0) {
 					generateAttack();
+					//attackNum = 1;
 					//Trunk attack
 					if(attackNum == 0) {
 						g.drawImage(attack1.get(attack1Count), (int)x, (int)y, null);
@@ -389,6 +399,7 @@ public class ElephantGuard extends GameObject{
 					}
 					//jumping attack
 					else if(attackNum == 1) {
+						g.drawImage(shadow, (int)x + 82, 493, null); //shadow y:196 shadow x: 82 
 						g.drawImage(attack2.get(attack2Count), (int)x, (int)y, null);
 						changeCount++;
 						if(changeCount % 20 == 0) {

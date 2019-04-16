@@ -54,7 +54,7 @@ public class Zatolib extends GameObject{
 	 */
 	public Zatolib(float x, float y, ID id, Handler handler){
 		super(x, y, id);
-		this.height = 120;
+		this.height = 199;
 		this.handler = handler;
 		attackOption = new Random();
 		healthGenerator = new Random();
@@ -65,99 +65,99 @@ public class Zatolib extends GameObject{
 		SpriteSheet ss = new SpriteSheet(Game.sprite_sheet);
 		
 		idle = new ArrayList<BufferedImage>();
-		idle.add(ss.grabImage(1, 1, 217, 199,"zatolib"));
-		idle.add(ss.grabImage(1, 2, 217, 199,"zatolib"));
-		idle.add(ss.grabImage(1, 3, 217, 199,"zatolib"));
-		idle.add(ss.grabImage(1, 4, 217, 199,"zatolib"));
-		idle.add(ss.grabImage(1, 5, 217, 199,"zatolib"));
+		idle.add(ss.grabImage(1, 1, 217, 210,"zatolib"));
+		idle.add(ss.grabImage(1, 2, 217, 210,"zatolib"));
+		idle.add(ss.grabImage(1, 3, 217, 210,"zatolib"));
+		idle.add(ss.grabImage(1, 4, 217, 210,"zatolib"));
+		idle.add(ss.grabImage(1, 5, 217, 210,"zatolib"));
 		
 		movingLeft = new ArrayList<BufferedImage>();
-		movingLeft.add(ss.grabImage(1, 6, 217, 199,"zatolib"));
-		movingLeft.add(ss.grabImage(1, 7, 217, 199,"zatolib"));
-		movingLeft.add(ss.grabImage(1, 8, 217, 199,"zatolib"));
-		movingLeft.add(ss.grabImage(2, 1, 217, 199,"zatolib"));
-		movingLeft.add(ss.grabImage(2, 2, 217, 199,"zatolib"));
-		movingLeft.add(ss.grabImage(2, 3, 217, 199,"zatolib"));
+		movingLeft.add(ss.grabImage(1, 6, 217, 210,"zatolib"));
+		movingLeft.add(ss.grabImage(1, 7, 217, 210,"zatolib"));
+		movingLeft.add(ss.grabImage(1, 8, 217, 210,"zatolib"));
+		movingLeft.add(ss.grabImage(2, 1, 217, 210,"zatolib"));
+		movingLeft.add(ss.grabImage(2, 2, 217, 210,"zatolib"));
+		movingLeft.add(ss.grabImage(2, 3, 217, 210,"zatolib"));
 		
 		movingRight = new ArrayList<BufferedImage>();
-		movingRight.add(ss.grabImage(1, 6, 150, 199,"zatolibRight"));
-		movingRight.add(ss.grabImage(1, 7, 150, 199,"zatolibRight"));
-		movingRight.add(ss.grabImage(1, 8, 150, 199,"zatolibRight"));
-		movingRight.add(ss.grabImage(2, 1, 150, 199,"zatolibRight"));
-		movingRight.add(ss.grabImage(2, 2, 150, 199,"zatolibRight"));
-		movingRight.add(ss.grabImage(2, 3, 150, 199,"zatolibRight"));
+		movingRight.add(ss.grabImage(1, 6, 150, 210,"zatolibRight"));
+		movingRight.add(ss.grabImage(1, 7, 150, 210,"zatolibRight"));
+		movingRight.add(ss.grabImage(1, 8, 150, 210,"zatolibRight"));
+		movingRight.add(ss.grabImage(2, 1, 150, 210,"zatolibRight"));
+		movingRight.add(ss.grabImage(2, 2, 150, 210,"zatolibRight"));
+		movingRight.add(ss.grabImage(2, 3, 150, 210,"zatolibRight"));
 		
 		hurt = new ArrayList<BufferedImage>();
-		hurt.add(ss.grabImage(8, 4, 217, 199,"zatolib"));
-		hurt.add(ss.grabImage(8, 5, 217, 199,"zatolib"));
+		hurt.add(ss.grabImage(8, 4, 217, 210,"zatolib"));
+		hurt.add(ss.grabImage(8, 5, 217, 210,"zatolib"));
 		
 		attack1 = new ArrayList<BufferedImage>();
-		attack1.add(ss.grabImage(2, 4, 217, 199,"zatolib"));
-		attack1.add(ss.grabImage(2, 5, 217, 199,"zatolib"));
-		attack1.add(ss.grabImage(2, 6, 217, 199,"zatolib"));
-		attack1.add(ss.grabImage(2, 7, 217, 199,"zatolib"));
-		attack1.add(ss.grabImage(2, 8, 217, 199,"zatolib"));
-		attack1.add(ss.grabImage(3, 1, 217, 199,"zatolib"));
-		attack1.add(ss.grabImage(3, 2, 217, 199,"zatolib"));
-		attack1.add(ss.grabImage(3, 3, 217, 199,"zatolib"));
-		attack1.add(ss.grabImage(3, 4, 217, 199,"zatolib"));
-		attack1.add(ss.grabImage(3, 5, 217, 199,"zatolib"));
-		attack1.add(ss.grabImage(3, 6, 217, 199,"zatolib"));
-		attack1.add(ss.grabImage(3, 7, 217, 199,"zatolib"));
-		attack1.add(ss.grabImage(3, 8, 217, 199,"zatolib"));
-		attack1.add(ss.grabImage(4, 1, 217, 199,"zatolib"));
-		attack1.add(ss.grabImage(4, 2, 217, 199,"zatolib"));
-		attack1.add(ss.grabImage(4, 3, 217, 199,"zatolib"));
-		attack1.add(ss.grabImage(4, 4, 217, 199,"zatolib"));
+		attack1.add(ss.grabImage(2, 4, 217, 210,"zatolib"));
+		attack1.add(ss.grabImage(2, 5, 217, 210,"zatolib"));
+		attack1.add(ss.grabImage(2, 6, 217, 210,"zatolib"));
+		attack1.add(ss.grabImage(2, 7, 217, 210,"zatolib"));
+		attack1.add(ss.grabImage(2, 8, 217, 210,"zatolib"));
+		attack1.add(ss.grabImage(3, 1, 217, 210,"zatolib"));
+		attack1.add(ss.grabImage(3, 2, 217, 210,"zatolib"));
+		attack1.add(ss.grabImage(3, 3, 217, 210,"zatolib"));
+		attack1.add(ss.grabImage(3, 4, 217, 210,"zatolib"));
+		attack1.add(ss.grabImage(3, 5, 217, 210,"zatolib"));
+		attack1.add(ss.grabImage(3, 6, 217, 210,"zatolib"));
+		attack1.add(ss.grabImage(3, 7, 217, 210,"zatolib"));
+		attack1.add(ss.grabImage(3, 8, 217, 210,"zatolib"));
+		attack1.add(ss.grabImage(4, 1, 217, 210,"zatolib"));
+		attack1.add(ss.grabImage(4, 2, 217, 210,"zatolib"));
+		attack1.add(ss.grabImage(4, 3, 217, 210,"zatolib"));
+		attack1.add(ss.grabImage(4, 4, 217, 210,"zatolib"));
 		
 		
 		
 		attack2 = new ArrayList<BufferedImage>();
-		attack2.add(ss.grabImage(4, 5, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(4, 6, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(4, 7, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(4, 8, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(5, 1, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(5, 2, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(5, 3, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(5, 4, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(5, 5, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(5, 6, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(5, 7, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(5, 8, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(6, 1, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(6, 2, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(6, 3, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(6, 4, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(6, 5, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(6, 6, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(6, 7, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(6, 8, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(7, 1, 217, 199,"zatolib"));
-		attack2.add(ss.grabImage(7, 2, 217, 199,"zatolib"));
+		attack2.add(ss.grabImage(4, 5, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(4, 6, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(4, 7, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(4, 8, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(5, 1, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(5, 2, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(5, 3, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(5, 4, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(5, 5, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(5, 6, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(5, 7, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(5, 8, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(6, 1, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(6, 2, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(6, 3, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(6, 4, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(6, 5, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(6, 6, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(6, 7, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(6, 8, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(7, 1, 217, 210,"zatolib"));
+		attack2.add(ss.grabImage(7, 2, 217, 210,"zatolib"));
 		
 		attack3 = new ArrayList<BufferedImage>();
-		attack3.add(ss.grabImage(7, 3, 217, 199,"zatolib"));
-		attack3.add(ss.grabImage(7, 4, 217, 199,"zatolib"));
-		attack3.add(ss.grabImage(7, 5, 217, 199,"zatolib"));
-		attack3.add(ss.grabImage(7, 6, 217, 199,"zatolib"));
-		attack3.add(ss.grabImage(7, 7, 217, 199,"zatolib"));
-		attack3.add(ss.grabImage(7, 8, 217, 199,"zatolib"));
-		attack3.add(ss.grabImage(8, 1, 217, 199,"zatolib"));
-		attack3.add(ss.grabImage(8, 2, 217, 199,"zatolib"));
-		attack3.add(ss.grabImage(8, 3, 217, 199,"zatolib"));
+		attack3.add(ss.grabImage(7, 3, 217, 210,"zatolib"));
+		attack3.add(ss.grabImage(7, 4, 217, 210,"zatolib"));
+		attack3.add(ss.grabImage(7, 5, 217, 210,"zatolib"));
+		attack3.add(ss.grabImage(7, 6, 217, 210,"zatolib"));
+		attack3.add(ss.grabImage(7, 7, 217, 210,"zatolib"));
+		attack3.add(ss.grabImage(7, 8, 217, 210,"zatolib"));
+		attack3.add(ss.grabImage(8, 1, 217, 210,"zatolib"));
+		attack3.add(ss.grabImage(8, 2, 217, 210,"zatolib"));
+		attack3.add(ss.grabImage(8, 3, 217, 210,"zatolib"));
 		
 		laugh = new ArrayList<BufferedImage>();
-		laugh.add(ss.grabImage(8, 6, 217, 199,"zatolib"));
-		laugh.add(ss.grabImage(8, 7, 217, 199,"zatolib"));
+		laugh.add(ss.grabImage(8, 6, 217, 210,"zatolib"));
+		laugh.add(ss.grabImage(8, 7, 217, 210,"zatolib"));
 
 		
 		die = new ArrayList<BufferedImage>();
-		die.add(ss.grabImage(8, 8, 217, 199,"zatolib"));
-		die.add(ss.grabImage(9, 1, 217, 199,"zatolib"));
-		die.add(ss.grabImage(9, 2, 217, 199,"zatolib"));
-		die.add(ss.grabImage(9, 3, 217, 199,"zatolib"));
-		die.add(ss.grabImage(9, 4, 217, 199,"zatolib"));
+		die.add(ss.grabImage(8, 8, 217, 210,"zatolib"));
+		die.add(ss.grabImage(9, 1, 217, 210,"zatolib"));
+		die.add(ss.grabImage(9, 2, 217, 210,"zatolib"));
+		die.add(ss.grabImage(9, 3, 217, 210,"zatolib"));
+		die.add(ss.grabImage(9, 4, 217, 210,"zatolib"));
 		
 		
 		laser = null;
@@ -243,11 +243,11 @@ public class Zatolib extends GameObject{
 	 */
 	public Rectangle getBounds() {
 		if(Game.gameState == Game.STATE.Battle) {
-			if(Battle.menuPosition == 0 && Game.gameState == Game.STATE.Battle && Battle.battleState == Battle.BATTLESTATE.PlayerTurnAction)
-				return new Rectangle((int)x + 85,(int)y+109, 59, 24);
-			return new Rectangle((int)x + 66, (int)y + 112, 62, 20);
+			//if(Battle.menuPosition == 0 && Game.gameState == Game.STATE.Battle && Battle.battleState == Battle.BATTLESTATE.PlayerTurnAction)
+				//return new Rectangle((int)x + 85,(int)y+109, 59, 24);
+			return new Rectangle((int)x + 100, (int)y + 170, 67, 27);
 		}
-		return new Rectangle((int)x-20, (int)y-20, 450, 400);
+		return new Rectangle((int)x-20, (int)y-20, 5, 5);//450, 400);
 	}
 	
 	
@@ -372,6 +372,7 @@ public class Zatolib extends GameObject{
 						animationCount = 0;
 						changeCount = 0;
 					}
+					g.drawRect((int)x + 112, (int)y + 170, 67, 27);
 				}
 				else if(velX==0) {
 					//hair whip
@@ -450,7 +451,7 @@ public class Zatolib extends GameObject{
 								yFactorUp -= .1;
 								yFactorDown = yFactorUp;
 								
-								if(laserBulletY > (int)this.getY() + 50) {
+								if(laserBulletY > (int)this.getY() + 75) {
 									return;
 								}
 								

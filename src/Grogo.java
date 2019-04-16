@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Grogo extends GameObject{
 	
 	Handler handler;
-	private ArrayList<BufferedImage> idle, largeIdle;
+	private ArrayList<BufferedImage> idle;
 	private ArrayList<BufferedImage> walkRight;
 	private ArrayList<BufferedImage> walkLeft;
 	private ArrayList<BufferedImage> fireAttack;
@@ -33,69 +33,61 @@ public class Grogo extends GameObject{
 	public Grogo(float x, float y, ID id, Handler handler){
 		super(x, y, id);
 		this.handler = handler;
-		this.height = 60;
+		this.height = 150;
 		SpriteSheet ss = new SpriteSheet(Game.sprite_sheet);
 		idle = new ArrayList<BufferedImage>();
-		largeIdle = new ArrayList<BufferedImage>();
 		walkRight = new ArrayList<BufferedImage>();
 		walkLeft = new ArrayList<BufferedImage>();
 		fireAttack = new ArrayList<BufferedImage>();
 		
-		idle.add(ss.grabImage(1, 1, 324, 150,"grogo"));
-		idle.add(ss.grabImage(1, 2, 324, 150,"grogo"));
-		idle.add(ss.grabImage(1, 3, 324, 150,"grogo"));
-		idle.add(ss.grabImage(1, 4, 324, 150,"grogo"));
-		idle.add(ss.grabImage(1, 5, 324, 150,"grogo"));
+		idle.add(ss.grabImage(1, 1, 324, 160,"grogo"));
+		idle.add(ss.grabImage(1, 2, 324, 160,"grogo"));
+		idle.add(ss.grabImage(1, 3, 324, 160,"grogo"));
+		idle.add(ss.grabImage(1, 4, 324, 160,"grogo"));
+		idle.add(ss.grabImage(1, 5, 324, 160,"grogo"));
 		
-		largeIdle.add(toBufferedImage(ss.grabImage(1, 1, 324, 150,"grogo").getScaledInstance(358, 166, Image.SCALE_AREA_AVERAGING)));
-		largeIdle.add(toBufferedImage(ss.grabImage(1, 2, 324, 150,"grogo").getScaledInstance(358, 166, Image.SCALE_AREA_AVERAGING)));
-		largeIdle.add(toBufferedImage(ss.grabImage(1, 3, 324, 150,"grogo").getScaledInstance(358, 166, Image.SCALE_AREA_AVERAGING)));
-		largeIdle.add(toBufferedImage(ss.grabImage(1, 4, 324, 150,"grogo").getScaledInstance(358, 166, Image.SCALE_AREA_AVERAGING)));
-		largeIdle.add(toBufferedImage(ss.grabImage(1, 5, 324, 150,"grogo").getScaledInstance(358, 166, Image.SCALE_AREA_AVERAGING)));
+		walkRight.add(ss.grabImage(2, 1, 324, 160,"grogo"));
+		walkRight.add(ss.grabImage(2, 2, 324, 160,"grogo"));
+		walkRight.add(ss.grabImage(2, 3, 324, 160,"grogo"));
+		walkRight.add(ss.grabImage(2, 4, 324, 160,"grogo"));
+		walkRight.add(ss.grabImage(2, 5, 324, 160,"grogo"));
 		
-		walkRight.add(ss.grabImage(2, 1, 324, 150,"grogo"));
-		walkRight.add(ss.grabImage(2, 2, 324, 150,"grogo"));
-		walkRight.add(ss.grabImage(2, 3, 324, 150,"grogo"));
-		walkRight.add(ss.grabImage(2, 4, 324, 150,"grogo"));
-		walkRight.add(ss.grabImage(2, 5, 324, 150,"grogo"));
-		
-		walkLeft.add(ss.grabImage(2, 1, 100, 150,"grogo2"));
-		walkLeft.add(ss.grabImage(2, 2, 100, 150,"grogo2"));
-		walkLeft.add(ss.grabImage(2, 3, 100, 150,"grogo2"));
-		walkLeft.add(ss.grabImage(2, 4, 100, 150,"grogo2"));
-		walkLeft.add(ss.grabImage(2, 5, 100, 150,"grogo2"));
+		walkLeft.add(ss.grabImage(2, 1, 100, 160,"grogo2"));
+		walkLeft.add(ss.grabImage(2, 2, 100, 160,"grogo2"));
+		walkLeft.add(ss.grabImage(2, 3, 100, 160,"grogo2"));
+		walkLeft.add(ss.grabImage(2, 4, 100, 160,"grogo2"));
+		walkLeft.add(ss.grabImage(2, 5, 100, 160,"grogo2"));
 		
 		
-		fireAttack.add(ss.grabImage(3, 1, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(3, 2, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(3, 3, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(3, 4, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(3, 5, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(4, 1, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(4, 2, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(4, 3, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(4, 4, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(4, 5, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(5, 1, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(5, 2, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(5, 3, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(5, 4, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(5, 5, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(6, 1, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(6, 2, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(6, 3, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(6, 4, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(6, 5, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(7, 1, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(7, 2, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(7, 3, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(7, 4, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(7, 5, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(8, 1, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(8, 2, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(8, 3, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(8, 4, 324, 150,"grogo"));
-		fireAttack.add(ss.grabImage(8, 5, 324, 150,"grogo"));
+		fireAttack.add(ss.grabImage(3, 1, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(3, 2, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(3, 3, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(3, 4, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(3, 5, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(4, 1, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(4, 2, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(4, 3, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(4, 4, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(4, 5, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(5, 1, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(5, 2, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(5, 3, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(5, 4, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(5, 5, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(6, 1, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(6, 2, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(6, 3, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(6, 4, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(6, 5, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(7, 1, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(7, 2, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(7, 3, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(7, 4, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(7, 5, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(8, 1, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(8, 2, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(8, 3, 324, 160,"grogo"));
+		fireAttack.add(ss.grabImage(8, 4, 324, 160,"grogo"));
 		
 		idleAnimation = 0;
 		walkAnimation = 0;
@@ -118,7 +110,7 @@ public class Grogo extends GameObject{
 	 * returns the bounds of Grogo
 	 */
 	public Rectangle getBounds() {
-		return new Rectangle((int)x + 40, (int)y + 88, 39, 13);
+		return new Rectangle((int)x + 14, (int)y + 126, 100, 23);
 	}
 	
 	/**
@@ -148,70 +140,47 @@ public class Grogo extends GameObject{
 					else {
 						Battle.takeDamage = false;
 					}
-					if(fireAnimation == 28) {
+					if(fireAnimation == 29) {
 						fireAnimation = 0;
 						changeCount = 0;
 						velX = -3;
-						this.setX((int)this.getX()-150);
+						//this.setX((int)this.getX()-150);
 					}
 				}
 				else if(velX > 0) {
 					g.drawImage(walkRight.get(walkAnimation), (int)x, (int)y, null);
 					changeCount++;
-					if(changeCount % 4 == 0) {
+					if(changeCount % 15 == 0) {
 						walkAnimation++;
 					}
-					if(walkAnimation == 9) {
+					if(walkAnimation == 5) {
 						walkAnimation = 0;
 						changeCount = 0;
 					}
 				}
-				else {
+				else if(velX < 0) {
 					g.drawImage(walkLeft.get(walkAnimation), (int)x, (int)y, null);
 					changeCount++;
-					if(changeCount % 4 == 0) {
+					if(changeCount % 15 == 0) {
 						walkAnimation++;
 					}
-					if(walkAnimation == 9) {
+					if(walkAnimation == 5) {
 						walkAnimation = 0;
 						changeCount = 0;
 					}
 				}
 			}
-			else {
-				g.drawImage(largeIdle.get(idleAnimation), Game.camX + (int)x-20, Game.camY + (int)y-40, null);
-				changeCount++;
-				if(changeCount % 5 == 0) {
-					idleAnimation++;
-				}
-				if(idleAnimation == 5) {
-					idleAnimation = 0;
-					changeCount = 0;
-				}
-			}
+			
 		}
 		else {
-			if(Game.allies.allies.contains(this)) {
-				g.drawImage(largeIdle.get(idleAnimation), Game.camX + (int)x-20, Game.camY + (int)y-40, null);
-				changeCount++;
-				if(changeCount % 2 == 0) {
-					idleAnimation++;
-				}
-				if(idleAnimation == 5) {
-					idleAnimation = 0;
-					changeCount = 0;
-				}
+			g.drawImage(idle.get(idleAnimation), (int)x, (int)y, null);
+			changeCount++;
+			if(changeCount % 10 == 0) {
+				idleAnimation++;
 			}
-			else {
-				g.drawImage(idle.get(idleAnimation), (int)x, (int)y, null);
-				changeCount++;
-				if(changeCount % 10 == 0) {
-					idleAnimation++;
-				}
-				if(idleAnimation == 5) {
-					idleAnimation = 0;
-					changeCount = 0;
-				}
+			if(idleAnimation == 5) {
+				idleAnimation = 0;
+				changeCount = 0;
 			}
 		}
 	}
