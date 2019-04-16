@@ -97,13 +97,15 @@ public class Chest extends GameObject{
 			g.drawImage(Game.dungeonTiles.get(335), (int)x, (int)y, null);
 		}
 		
+		g.drawRect((int)x-48, (int)y, 144, 96);
+		
 	}
 	@Override
 	/**
 	 * returns the bounds that the player can be within to open the chest
 	 */
 	public Rectangle getBounds() {
-		return new Rectangle((int)x-32, (int)y, 96, 64);
+		return new Rectangle((int)x-48, (int)y, 144, 96);
 	}
 	@Override
 	public GameObject copy() {

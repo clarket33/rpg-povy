@@ -67,33 +67,34 @@ public class Menu extends MouseAdapter{
 				AudioPlayer.getMusic("dungeon").loop(1, (float).1);
 				
 				//handler.addObject(new Povy(2848, 224, ID.Povy, handler, "blue"));
-				handler.addObject(new Povy(255*2, 40*2, ID.Povy, handler, "blue"));
-				//handler.addObject(new Povy(2000*2, 864*2, ID.Povy, handler, "blue"));
+				handler.addObject(new Povy(255*3, 40*3, ID.Povy, handler, "blue"));
+				//handler.addObject(new Povy(2000*3, 864*3, ID.Povy, handler, "blue"));
+				//handler.addObject(new Povy(832*3, 1008*3, ID.Povy, handler, "blue"));
 				
 				
-				handler.addObject(new Grogo(182*2, 24*2, ID.Grogo, handler));
-				handler.addObject(new Golem(550*2, 216*2, ID.Golem, handler, Golem.GolemType.firstGolem));
-				handler.addObject(new Golem(1753*2, 98*2, ID.Golem, handler, Golem.GolemType.normal));
-				handler.addObject(new Golem(2349*2, 510*2, ID.Golem, handler, Golem.GolemType.normal));
-				handler.addObject(new Golem(2259*2, 1729*2, ID.Golem, handler, Golem.GolemType.normal));
-				handler.addObject(new Golem(765*2, 509*2, ID.Golem, handler, Golem.GolemType.normal));
-				handler.addObject(new Golem(298*2, 1769*2, ID.Golem, handler, Golem.GolemType.treasureGuard));
+				handler.addObject(new Grogo(182*3, 24*3, ID.Grogo, handler));
+				handler.addObject(new Golem(550*3, 216*3, ID.Golem, handler, Golem.GolemType.firstGolem));
+				handler.addObject(new Golem(1753*3, 98*3, ID.Golem, handler, Golem.GolemType.normal));
+				handler.addObject(new Golem(2349*3, 510*3, ID.Golem, handler, Golem.GolemType.normal));
+				handler.addObject(new Golem(2259*3, 1729*3, ID.Golem, handler, Golem.GolemType.normal));
+				handler.addObject(new Golem(765*3, 509*3, ID.Golem, handler, Golem.GolemType.normal));
+				handler.addObject(new Golem(298*3, 1769*3, ID.Golem, handler, Golem.GolemType.treasureGuard));
 				
-				handler.addObject(new Rat(2165*2, 170*2, ID.Rat, handler, 0));
-				handler.addObject(new Rat(1424*2, 252*2, ID.Rat, handler, 1));
-				handler.addObject(new Rat(2335*2, 1097*2, ID.Rat, handler, 0));
-				handler.addObject(new Rat(435*2, 1566*2, ID.Rat, handler, 0));
-				
-				
-				handler.addObject(new Zatolib(1550*2, 1058*2, ID.Zatolib, handler));
+				handler.addObject(new Rat(2165*3, 170*3, ID.Rat, handler, 0));
+				handler.addObject(new Rat(1424*3, 252*3, ID.Rat, handler, 1));
+				handler.addObject(new Rat(2335*3, 1097*3, ID.Rat, handler, 0));
+				handler.addObject(new Rat(435*3, 1566*3, ID.Rat, handler, 0));
 				
 				
-				handler.addObject(new ElephantGuard(192*2, 1010*2, ID.ElephantGuard, handler));
+				handler.addObject(new Zatolib(1550*3, 1058*3, ID.Zatolib, handler));
 				
-				handler.addObject(new Costume(920*2, 165*2, ID.NonEnemy, "purple", handler));
 				
-				game.gameState = Game.STATE.KeyFromGrogo;
+				handler.addObject(new ElephantGuard(192*3, 1010*3, ID.ElephantGuard, handler));
 				
+				handler.addObject(new Costume(920*3, 165*3, ID.NonEnemy, "purple", handler));
+				
+				
+				game.gameState = Game.STATE.Game;		
 			}
 			
 			

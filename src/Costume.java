@@ -45,11 +45,11 @@ public class Costume extends GameObject{
 			gotten = true;
 		}
 		
-		purpleCost.add(ss.grabImage(1, 1, 64, 64,"purpleOutfit"));
-		purpleCost.add(ss.grabImage(1, 2, 64, 64,"purpleOutfit"));
-		purpleCost.add(ss.grabImage(1, 3, 64, 64,"purpleOutfit"));
-		purpleCost.add(ss.grabImage(1, 4, 64, 64,"purpleOutfit"));
-		purpleCost.add(ss.grabImage(1, 5, 64, 64,"purpleOutfit"));
+		purpleCost.add(ss.grabImage(1, 1, 96, 96,"purpleOutfit"));
+		purpleCost.add(ss.grabImage(1, 2, 96, 96,"purpleOutfit"));
+		purpleCost.add(ss.grabImage(1, 3, 96, 96,"purpleOutfit"));
+		purpleCost.add(ss.grabImage(1, 4, 96, 96,"purpleOutfit"));
+		purpleCost.add(ss.grabImage(1, 5, 96, 96,"purpleOutfit"));
 	}
 	
 	@Override

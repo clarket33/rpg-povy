@@ -64,51 +64,51 @@ public class Rat extends GameObject{
 		SpriteSheet ss = new SpriteSheet(Game.sprite_sheet);
 		
 		idle = new ArrayList<BufferedImage>();
-		idle.add(ss.grabImage(1, 1, 100, 52,"rat"));
-		idle.add(ss.grabImage(1, 2, 100, 52,"rat"));
-		idle.add(ss.grabImage(1, 3, 100, 52,"rat"));
-		idle.add(ss.grabImage(1, 4, 100, 52,"rat"));
+		idle.add(ss.grabImage(1, 1, 150, 78,"rat"));
+		idle.add(ss.grabImage(1, 2, 150, 78,"rat"));
+		idle.add(ss.grabImage(1, 3, 150, 78,"rat"));
+		idle.add(ss.grabImage(1, 4, 150, 78,"rat"));
 		
 		facingRightIdle = new ArrayList<BufferedImage>();
-		facingRightIdle.add(ss.grabImage(1, 6, 100, 52,"rat1"));
-		facingRightIdle.add(ss.grabImage(1, 5, 100, 52,"rat1"));
-		facingRightIdle.add(ss.grabImage(1, 4, 100, 52,"rat1"));
-		facingRightIdle.add(ss.grabImage(1, 3, 100, 52,"rat1"));
+		facingRightIdle.add(ss.grabImage(1, 1, 150, 78,"rat1"));
+		facingRightIdle.add(ss.grabImage(1, 2, 150, 78,"rat1"));
+		facingRightIdle.add(ss.grabImage(1, 3, 150, 78,"rat1"));
+		facingRightIdle.add(ss.grabImage(1, 4, 150, 78,"rat1"));
 		
 		
 		movingLeft = new ArrayList<BufferedImage>();
-		movingLeft.add(ss.grabImage(1, 5, 100, 52,"rat"));
-		movingLeft.add(ss.grabImage(1, 6, 100, 52,"rat"));
-		movingLeft.add(ss.grabImage(2, 1, 100, 52,"rat"));
-		movingLeft.add(ss.grabImage(2, 2, 100, 52,"rat"));
+		movingLeft.add(ss.grabImage(1, 5, 150, 78,"rat"));
+		movingLeft.add(ss.grabImage(1, 6, 150, 78,"rat"));
+		movingLeft.add(ss.grabImage(2, 1, 150, 78,"rat"));
+		movingLeft.add(ss.grabImage(2, 2, 150, 78,"rat"));
 		
 		
 		attack1 = new ArrayList<BufferedImage>();
-		attack1.add(ss.grabImage(2, 3, 100, 52,"rat"));
-		attack1.add(ss.grabImage(2, 4, 100, 52,"rat"));
-		attack1.add(ss.grabImage(2, 5, 100, 52,"rat"));
-		attack1.add(ss.grabImage(2, 6, 100, 52,"rat"));
-		attack1.add(ss.grabImage(3, 1, 100, 52,"rat"));
-		attack1.add(ss.grabImage(3, 2, 100, 52,"rat"));
+		attack1.add(ss.grabImage(2, 3, 150, 78,"rat"));
+		attack1.add(ss.grabImage(2, 4, 150, 78,"rat"));
+		attack1.add(ss.grabImage(2, 5, 150, 78,"rat"));
+		attack1.add(ss.grabImage(2, 6, 150, 78,"rat"));
+		attack1.add(ss.grabImage(3, 1, 150, 78,"rat"));
+		attack1.add(ss.grabImage(3, 2, 150, 78,"rat"));
 		
 		hurt = new ArrayList<BufferedImage>();
-		hurt.add(ss.grabImage(3, 3, 100, 52,"rat"));
-		hurt.add(ss.grabImage(3, 4, 100, 52,"rat"));
-		hurt.add(ss.grabImage(3, 5, 100, 52,"rat"));
+		hurt.add(ss.grabImage(3, 3, 150, 78,"rat"));
+		hurt.add(ss.grabImage(3, 4, 150, 78,"rat"));
+		hurt.add(ss.grabImage(3, 5, 150, 78,"rat"));
 		
 		movingRight = new ArrayList<BufferedImage>();
-		movingRight.add(ss.grabImage(1, 1, 100, 52,"rat1"));
-		movingRight.add(ss.grabImage(1, 2, 100, 52,"rat1"));
-		movingRight.add(ss.grabImage(2, 5, 100, 52,"rat1"));
-		movingRight.add(ss.grabImage(2, 6, 100, 52,"rat1"));
+		movingRight.add(ss.grabImage(1, 5, 150, 78,"rat1"));
+		movingRight.add(ss.grabImage(1, 6, 150, 78,"rat1"));
+		movingRight.add(ss.grabImage(2, 1, 150, 78,"rat1"));
+		movingRight.add(ss.grabImage(2, 2, 150, 78,"rat1"));
 		
 		
 		die = new ArrayList<BufferedImage>();
-		die.add(ss.grabImage(3, 6, 100, 52,"rat"));
-		die.add(ss.grabImage(4, 1, 100, 52,"rat"));
-		die.add(ss.grabImage(4, 2, 100, 52,"rat"));
-		die.add(ss.grabImage(4, 3, 100, 52,"rat"));
-		die.add(ss.grabImage(4, 4, 100, 52,"rat"));
+		die.add(ss.grabImage(3, 6, 150, 78,"rat"));
+		die.add(ss.grabImage(4, 1, 150, 78,"rat"));
+		die.add(ss.grabImage(4, 2, 150, 78,"rat"));
+		die.add(ss.grabImage(4, 3, 150, 78,"rat"));
+		die.add(ss.grabImage(4, 4, 150, 78,"rat"));
 		
 		
 		velX = -4;
@@ -165,8 +165,8 @@ public class Rat extends GameObject{
 							32, 32))) {
 						if(!setVel) {
 							if(idt == 1) {
-								System.out.println("hit");
-								System.out.println(velX);
+								//System.out.println("hit");
+								//System.out.println(velX);
 							}
 							if(velX < 0) {
 								//x = Game.clampUpLeft((int)x, Game.collisionTiles.get(new Integer(0)).get(cur).get(i)+11);
@@ -200,11 +200,11 @@ public class Rat extends GameObject{
 	public Rectangle getBounds() {
 		if(Game.gameState == Game.STATE.Battle) {
 			if(Battle.menuPosition == 0 && Game.gameState == Game.STATE.Battle && Battle.battleState == Battle.BATTLESTATE.PlayerTurnAction)
-				return new Rectangle((int)x + 10,(int)y+10,104, 49);
-			return new Rectangle((int)x + 10, (int)y + 10, 104, 49);
+				return new Rectangle((int)x - 10,(int)y+10,104, 49);
+			return new Rectangle((int)x + 23, (int)y + 30, 110, 43);
 		}
 		
-		return new Rectangle((int)x, (int)y + 10, 104, 49);
+		return new Rectangle((int)x + 23, (int)y + 30, 110, 43);
 	}
 	
 	public void render(Graphics g) {
@@ -230,7 +230,7 @@ public class Rat extends GameObject{
 			if(velX == 0) {
 				g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
 				changeCount++;
-				if(changeCount % 2 == 0) {
+				if(changeCount % 10 == 0) {
 					idleCount++;
 				}
 				if(idleCount == 4) {
@@ -241,7 +241,7 @@ public class Rat extends GameObject{
 			else if(velX > 0) {
 				g.drawImage(movingRight.get(animationCount), (int)x, (int)y, null);
 				changeCount++;
-				if(changeCount % 2 == 0) {
+				if(changeCount % 10 == 0) {
 					animationCount++;
 				}
 				if(animationCount == 4) {
@@ -252,7 +252,7 @@ public class Rat extends GameObject{
 			else if(velX < 0) {
 				g.drawImage(movingLeft.get(animationCount), (int)x, (int)y, null);
 				changeCount++;
-				if(changeCount % 2 == 0) {
+				if(changeCount % 10 == 0) {
 					animationCount++;
 				}
 				if(animationCount == 4) {
@@ -280,7 +280,7 @@ public class Rat extends GameObject{
 				}
 				g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
 				changeCount++;
-				if(changeCount % 20 == 0) {
+				if(changeCount % 10 == 0) {
 					idleCount++;
 				}
 				if(idleCount == 4) {
@@ -292,7 +292,7 @@ public class Rat extends GameObject{
 				if(velX < 0) {
 					g.drawImage(movingLeft.get(animationCount), (int)x, (int)y, null);
 					changeCount++;
-					if(changeCount % 20 == 0) {
+					if(changeCount % 10 == 0) {
 						animationCount++;
 					}
 					if(animationCount == 4) {
@@ -304,7 +304,7 @@ public class Rat extends GameObject{
 				else if(velX > 0) {
 					g.drawImage(movingRight.get(animationCount), (int)x, (int)y, null);
 					changeCount++;
-					if(changeCount % 20 == 0) {
+					if(changeCount % 10 == 0) {
 						animationCount++;
 					}
 					if(animationCount == 4) {
@@ -317,7 +317,7 @@ public class Rat extends GameObject{
 					g.drawImage(attack1.get(attack1Count), (int)x, (int)y, null);
 					
 					changeCount++;
-					if(changeCount % 20 == 0) {
+					if(changeCount % 10 == 0) {
 						attack1Count++;
 					}
 					if(attack1Count == 4 && changeCount % 20 == 0) {
@@ -416,6 +416,9 @@ public class Rat extends GameObject{
 				changeCount = 0;
 			}
 		}
+		
+		
+		g.drawRect((int)x + 23, (int)y + 30, 110, 43);
 		
 		
 		

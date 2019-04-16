@@ -27,14 +27,15 @@ public class Gate extends GameObject{
 	}
 	@Override
 	/**
-	 * render sthe gate as closed or open
+	 * renders the gate as closed or open
 	 */
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
 		if(!opened) {
 			g.drawImage(Game.dungeonTiles.get(215), (int)x, (int)y, null);
-			g.drawImage(Game.dungeonTiles.get(215), (int)x+32, (int)y, null);
+			g.drawImage(Game.dungeonTiles.get(215), (int)x+48, (int)y, null);
 		}
+		g.drawRect((int)x, (int)y-48, 96, 144);
 		
 		
 	}
@@ -43,7 +44,7 @@ public class Gate extends GameObject{
 	 * bounds of which the user can be within to interact with the gate
 	 */
 	public Rectangle getBounds() {
-		return new Rectangle((int)x, (int)y-32, 64, 96);
+		return new Rectangle((int)x, (int)y-48, 96, 144);
 	}
 	@Override
 	public GameObject copy() {

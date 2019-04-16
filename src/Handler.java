@@ -9,7 +9,7 @@ import java.util.LinkedList;
 public class Handler {
 	LinkedList<GameObject> objects = new LinkedList<GameObject>();
 	Game game;
-	public int spd = 3;
+	public int spd = 4;
 	public Handler(Game game) {
 		this.game = game;
 	}
@@ -37,7 +37,8 @@ public class Handler {
 	
 		
 		for(int i = 0; i < objects.size(); i++) {
-			objects.get(i).render(g);
+			if(!Game.shouldRender((int)objects.get(i).getX(), (int)objects.get(i).getY()))
+				objects.get(i).render(g);
 		}
 	
 	}

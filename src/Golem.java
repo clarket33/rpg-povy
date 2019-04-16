@@ -73,73 +73,73 @@ public class Golem extends GameObject{
 		
 		SpriteSheet ss = new SpriteSheet(Game.sprite_sheet);
 		facingRightIdle = new ArrayList<BufferedImage>();
-		facingRightIdle.add(ss.grabImage(1, 6, 164, 126,"golem1"));
-		facingRightIdle.add(ss.grabImage(1, 5, 164, 126,"golem1"));
-		facingRightIdle.add(ss.grabImage(1, 4, 164, 126,"golem1"));
-		facingRightIdle.add(ss.grabImage(1, 3, 164, 126,"golem1"));
-		facingRightIdle.add(ss.grabImage(1, 2, 164, 126,"golem1"));
+		facingRightIdle.add(ss.grabImage(1, 1, 175, 189,"golem1"));
+		facingRightIdle.add(ss.grabImage(1, 2, 175, 189,"golem1"));
+		facingRightIdle.add(ss.grabImage(1, 3, 175, 189,"golem1"));
+		facingRightIdle.add(ss.grabImage(1, 4, 175, 189,"golem1"));
+		facingRightIdle.add(ss.grabImage(1, 5, 175, 189,"golem1"));
 		
 		idle = new ArrayList<BufferedImage>();
-		idle.add(ss.grabImage(1, 1, 164, 126,"golem"));
-		idle.add(ss.grabImage(1, 2, 164, 126,"golem"));
-		idle.add(ss.grabImage(1, 3, 164, 126,"golem"));
-		idle.add(ss.grabImage(1, 4, 164, 126,"golem"));
-		idle.add(ss.grabImage(1, 5, 164, 126,"golem"));
+		idle.add(ss.grabImage(1, 1, 246, 189,"golem"));
+		idle.add(ss.grabImage(1, 2, 246, 189,"golem"));
+		idle.add(ss.grabImage(1, 3, 246, 189,"golem"));
+		idle.add(ss.grabImage(1, 4, 246, 189,"golem"));
+		idle.add(ss.grabImage(1, 5, 246, 189,"golem"));
 		
 		
 		movingLeft = new ArrayList<BufferedImage>();
-		movingLeft.add(ss.grabImage(1, 6, 164, 126,"golem"));
-		movingLeft.add(ss.grabImage(2, 1, 164, 126,"golem"));
-		movingLeft.add(ss.grabImage(2, 2, 164, 126,"golem"));
-		movingLeft.add(ss.grabImage(2, 3, 164, 126,"golem"));
-		movingLeft.add(ss.grabImage(2, 4, 164, 126,"golem"));
-		movingLeft.add(ss.grabImage(2, 5, 164, 126,"golem"));
+		movingLeft.add(ss.grabImage(1, 6, 246, 189,"golem"));
+		movingLeft.add(ss.grabImage(2, 1, 246, 189,"golem"));
+		movingLeft.add(ss.grabImage(2, 2, 246, 189,"golem"));
+		movingLeft.add(ss.grabImage(2, 3, 246, 189,"golem"));
+		movingLeft.add(ss.grabImage(2, 4, 246, 189,"golem"));
+		movingLeft.add(ss.grabImage(2, 5, 246, 189,"golem"));
 		
 		movingRight = new ArrayList<BufferedImage>();
-		movingRight.add(ss.grabImage(1, 1, 164, 126,"golem1"));
-		movingRight.add(ss.grabImage(2, 6, 164, 126,"golem1"));
-		movingRight.add(ss.grabImage(2, 5, 164, 126,"golem1"));
-		movingRight.add(ss.grabImage(2, 4, 164, 126,"golem1"));
-		movingRight.add(ss.grabImage(2, 3, 164, 126,"golem1"));
-		movingRight.add(ss.grabImage(2, 2, 164, 126,"golem1"));
+		movingRight.add(ss.grabImage(1, 6, 175, 189,"golem1"));
+		movingRight.add(ss.grabImage(2, 1, 175, 189,"golem1"));
+		movingRight.add(ss.grabImage(2, 2, 175, 189,"golem1"));
+		movingRight.add(ss.grabImage(2, 3, 175, 189,"golem1"));
+		movingRight.add(ss.grabImage(2, 4, 175, 189,"golem1"));
+		movingRight.add(ss.grabImage(2, 5, 175, 189,"golem1"));
 		
 		hurt = new ArrayList<BufferedImage>();
-		hurt.add(ss.grabImage(5, 6, 164, 126,"golem"));
-		hurt.add(ss.grabImage(6, 1, 164, 126,"golem"));
-		hurt.add(ss.grabImage(6, 2, 164, 126,"golem"));
+		hurt.add(ss.grabImage(5, 6, 246, 189,"golem"));
+		hurt.add(ss.grabImage(6, 1, 246, 189,"golem"));
+		hurt.add(ss.grabImage(6, 2, 246, 189,"golem"));
 		
 		attack1 = new ArrayList<BufferedImage>();
-		attack1.add(ss.grabImage(2, 6, 164, 126,"golem"));
-		attack1.add(ss.grabImage(3, 1, 164, 126,"golem"));
-		attack1.add(ss.grabImage(3, 2, 164, 126,"golem"));
-		attack1.add(ss.grabImage(3, 3, 164, 126,"golem"));
-		attack1.add(ss.grabImage(3, 4, 164, 126,"golem"));
-		attack1.add(ss.grabImage(3, 5, 164, 126,"golem"));
-		attack1.add(ss.grabImage(3, 6, 164, 126,"golem"));
+		attack1.add(ss.grabImage(2, 6, 246, 189,"golem"));
+		attack1.add(ss.grabImage(3, 1, 246, 189,"golem"));
+		attack1.add(ss.grabImage(3, 2, 246, 189,"golem"));
+		attack1.add(ss.grabImage(3, 3, 246, 189,"golem"));
+		attack1.add(ss.grabImage(3, 4, 246, 189,"golem"));
+		attack1.add(ss.grabImage(3, 5, 246, 189,"golem"));
+		attack1.add(ss.grabImage(3, 6, 246, 189,"golem"));
 		
 		attack2 = new ArrayList<BufferedImage>();
-		attack2.add(ss.grabImage(4, 1, 164, 126,"golem"));
-		attack2.add(ss.grabImage(4, 2, 164, 126,"golem"));
-		attack2.add(ss.grabImage(4, 3, 164, 126,"golem"));
-		attack2.add(ss.grabImage(4, 4, 164, 126,"golem"));
-		attack2.add(ss.grabImage(4, 5, 164, 126,"golem"));
-		attack2.add(ss.grabImage(4, 6, 164, 126,"golem"));
-		attack2.add(ss.grabImage(5, 1, 164, 126,"golem"));
-		attack2.add(ss.grabImage(5, 2, 164, 126,"golem"));
-		attack2.add(ss.grabImage(5, 3, 164, 126,"golem"));
-		attack2.add(ss.grabImage(5, 4, 164, 126,"golem"));
-		attack2.add(ss.grabImage(5, 5, 164, 126,"golem"));
+		attack2.add(ss.grabImage(4, 1, 246, 189,"golem"));
+		attack2.add(ss.grabImage(4, 2, 246, 189,"golem"));
+		attack2.add(ss.grabImage(4, 3, 246, 189,"golem"));
+		attack2.add(ss.grabImage(4, 4, 246, 189,"golem"));
+		attack2.add(ss.grabImage(4, 5, 246, 189,"golem"));
+		attack2.add(ss.grabImage(4, 6, 246, 189,"golem"));
+		attack2.add(ss.grabImage(5, 1, 246, 189,"golem"));
+		attack2.add(ss.grabImage(5, 2, 246, 189,"golem"));
+		attack2.add(ss.grabImage(5, 3, 246, 189,"golem"));
+		attack2.add(ss.grabImage(5, 4, 246, 189,"golem"));
+		attack2.add(ss.grabImage(5, 5, 246, 189,"golem"));
 		
 		die = new ArrayList<BufferedImage>();
-		die.add(ss.grabImage(6, 3, 164, 126,"golem"));
-		die.add(ss.grabImage(6, 4, 164, 126,"golem"));
-		die.add(ss.grabImage(6, 5, 164, 126,"golem"));
-		die.add(ss.grabImage(6, 6, 164, 126,"golem"));
-		die.add(ss.grabImage(7, 1, 164, 126,"golem"));
-		die.add(ss.grabImage(7, 2, 164, 126,"golem"));
-		die.add(ss.grabImage(7, 3, 164, 126,"golem"));
-		die.add(ss.grabImage(7, 4, 164, 126,"golem"));
-		die.add(ss.grabImage(7, 5, 164, 126,"golem"));
+		die.add(ss.grabImage(6, 3, 246, 189,"golem"));
+		die.add(ss.grabImage(6, 4, 246, 189,"golem"));
+		die.add(ss.grabImage(6, 5, 246, 189,"golem"));
+		die.add(ss.grabImage(6, 6, 246, 189,"golem"));
+		die.add(ss.grabImage(7, 1, 246, 189,"golem"));
+		die.add(ss.grabImage(7, 2, 246, 189,"golem"));
+		die.add(ss.grabImage(7, 3, 246, 189,"golem"));
+		die.add(ss.grabImage(7, 4, 246, 189,"golem"));
+		die.add(ss.grabImage(7, 5, 246, 189,"golem"));
 		
 		
 		if(golemState == GolemType.normal) velX = -2;
@@ -205,13 +205,13 @@ public class Golem extends GameObject{
 			
 			for(int i = 0; i < Game.collisionTiles.get(new Integer(0)).get(cur).size(); i+=2) {
 				if(getBounds().intersects(new Rectangle(Game.collisionTiles.get(new Integer(0)).get(cur).get(i), Game.collisionTiles.get(new Integer(0)).get(cur).get(i+1),
-						32, 32))) {
+						48, 48))) {
 					if(velX < 0) {
-						x = Game.clampUpLeft((int)x, Game.collisionTiles.get(new Integer(0)).get(cur).get(i) + 26);
+						x = Game.clampUpLeft((int)x, Game.collisionTiles.get(new Integer(0)).get(cur).get(i) + 42);
 						this.setVelX((int)this.getVelX()*-1);
 					}
 					else if(velX > 0){
-						x = Game.clampDownRight((int)x, Game.collisionTiles.get(new Integer(0)).get(cur).get(i)-42);
+						x = Game.clampDownRight((int)x, Game.collisionTiles.get(new Integer(0)).get(cur).get(i)-250);
 						this.setVelX((int)this.getVelX()*-1);
 					}
 				}
@@ -233,13 +233,17 @@ public class Golem extends GameObject{
 	public Rectangle getBounds() {
 		if(Game.gameState == Game.STATE.Battle) {
 			if(Battle.menuPosition == 0 && Game.gameState == Game.STATE.Battle && Battle.battleState == Battle.BATTLESTATE.PlayerTurnAction)
-				return new Rectangle((int)x+78,(int)y+54,38, 42);
-			return new Rectangle((int)x + 40, (int)y + 96, 108, 30);
+				return new Rectangle((int)x + 20, (int)y + 134, 165, 52);
+			return new Rectangle((int)x + 59, (int)y + 134, 165, 52);
 		}
 		else if(Game.gameState == Game.STATE.Game) {
-			if(golemState == GolemType.firstGolem || golemState == GolemType.treasureGuard) return new Rectangle((int)x + 40, (int)y - 130, 108, 370);
+			if(golemState == GolemType.firstGolem) return new Rectangle((int)x + 50, (int)y - 130, 180, 400);
+			if(golemState == GolemType.treasureGuard) return new Rectangle((int)x + 10, (int)y - 200, 180, 575);
 		}
-		return new Rectangle((int)x + 40, (int)y + 96, 108, 30);
+		if(velX < 0) return new Rectangle((int)x + 59, (int)y + 134, 165, 52);
+		if(velX > 0) return new Rectangle((int)x + 10, (int)y + 134, 165, 52);
+		
+		return new Rectangle((int)x + 59, (int)y + 134, 165, 52);
 	}
 	
 	/**
@@ -286,6 +290,7 @@ public class Golem extends GameObject{
 						idleCount = 0;
 						changeCount = 0;
 					}
+					g.drawRect((int)x + 10, (int)y - 200, 180, 575);
 					return;
 				}
 				g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
@@ -308,6 +313,7 @@ public class Golem extends GameObject{
 					animationCount = 0;
 					changeCount = 0;
 				}
+				g.drawRect((int)x + 10, (int)y + 134, 165, 52);
 			}
 			else if(velX < 0) {
 				g.drawImage(movingLeft.get(animationCount), (int)x, (int)y, null);
@@ -519,7 +525,8 @@ public class Golem extends GameObject{
 				changeCount = 0;
 			}
 		}
-		
+		g.drawRect((int)x + 59, (int)y + 134, 165, 52);
+		g.drawRect((int)x + 50, (int)y - 130, 180, 400);
 		
 	}
 

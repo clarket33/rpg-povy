@@ -44,11 +44,19 @@ public class KeyInput extends KeyAdapter{
 				}
 			}
 			if(key == KeyEvent.VK_SPACE) {
+				keyDown[0] = false;
+				keyDown[1] = false;
+				keyDown[2] = false;
+				keyDown[3] = false;
 				Game.gameState = Game.STATE.Paused;
 				PauseScreen.changeScreens();
 				return;
 			}
 			if(key == KeyEvent.VK_ESCAPE) {
+				keyDown[0] = false;
+				keyDown[1] = false;
+				keyDown[2] = false;
+				keyDown[3] = false;
 				Game.gameState = Game.STATE.Paused;
 				PauseScreen.changeScreens();
 				return;
@@ -72,7 +80,24 @@ public class KeyInput extends KeyAdapter{
 							}
 							if(handler.objects.get(i) instanceof Lever) {
 								Lever temp = (Lever)handler.objects.get(i);
-								temp.push();;
+								temp.push();
+							}
+							if(handler.objects.get(i) instanceof Pillar) {
+								Pillar temp = (Pillar)handler.objects.get(i);
+								boolean success = temp.select();
+								if(!success) {
+									for(int j = 0; j < handler.objects.size(); j++) {
+										if(handler.objects.get(j) instanceof Povy) {
+											Povy po = (Povy)handler.objects.get(j); 
+											po.getsHit();
+										}
+										if(handler.objects.get(j) instanceof Pillar) {
+											Pillar p = (Pillar)handler.objects.get(j);
+											p.deSelect();
+											
+										}
+									}
+								}
 							}
 						}
 					}

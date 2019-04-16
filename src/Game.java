@@ -41,6 +41,7 @@ public class Game extends Canvas implements Runnable{
 	public static boolean battleReturn = false;
 	public static boolean firstBattle = true, lastBattle = false;
 	public static AllyPouch allies;
+	public static int pillarOrder = 1;
 	
 	public enum STATE{
 		Menu,
@@ -283,6 +284,23 @@ public class Game extends Canvas implements Runnable{
 			return var;
 		}
 	}
+	
+	/**
+	 * if block is on the screen, render it
+	 * @param x x value
+	 * @param y y valu
+	 * @return
+	 */
+	public static boolean shouldRender(int x, int y) {
+		if(x > (Game.camX + 1260 + 240) || x < (Game.camX - 240)) {
+			return false;
+		}
+		if(y > (Game.camY + 1260 + 240) || y < (Game.camY - 240)) {
+			return false;
+		}
+		return true;
+	}
+	
 	
 	/**
 	 * calls the render methods of all aspects of the game depending on the game state
