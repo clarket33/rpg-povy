@@ -56,7 +56,7 @@ public class ElephantGuard extends GameObject{
 		attackOption = new Random();
 		healthGenerator = new Random();
 		health = healthGenerator.nextInt(3);
-		health = 30;
+		health = 90; //its 90
 		maxHealth = health;
 		try {
 			 shadow = ImageIO.read(new File("res/elePhantShadow.png"));

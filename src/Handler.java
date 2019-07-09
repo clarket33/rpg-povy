@@ -55,7 +55,7 @@ public class Handler {
 		
 		for(int i = 0; i < objects.size(); i++) {
 			if(objects.get(i).id != ID.NonEnemy) {
-				objects.get(i).render(g);
+				if(Game.shouldRender((int)objects.get(i).getX(), (int)objects.get(i).getY())) objects.get(i).render(g);
 				//System.out.println(objects.get(i).id);
 			}
 		}

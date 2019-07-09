@@ -74,7 +74,6 @@ public class KeyToPovy extends KeyAdapter{
 	    String str10 = "GG with that battle, now open this up!";	
 	    String str11 = "Thanks man, I'll help you get out of here.";	
 	    String str12 = "Gained Grogo as an ally! Be sure to utilize him in battle!";
-	    String str13 = ".";
 	    dialogue.put(new Integer(0), str.toCharArray());
 	    dialogue.put(new Integer(1), str1.toCharArray());
 	    dialogue.put(new Integer(2), str2.toCharArray());
@@ -88,7 +87,6 @@ public class KeyToPovy extends KeyAdapter{
 	    dialogue.put(new Integer(10), str10.toCharArray());
 	    dialogue.put(new Integer(11), str11.toCharArray());
 	    dialogue.put(new Integer(12), str12.toCharArray());
-	    dialogue.put(new Integer(13), str13.toCharArray());
 	    
 	    copy = new char[dialogue.get(new Integer(0)).length];
 	    copy2 = new char[dialogue.get(new Integer(2)).length];
@@ -115,36 +113,6 @@ public class KeyToPovy extends KeyAdapter{
 					else {
 						doneCount += 2;
 					}
-					if(doneCount == 10 && Game.firstBattle == true) {
-						Game.gameState = Game.STATE.Game;
-					}
-					count = 0;
-					countLine2 = 0;
-					copy = new char[dialogue.get(new Integer(doneCount)).length];
-					copy2 = new char[dialogue.get(new Integer(doneCount)).length];
-					speedChanged = false;
-					done = false;
-					
-					if(doneCount == 11) {
-						for(int i = 0; i < handler.objects.size(); i++) {
-							if(handler.objects.get(i) instanceof Gate) {
-								Gate temp = (Gate)handler.objects.get(i);
-								if(temp.gateNum() == 0) {
-									temp.hasKey();
-									temp.open();
-								}
-							}
-						}
-					}
-					if(doneCount == 12) {
-						AudioPlayer.getSound("newAlly").play(1, (float).3);
-						for(int i = 0; i < handler.objects.size(); i++) {
-							if(handler.objects.get(i).getID() == ID.Grogo) {
-								Grogo g = (Grogo)handler.objects.get(i);
-								handler.removeObject(g);
-							}	
-						}
-					}
 					if(doneCount >= 13) {
 						Game.gameState = Game.STATE.Game;
 						for(int i = 0; i < handler.objects.size(); i++) {
@@ -157,13 +125,50 @@ public class KeyToPovy extends KeyAdapter{
 						Grogo temp = new Grogo(3*96, 3*125, ID.Grogo, handler);
 						Game.allies.addAlly(temp);
 						temp.originalSpot();
-						
+						return;
 					}
+					
+					count = 0;
+					countLine2 = 0;
+					speedChanged = false;
+					done = false;
+					
+					if(doneCount == 10 && Game.firstBattle == true) {
+						Game.gameState = Game.STATE.Game;
+						copy = new char[dialogue.get(new Integer(doneCount)).length];
+						copy2 = new char[dialogue.get(new Integer(doneCount)).length];
+						return;
+					}
+					copy = new char[dialogue.get(new Integer(doneCount)).length];
+					copy2 = new char[dialogue.get(new Integer(doneCount)).length];
+					
+					if(doneCount == 11) {
+						for(int i = 0; i < handler.objects.size(); i++) {
+							if(handler.objects.get(i) instanceof Gate) {
+								Gate temp = (Gate)handler.objects.get(i);
+								if(temp.gateNum() == 0) {
+									temp.hasKey();
+									temp.open();
+								}
+							}
+						}
+						return;
+					}
+					if(doneCount == 12) {
+						AudioPlayer.getSound("newAlly").play(1, (float).3);
+						for(int i = 0; i < handler.objects.size(); i++) {
+							if(handler.objects.get(i).getID() == ID.Grogo) {
+								Grogo g = (Grogo)handler.objects.get(i);
+								handler.removeObject(g);
+							}	
+						}
+						return;
+					}
+					
 					if(doneCount == 7) {
 						AudioPlayer.getSound("gotKey").play(1, (float).1);
 					}
-					System.out.println("after enter copy: " + copy.length);
-					System.out.println();
+					
 					
 				}
 			}
@@ -180,11 +185,14 @@ public class KeyToPovy extends KeyAdapter{
 	 * @param g
 	 */
 	public void render(Graphics g) {
+		if(doneCount >= 13) {
+			return;
+		}
 		if(Game.gameState == Game.STATE.KeyFromGrogo) {
 			if(buffer <= 10) buffer++;
 			if(done) buffer=10;
-			Font fo = new Font("System Bold", 1, 15);
-			g.setColor(Color.WHITE);
+			Font fo = new Font("verdana", 1, 18);
+			g.setColor(new Color(106, 215, 48));
 			g.setFont(fo);
 			if(!done) {
 				g.drawImage(text.get(0), Game.camX + 120, Game.camY + 625, null);
@@ -218,7 +226,7 @@ public class KeyToPovy extends KeyAdapter{
 					changeCount = 0;
 				}
 				
-				handleScene(doneCount,g);
+				if(doneCount < 13)handleScene(doneCount,g);
 				
 	
 				if(doneCount == 7) {

@@ -91,6 +91,7 @@ public class Game extends Canvas implements Runnable{
 			sprite_sheet.put("fallingPovy", loader.loadImage("/fallingPovy-sheet.png"));
 			sprite_sheet.put("endOfOpening", loader.loadImage("/cobit_explosion-sheet.png"));
 			sprite_sheet.put("dungeonTiles", loader.loadImage("/Dungeon/rpg-dungeon-pack v1.1(wonderdot)/tiles_dungeon_v1.1.png"));
+			sprite_sheet.put("dungeonShadows", loader.loadImage("/Dungeon/rpg-dungeon-pack v1.1(wonderdot)/shadowTile.png"));
 			sprite_sheet.put("grogo", loader.loadImage("/grogo_right.png"));
 			sprite_sheet.put("grogo2", loader.loadImage("/grogo_left.png"));
 			sprite_sheet.put("transition", loader.loadImage("/Transition.png"));
@@ -134,6 +135,7 @@ public class Game extends Canvas implements Runnable{
 			
 			sprite_sheet.put("sparkle", loader.loadImage("/sparkle.png"));
 			sprite_sheet.put("menuButtons", loader.loadImage("/MenuOptions.png"));
+			sprite_sheet.put("leverShadow", loader.loadImage("/leverShad.png"));
 			
 			
 		}catch(Exception e) {
@@ -224,9 +226,10 @@ public class Game extends Canvas implements Runnable{
 	
 	private void tick() {
 		
-		if(gameState == STATE.Game) {
+		if(gameState == STATE.Game || gameState == STATE.KeyFromGrogo) {
 			hud.tick();
 			handler.tick();	
+			map.tick();
 		}
 		else if (gameState == STATE.Menu) {
 			menu.tick();

@@ -52,7 +52,7 @@ public class Povy extends GameObject{
 	private int potionCount = 0, laserCount = 0;
 	public static int laserBulletX = 0;
 	private boolean hit = false;
-	private int hitWait = 0, hitSpeed = 0, hitCount = 0;
+	private int hitSpeed = 0, hitCount = 0;
 	private int pummelTotal = 0;
 	private boolean invincible = false;
 	private String suitColor;
@@ -243,34 +243,37 @@ public class Povy extends GameObject{
 			if(cur.contains("281") || cur.contains("282") || cur.contains("283")) {
 				if(hit == true) {
 					hitSpeed++;
-					if(hitSpeed % 80 == 0) {
-						hitWait++;
-					}
-					
-					if(hitWait == 2) {
-						hitWait = 0;
+					if(hitSpeed == 100) {
+						hitSpeed = 0;
 						hit = false;
 					}
+					
+					
+					return;
 				}
 				for(int i = 0; i < Game.collisionTiles.get(new Integer(0)).get(cur).size(); i+=2) {
+					
 					if(hit == false && getBounds().intersects(new Rectangle(Game.collisionTiles.get(new Integer(0)).get(cur).get(i), Game.collisionTiles.get(new Integer(0)).get(cur).get(i+1),
 							48, 48))) {
+						
 						if(cur.contains("281")) {
-							if(Game.animationDungeonCounter.get("floorTrap") == Game.animationDungeon.get("floorTrap").size()-2) {
+							
+							if(Game.animationDungeonCounter.get("floorTrap") == 2) {
 								AudioPlayer.getSound("hit").play(1, (float).1);
 								HUD.HEALTH -= 4;
 								hit = true;
 							}
 						}
 						else if(cur.contains("282")) {
-							if(Game.animationDungeonCounter.get("floorTrapA") == Game.animationDungeon.get("floorTrap").size()-2) {
+							if(Game.animationDungeonCounter.get("floorTrapA") == 2) {
 								AudioPlayer.getSound("hit").play(1, (float).1);
 								HUD.HEALTH -= 4;
 								hit = true;
 							}
 						}
 						else if(cur.contains("283")) {
-							if(Game.animationDungeonCounter.get("floorTrapB") == Game.animationDungeon.get("floorTrap").size()-2) {
+							if(Game.animationDungeonCounter.get("floorTrapB") == 2) {
+								//System.out.println(cur);
 								AudioPlayer.getSound("hit").play(1, (float).1);
 								HUD.HEALTH -= 4;
 								hit = true;
@@ -352,11 +355,11 @@ public class Povy extends GameObject{
 				}
 			}
 		}
-		if(hit && hitWait < 3 && Game.gameState == Game.STATE.Game) {
+		if(hit && Game.gameState == Game.STATE.Game) {
 			g.drawImage(hurt.get(hitCount), (int)x, (int)y, null);
 			
 			speedControl++;
-			if(speedControl % 2 == 0) {
+			if(speedControl % 6 == 0) {
 				hitCount++;
 			}
 			

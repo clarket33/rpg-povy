@@ -22,10 +22,12 @@ public class Menu extends MouseAdapter implements MouseMotionListener{
 	private Handler handler;
 	private Random r;
 	private HUD hud;
-	private BufferedImage titleScreen;
+	private BufferedImage titleScreen, titleScreen1;
 	private BufferedImage titleText, titleBg;
-	int sparkleCount = 0;
-	int changeCount = 0, sparkleX, sparkleY;
+	private int sparkleCount = 0;
+	private float menuX = 0;
+	private boolean right = true;
+	private int changeCount = 0, sparkleX, sparkleY;
 	private boolean overNew = false, overLoad = false, overQuit = false, overOptions = false;
 	private ArrayList<BufferedImage> sparkle = new ArrayList<BufferedImage>();
 	private ArrayList<BufferedImage> menu = new ArrayList<BufferedImage>();
@@ -61,7 +63,7 @@ public class Menu extends MouseAdapter implements MouseMotionListener{
 	        sparkle.add(ss.grabImage(2, 3, 124, 101, "sparkle"));
 	        sparkle.add(ss.grabImage(2, 4, 124, 101, "sparkle"));
 	        
-	        titleScreen = ImageIO.read(new File("res/openSpaceTitle.png"));
+	        titleScreen = ImageIO.read(new File("res/space/continuousBackground.png"));
 	        
 	        
 	    } catch (IOException e) {
@@ -91,11 +93,11 @@ public class Menu extends MouseAdapter implements MouseMotionListener{
 		int my = e.getY();
 		if(Game.gameState == Game.STATE.Menu) {
 			//play button
-			
+			/**
 			if(mouseOver(mx, my, sparkleX, sparkleY, 124, 101)) {
 				AudioPlayer.getSound("starClick").play(1, (float).4);
 			}
-			
+			**/
 			
 			if(mouseOver(mx, my, 17, 627, 374, 88)) {
 				AudioPlayer.getSound("click").play(1, (float).1);
@@ -105,11 +107,12 @@ public class Menu extends MouseAdapter implements MouseMotionListener{
 				Game.map = new MapReader(handler);
 				AudioPlayer.getMusic("dungeon").loop(1, (float).1);
 				
-				//handler.addObject(new Povy(2000*3, 224, ID.Povy, handler, "blue")); //near chest
-				handler.addObject(new Povy(255*3, 40*3, ID.Povy, handler, "blue")); //original
+				handler.addObject(new Povy(2000*3, 224, ID.Povy, handler, "blue")); //near chest
+				//handler.addObject(new Povy(255*3, 40*3, ID.Povy, handler, "blue")); //original
 				//handler.addObject(new Povy(2000*3, 864*3, ID.Povy, handler, "blue")); //before final spike trap
 				//handler.addObject(new Povy(900*3, 1008*3, ID.Povy, handler, "blue")); //near zatolib
 				//handler.addObject(new Povy(192*3, 1184*3, ID.Povy, handler, "blue")); //elephant
+				//handler.addObject(new Povy(686*3, 160*3, ID.Povy, handler, "blue")); //first trap
 				
 				
 				handler.addObject(new Grogo(182*3, 24*3, ID.Grogo, handler));
@@ -136,7 +139,7 @@ public class Menu extends MouseAdapter implements MouseMotionListener{
 				
 				
 				
-				Game.gameState = Game.STATE.KeyFromGrogo;		
+				Game.gameState = Game.STATE.Game;		
 			}
 			
 			
@@ -157,7 +160,14 @@ public class Menu extends MouseAdapter implements MouseMotionListener{
 	}
 	
 	public void tick() {
-		
+		if(right) menuX -= 1;
+		if(!right) menuX+=1; 
+		if(menuX <= -11520) {
+			right = false;
+		}
+		else if (menuX >= 0){
+			right = true;
+		}
 	}
 	
 	private boolean mouseOver(int mx, int my, int x, int y, int width, int height) {
@@ -177,11 +187,11 @@ public class Menu extends MouseAdapter implements MouseMotionListener{
 	public void render(Graphics g) {
 	
 		if(Game.gameState == Game.STATE.Menu) {
-			g.drawImage(titleScreen, 0, 0, null);
-			g.drawImage(sparkle.get(sparkleCount), sparkleX, sparkleY, null);
-			
+			g.drawImage(titleScreen, (int)menuX, 0, null);
+			//g.drawImage(sparkle.get(sparkleCount), sparkleX, sparkleY, null);
+			/**
 			changeCount++;
-			if(changeCount >= 12) {
+			if(changeCount >= 5) {
 				changeCount = 0;
 				sparkleCount++;
 			}
@@ -190,7 +200,7 @@ public class Menu extends MouseAdapter implements MouseMotionListener{
 				sparkleY = r.nextInt(800);
 				sparkleCount = 0;
 			}
-			
+			**/
 			
 			g.drawImage(titleBg, 50, Game.HEIGHT/2-500, null);
 			g.drawImage(titleText, 50, Game.HEIGHT/2-500, null);

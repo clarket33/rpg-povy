@@ -118,6 +118,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 		
 		expMenuBattle.add(ss.grabImage(1, 1, 1280, 960, "progressMenu"));
 		expMenuBattle.add(ss.grabImage(2, 1, 1280, 960, "progressMenu"));
+		expMenuBattle.add(ss.grabImage(1, 3, 1280, 960, "progressMenu"));
 		
 		expMenuPause.add(ss.grabImage(1, 2, 1280, 960, "progressMenu"));
 		expMenuPause.add(ss.grabImage(2, 2, 1280, 960, "progressMenu"));
@@ -564,41 +565,63 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				}
 			}
 			else if(Battle.expToBeAdded == 0){
-				g.drawImage(expMenuBattle.get(0), Game.camX, Game.camY, null);
+				g.drawImage(expMenuBattle.get(2), Game.camX, Game.camY, null);
 			}
 			else {
-				g.drawImage(expMenuBattle.get(0), Game.camX, Game.camY, null);
+				g.drawImage(expMenuBattle.get(2), Game.camX, Game.camY, null);
 			}
 			if(!ExperienceBar.levelUp) {
-				if(overHealth)g.drawImage(healthIcon.get(1), Game.camX + 142, Game.camY + 429, null);
-				else g.drawImage(healthIcon.get(0), Game.camX + 142, Game.camY + 429, null);
+				Font fo = new Font("verdana", 1, 20);
+				g.setColor(new Color(106, 215, 48));
+				g.setFont(fo);
+				Game.expBarTracker.render(g);
 				
-				if(overAlly)g.drawImage(allyIcon.get(1), Game.camX + 142, Game.camY + 499, null);
-				else g.drawImage(allyIcon.get(0), Game.camX + 142, Game.camY + 499, null);
+				g.drawImage(healthIcon.get(0), Game.camX + 142, Game.camY + 429, null);
+				g.drawImage(allyIcon.get(0), Game.camX + 142, Game.camY + 499, null);
+				g.drawImage(pummelIcon.get(0), Game.camX + 142, Game.camY + 569, null);
+				g.drawImage(laserIcon.get(0), Game.camX + 142, Game.camY + 639, null);
 				
-				if(overPummel)g.drawImage(pummelIcon.get(1), Game.camX + 142, Game.camY + 569, null);
-				else g.drawImage(pummelIcon.get(0), Game.camX + 142, Game.camY + 569, null);
-				
-				if(overLaser)g.drawImage(laserIcon.get(1), Game.camX + 142, Game.camY + 639, null);
-				else g.drawImage(laserIcon.get(0), Game.camX + 142, Game.camY + 639, null);
 			}
 			else {
-				g.setFont(new Font("Cooper Black",1,30));
-				g.setColor(Color.GREEN);
-				g.drawString("Upgrade Available!", Game.camX + 490, Game.camY + 370);
-				g.drawString("Select an area to upgrade by selecting an icon:", Game.camX + 260, Game.camY + 410);
+				g.setFont(new Font("Cooper Black",1,40));
+				g.setColor(new Color(106, 215, 48));
+				g.drawString("Upgrade Available!", Game.camX + 420, Game.camY + 370);
+				g.drawString("Select an area to upgrade by selecting an icon:", Game.camX + 140, Game.camY + 410);
 				
-				if(overHealth)g.drawImage(healthIcon.get(1), Game.camX + 142, Game.camY + 429, null);
-				else g.drawImage(healthIcon.get(0), Game.camX + 142, Game.camY + 429, null);
+				Font fo = new Font("verdana", 1, 20);
+				g.setColor(new Color(106, 215, 48));
+				g.setFont(fo);
+				Game.expBarTracker.render(g);
+				if(overHealth) {
+					g.drawImage(healthIcon.get(1), Game.camX + 142, Game.camY + 429, null);
+					g.drawImage(text, Game.camX + 120, Game.camY + 687, null);
+					g.drawString("Status of Povy's health. Current level: " + ExperienceBar.healthLevel + " (" + HUD.maxHealth + " max health)", Game.camX + 340, Game.camY + 830);
+				}
+				else {
+					g.drawImage(healthIcon.get(0), Game.camX + 142, Game.camY + 429, null);
+				}
 				
-				if(overAlly)g.drawImage(allyIcon.get(1), Game.camX + 142, Game.camY + 499, null);
+				if(overAlly) {
+					g.drawImage(allyIcon.get(1), Game.camX + 142, Game.camY + 499, null);
+					g.drawImage(text, Game.camX + 120, Game.camY + 687, null);
+					g.drawString("The effectiveness of Povy's allies. Current level: " + ExperienceBar.allyLevel, Game.camX + 350, Game.camY + 830);
+				}
 				else g.drawImage(allyIcon.get(0), Game.camX + 142, Game.camY + 499, null);
 				
-				if(overPummel)g.drawImage(pummelIcon.get(1), Game.camX + 142, Game.camY + 569, null);
+				if(overPummel) {
+					g.drawImage(pummelIcon.get(1), Game.camX + 142, Game.camY + 569, null);
+					g.drawImage(text, Game.camX + 120, Game.camY + 687, null);
+					g.drawString("The strength of Povy's pummel attack. Current level: " + ExperienceBar.pummelLevel, Game.camX + 350, Game.camY + 830);
+				}
 				else g.drawImage(pummelIcon.get(0), Game.camX + 142, Game.camY + 569, null);
 				
-				if(overLaser)g.drawImage(laserIcon.get(1), Game.camX + 142, Game.camY + 639, null);
+				if(overLaser) {
+					g.drawImage(laserIcon.get(1), Game.camX + 142, Game.camY + 639, null);
+					g.drawImage(text, Game.camX + 120, Game.camY + 687, null);
+					g.drawString("The power of Povy's Laser Blaster. Current level: " + ExperienceBar.laserLevel, Game.camX + 350, Game.camY + 830);
+				}
 				else g.drawImage(laserIcon.get(0), Game.camX + 142, Game.camY + 639, null);
+				
 			}
 			
 			return;
