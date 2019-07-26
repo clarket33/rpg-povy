@@ -1,6 +1,7 @@
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
 /**
  * analyzes the key presses by the user
  * @author clarkt5
@@ -31,44 +32,88 @@ public class KeyInput extends KeyAdapter{
 		if(key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) { keyDown[1] = true;}
 		if(key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) { keyDown[2] = true;}
 		if(key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) { keyDown[3] = true;}
-		if(Game.gameState == Game.STATE.Game) {
+		
+		if((Game.gameState == Game.STATE.Game && !Game.stair && FightText.enemyState == FightText.ENEMYSTATE.INACTIVE) || Game.gameState == Game.STATE.AfterZatolib) {
+			
 			for (int i = 0; i < handler.objects.size(); i++) {
 				GameObject temp = handler.objects.get(i);
+				
 				if(temp.getID() == ID.Povy) {
 					//key Events for Povy
 					
-					if(key == KeyEvent.VK_UP || key == KeyEvent.VK_W) {temp.setVelY(-handler.spd);}
-					if(key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) { temp.setVelX(-handler.spd);}
-					if(key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) { temp.setVelY(handler.spd);}
-					if(key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) { temp.setVelX(handler.spd);}
+					
+					if(keyDown[0]) {temp.setVelY(-handler.spd);}
+					if(keyDown[1]) { temp.setVelX(-handler.spd);}
+					if(keyDown[2]) { temp.setVelY(handler.spd);}
+					if(keyDown[3]) { temp.setVelX(handler.spd);}
+					
+					
 					
 					//vertical movement
 					if(keyDown[0] && keyDown[2]) temp.setVelY(0);
 					//horizontal movement
 					if(keyDown[1] && keyDown[3]) temp.setVelX(0);
+					//System.out.println("Up: " + keyDown[0] + " Down: " + keyDown[2] + " Right: " + keyDown[3] + " Left: " + keyDown[1]);
+					
+				
 				}
 			}
 			if(key == KeyEvent.VK_SPACE || key == KeyEvent.VK_ESCAPE) {
-				keyDown[0] = false;
-				keyDown[1] = false;
-				keyDown[2] = false;
-				keyDown[3] = false;
-				Game.gameState = Game.STATE.Paused;
-				PauseScreen.changeScreens();
-				return;
+				if(Game.gameState != Game.STATE.AfterZatolib) {
+					keyDown[0] = false;
+					keyDown[1] = false;
+					keyDown[2] = false;
+					keyDown[3] = false;
+					Game.gameState = Game.STATE.Paused;
+					PauseScreen.changeScreens();
+					return;
+				}
 			}
-			if(key == KeyEvent.VK_ENTER) {
+			if(key == KeyEvent.VK_ENTER || key == KeyEvent.VK_E) {
 				for(int i = 0; i < handler.objects.size(); i++) {
 					if(handler.objects.get(i).id == ID.Povy) {
 						povy = handler.objects.get(i);
+						break;
 					}
 				}
 				for(int i = 0; i < handler.objects.size(); i++) {
+					if(handler.objects.get(i).id == ID.SpaceShip) {
+	       				if(povy.getBounds().intersects(handler.objects.get(i).getBounds())) {
+	       					SpaceShip s = (SpaceShip)handler.objects.get(i);
+	       					if(!s.isSelected()) {
+	       						s.select();
+	       						if(AudioPlayer.getMusic("dungeon").playing()) {
+	       							AudioPlayer.getMusic("dungeon").stop();
+	       							AudioPlayer.getSound("stairs").play(1, (float).6);
+	       							
+	       						}
+	       					}
+	       				}
+					}
 					if(handler.objects.get(i).id == ID.NonEnemy) {
 						if(povy.getBounds().intersects(handler.objects.get(i).getBounds())) {
 							if(handler.objects.get(i) instanceof Chest) {
 								Chest temp = (Chest)handler.objects.get(i);
 								temp.open();
+							}
+							if(handler.objects.get(i) instanceof Stair) {
+								if(!Game.stair) {
+									Stair temp = (Stair)handler.objects.get(i);
+									if(temp.getNum() != 9) {
+										Game.gameState = Game.STATE.Transition;
+										Game.stair = true;
+										//Game.stairBuffer = true;
+										AudioPlayer.getSound("stairs").play(1, (float).6);
+									}
+									if(temp.getNum() == 8) {
+										if(AudioPlayer.getMusic("dungeon").playing()) {
+											AudioPlayer.getMusic("dungeon").stop();
+											
+										}
+									}
+								}
+								
+								break;
 							}
 							if(handler.objects.get(i) instanceof Gate) {
 								Gate temp = (Gate)handler.objects.get(i);
@@ -98,6 +143,9 @@ public class KeyInput extends KeyAdapter{
 						}
 					}
 				}
+			}
+			if(key == KeyEvent.VK_5) {
+				System.out.println("Up: " + keyDown[0] + " Down: " + keyDown[2] + " Right: " + keyDown[3] + " Left: " + keyDown[1]);
 			}
 		}
 		if(Game.gameState == Game.STATE.Paused || Game.gameState == Game.STATE.Battle) {
@@ -587,7 +635,7 @@ public class KeyInput extends KeyAdapter{
 			
 			
 			
-			if(key == KeyEvent.VK_ENTER) {
+			if(key == KeyEvent.VK_ENTER || key == KeyEvent.VK_E) {
 				PauseScreen.menuControl();
 			}
 		}
@@ -645,7 +693,7 @@ public class KeyInput extends KeyAdapter{
 					}	
 				}
 			}
-			if(key == KeyEvent.VK_ENTER) {
+			if(key == KeyEvent.VK_ENTER || key == KeyEvent.VK_E) {
 				PauseScreen.menuControl();
 			}
 		}
@@ -653,7 +701,7 @@ public class KeyInput extends KeyAdapter{
 		if(Game.gameState == Game.STATE.Battle && Battle.battleState == Battle.BATTLESTATE.PlayerTurnStart) {
 			if(Battle.itemSelected == false && Battle.allySelected == false) {
 				
-				if(key == KeyEvent.VK_LEFT) {
+				if(key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
 					Battle.left = true;
 					AudioPlayer.getSound("menuSlider").play(1, (float).1);
 					Battle.menuChange = 0;
@@ -662,7 +710,7 @@ public class KeyInput extends KeyAdapter{
 						Battle.menuPosition = 0;
 					}
 				}
-				if(key == KeyEvent.VK_RIGHT) {
+				if(key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
 					Battle.left = false;
 					AudioPlayer.getSound("menuSlider").play(1, (float).1);
 					Battle.menuChange = 0;
@@ -671,7 +719,7 @@ public class KeyInput extends KeyAdapter{
 						Battle.menuPosition = 5;
 					}
 				}
-				if(key == KeyEvent.VK_ENTER) {
+				if(key == KeyEvent.VK_ENTER || key == KeyEvent.VK_E) {
 					if(Battle.menuPosition == 4 && Battle.useAlly == false) {
 						AudioPlayer.getSound("errorGate").play(1, (float).1);
 						return;
@@ -693,12 +741,14 @@ public class KeyInput extends KeyAdapter{
 						PauseScreen.changeScreens();
 						if(!Battle.itemAllyRet) Battle.itemSelected = true;
 						else Battle.itemAllyRet = false;
+						PauseScreen.backToRegFromItem = true;
 						return;
 					}
 					else if(Battle.menuPosition == 4) {
 						PauseScreen.changeScreens();
 						if(!Battle.itemAllyRet) Battle.allySelected = true;
 						else Battle.itemAllyRet = false;
+						PauseScreen.goBackFromAlly = true;
 						return;
 					}
 				}
@@ -716,21 +766,33 @@ public class KeyInput extends KeyAdapter{
 		if(key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A)	keyDown[1] = false;
 		if(key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) keyDown[2] = false;
 		if(key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) keyDown[3] = false;
-		if(Game.gameState == Game.STATE.Game) {
+		if((Game.gameState == Game.STATE.Game && !Game.stair && FightText.enemyState == FightText.ENEMYSTATE.INACTIVE) || Game.gameState == Game.STATE.AfterZatolib) {
 			for (int i = 0; i < handler.objects.size(); i++) {
 				GameObject temp = handler.objects.get(i);
+				
 				if(temp.getID() == ID.Povy) {
-					//vertical movement
-					if(!keyDown[0] && !keyDown[2]) temp.setVelY(0);
-					//horizontal movement
-					if(!keyDown[1] && !keyDown[3]) temp.setVelX(0);
+					
 					if(keyDown[0] == true) temp.setVelY(-handler.spd);
 					if(keyDown[1] == true) temp.setVelX(-handler.spd);
 					if(keyDown[2] == true) temp.setVelY(handler.spd);
 					if(keyDown[3] == true) temp.setVelX(handler.spd);
+					
+					
+					//vertical movement
+					if(!keyDown[0] && !keyDown[2]) temp.setVelY(0);
+					//horizontal movement
+					if(!keyDown[1] && !keyDown[3]) temp.setVelX(0);
+					
+					//vertical movement
+					if(keyDown[0] && keyDown[2]) temp.setVelY(0);
+					//horizontal movement
+					if(keyDown[1] && keyDown[3]) temp.setVelX(0);
+
 				}
 			}
 		}
 	}
+	
+
 
 }

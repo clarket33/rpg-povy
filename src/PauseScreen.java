@@ -503,15 +503,15 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 					
 					if(overItem == true) {
 						Font fo = new Font("verdana", 1, 20);
-						g.setColor(Color.WHITE);
+						g.setColor(new Color(106, 215, 48));
 						g.setFont(fo);
-						g.drawImage(itemCover, 0+482, 0 + overItemY, null);
+						g.drawImage(itemCover, Game.camX+482, Game.camY + overItemY, null);
 						g.drawImage(text, Game.camX + 120, Game.camY + 625, null);
 						if(curItemOver != null) {
 							curItemOverLst = curItemOver.itemDescript();
 							int ySpot = 0;
 							for(int i = 0; i < curItemOverLst.size(); i++) {
-								g.drawString(curItemOverLst.get(i), Game.camX + 390, Game.camY + 800 + ySpot);
+								g.drawString(curItemOverLst.get(i), Game.camX + 390, Game.camY + 750 + ySpot);
 								ySpot += 25;
 							}
 						}
@@ -522,7 +522,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 					g.drawImage(itemMenu.get(0), 0, 0, null);
 					Game.itemPouch.render(g);
 					Font fo = new Font("verdana", 1, 20);
-					g.setColor(Color.WHITE);
+					g.setColor(new Color(106, 215, 48));
 					g.setFont(fo);
 					g.drawImage(itemCover, Game.camX+482, Game.camY + overItemY, null);
 					g.drawImage(text, Game.camX + 120, Game.camY + 625, null);
@@ -530,7 +530,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 						curItemOverLst = curItemOver.itemDescript();
 						int ySpot = 0;
 						for(int i = 0; i < curItemOverLst.size(); i++) {
-							g.drawString(curItemOverLst.get(i), Game.camX + 390, Game.camY + 800 + ySpot);
+							g.drawString(curItemOverLst.get(i), Game.camX + 390, Game.camY + 750 + ySpot);
 							ySpot += 25;
 						}
 					}

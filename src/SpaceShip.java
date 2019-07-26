@@ -25,10 +25,11 @@ public class SpaceShip extends GameObject{
 	 * @param id
 	 * grogo's spaceship
 	 */
-	BufferedImage grogoShip;
+	private BufferedImage grogoShip;
+	private boolean selected = false;
 	public SpaceShip(float x, float y, ID id) {
 		super(x, y, id);
-		this.height = 230;
+		this.height = 200;
 		 grogoShip = null;
 			
 		    try {
@@ -44,13 +45,35 @@ public class SpaceShip extends GameObject{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	/**
+	 * 
+	 * @return if spaceship is selected or not
+	 */
+	public boolean isSelected() {
+		return selected;
+	}
+	
+	
+	/**
+	 * selects spaceship triggers level 2;
+	 */
+	public void select() {
+		Game.gameState = Game.STATE.Transition;
+		Game.levTwo = true;
+		selected = true;
+		
+	}
+	
+	
+	
 	@Override
 	/**
 	 * draws it open or closed
 	 */
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
-			g.drawImage(grogoShip, (int)x, (int)y, null);
+			if(!Game.levTwo && Game.gameState != Game.STATE.levelTwoTran) g.drawImage(grogoShip, (int)x, (int)y, null);
 			
 		
 		
@@ -60,7 +83,7 @@ public class SpaceShip extends GameObject{
 	 * returns the bounds that the player can be within to select a pillar
 	 */
 	public Rectangle getBounds() {
-		return null;
+		return new Rectangle((int)x + 80, (int)y + 96, 453, 160);
 	}
 	@Override
 	public GameObject copy() {
@@ -89,6 +112,12 @@ public class SpaceShip extends GameObject{
 	public int getMaxHealth() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public Rectangle areaCoverage() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

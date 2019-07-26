@@ -67,37 +67,12 @@ public class Chest extends GameObject{
 		// TODO Auto-generated method stub
 		if(opened) {
 			g.drawImage(Game.dungeonTiles.get(336), (int)x, (int)y, null);
-			if(count <= 80) {
-				
-				count++;
-				Font fo = new Font("verdana", 1, 40);
-				g.setColor(Color.CYAN);
-				g.setFont(fo);
-				g.drawImage(text, Game.camX + 120, Game.camY + 625, null);
-				if(item.toString().contains("Small HP") || item.toString().contains("Large HP") || item.toString().contains("Max HP")) {
-					g.setColor(Color.GREEN);
-					g.drawString(item.toString(), Game.camX + 550, Game.camY + 790);
-				}
-				else if(item.toString().contains("Small Attack Boost") || item.toString().contains("Large Attack Boost")) {
-					g.setColor(Color.RED);
-					g.drawString(item.toString(), Game.camX + 470, Game.camY + 790);
-				}
-				else {
-					g.setColor(Color.BLUE);
-					g.drawString(item.toString(), Game.camX + 470, Game.camY + 790);
-				}
-				
-				
-					
-				
-				g.drawImage(item.getImage().getScaledInstance(140, 140, Image.SCALE_DEFAULT), Game.camX + 310, Game.camY + 700, null);
-			}
 		}
 		else {
 			g.drawImage(Game.dungeonTiles.get(335), (int)x, (int)y, null);
 		}
 		
-		g.drawRect((int)x-48, (int)y, 144, 96);
+		//g.drawRect((int)x-48, (int)y, 144, 96);
 		
 	}
 	@Override
@@ -105,7 +80,7 @@ public class Chest extends GameObject{
 	 * returns the bounds that the player can be within to open the chest
 	 */
 	public Rectangle getBounds() {
-		return new Rectangle((int)x-48, (int)y, 144, 96);
+		return new Rectangle((int)x-24, (int)y-24, 96, 96);
 	}
 	@Override
 	public GameObject copy() {
@@ -134,11 +109,57 @@ public class Chest extends GameObject{
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	public void iconDisplay(Graphics g) {
+		if(opened) {
+			if(count <= 80) {
+				
+				count++;
+				Font fo = new Font("verdana", 1, 40);
+				g.setColor(Color.CYAN);
+				g.setFont(fo);
+				g.drawImage(text, Game.camX + 120, Game.camY + 625, null);
+				if(item.toString().contains("Small HP") || item.toString().contains("Large HP") || item.toString().contains("Max HP")) {
+					g.setColor(Color.GREEN);
+					g.drawString(item.toString(), Game.camX + 550, Game.camY + 790);
+				}
+				else if(item.toString().contains("Small Attack Boost") || item.toString().contains("Large Attack Boost")) {
+					g.setColor(Color.RED);
+					g.drawString(item.toString(), Game.camX + 470, Game.camY + 790);
+				}
+				else {
+					g.setColor(Color.BLUE);
+					g.drawString(item.toString(), Game.camX + 470, Game.camY + 790);
+				}
+				
+				
+					
+				
+				g.drawImage(item.getImage().getScaledInstance(140, 140, Image.SCALE_DEFAULT), Game.camX + 310, Game.camY + 700, null);
+			}
+		}
+	}
 
 	@Override
 	public int getMaxHealth() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	
+	/**
+	 * 
+	 * @return if chest is opened or not
+	 */
+	public boolean isOpen() {
+		if(opened) return true;
+		return false;
+	}
+
+	@Override
+	public Rectangle areaCoverage() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

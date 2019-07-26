@@ -53,6 +53,9 @@ public class CrystalCutscene extends KeyAdapter{
 	    dialogue.put(new Integer(3), str3.toCharArray());
 	    
 	    copy = new char[dialogue.get(new Integer(0)).length];
+	    for(int i = 0; i < dialogue.get(new Integer(0)).length; i++) {
+	    	copy[i] = ' ';
+	    }
 	}
 	
 	public enum CRYSTALSTATE{
@@ -84,7 +87,9 @@ public class CrystalCutscene extends KeyAdapter{
 						count = 0;
 						copy = new char[dialogue.get(new Integer(doneCount)).length];
 						done = false;
-						
+						 for(int i = 0; i < dialogue.get(new Integer(doneCount)).length; i++) {
+						    copy[i] = ' ';
+						 }
 						if(doneCount == 1) {
 							AudioPlayer.getMusic("crystalScene").loop(1, (float).1);
 							crystalState = CRYSTALSTATE.PovyRise;
@@ -128,6 +133,7 @@ public class CrystalCutscene extends KeyAdapter{
 				Font fo = new Font("verdana", 1, 40);
 				g.setColor(new Color(106, 215, 48));
 				g.setFont(fo);
+				
 				if(!done) {
 					g.drawImage(text.get(0), Game.camX + 120, Game.camY + 625, null);
 					handleScene(doneCount,g);
@@ -152,6 +158,7 @@ public class CrystalCutscene extends KeyAdapter{
 					handleScene(doneCount,g);
 					
 				}
+				
 			}
 		}
 	}

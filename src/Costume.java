@@ -133,5 +133,11 @@ public class Costume extends GameObject{
 		return 0;
 	}
 
+	@Override
+	public Rectangle areaCoverage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 }

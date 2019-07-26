@@ -31,15 +31,21 @@ public class MapReader {
 	
 	private Map<Integer, ArrayList<Integer>> layers;
 	private Handler handler;
-	private int torchCounter = 0;
+	private int torchCounter = 0, shipX = 4710, shipY = 3450;
 	private int trapCounter = 0, trapCounterA = 0, trapCounterB = 0;
-	private ArrayList<BufferedImage> transition;
-	private BufferedImage grogoShip;
+	private ArrayList<BufferedImage> transition, trans2;
 	private int changeCount = 0;
-	private int idleCount = 0;
+	private int idleCount = 0, textCount = 0;;
 	private int animationHold = 0, animationHoldA = 0, animationHoldB = 0;
 	private boolean doLeft = true;
 	private Map<Integer, ArrayList<Integer>> unusedTiles;
+	private Povy povy;
+	private BufferedImage grogoShip, grogoShipNoShad;
+	private int tempX, tempY;
+	private boolean introTitle = false, across = false;
+	private ArrayList<BufferedImage> sparkle = new ArrayList<BufferedImage>();
+	private int sparkleCount = 0;
+	private int countControl = 0;
 	
 	/**
 	 * loads in the xml files and stores information about the map and tiles in various structures
@@ -68,13 +74,15 @@ public class MapReader {
 		Game.animationDungeonCounter.put("chest", new Integer(0));
 		Game.animationDungeonCounter.put("lever", new Integer(0));
 		
-		 grogoShip = null;
+		grogoShip = null;
+		grogoShipNoShad = null;
 			
-		    try {
-		        grogoShip = ImageIO.read(new File("res/grogoShip.png"));
-		    } catch (IOException e) {
-		    	e.printStackTrace();
-		    }
+	    try {
+	        grogoShip = ImageIO.read(new File("res/grogoShip.png"));
+	        grogoShipNoShad = ImageIO.read(new File("res/grogoShipNoShad.png"));
+	    } catch (IOException e) {
+	    	e.printStackTrace();
+	    }
 		
 		transition = new ArrayList<BufferedImage>();
 		transition.add(ss.grabImage(1, 1, 1280, 960,"transition"));
@@ -113,6 +121,50 @@ public class MapReader {
 		transition.add(ss.grabImage(5, 4, 1280, 960,"transition"));
 		transition.add(ss.grabImage(5, 5, 1280, 960,"transition"));
 		
+		trans2 = new ArrayList<BufferedImage>();
+		trans2.add(ss.grabImage(1, 1, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(1, 2, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(1, 3, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(1, 4, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(2, 1, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(2, 2, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(2, 3, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(2, 4, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(3, 1, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(3, 2, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(3, 3, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(3, 4, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(4, 1, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(4, 2, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(4, 3, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(4, 4, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(5, 1, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(5, 2, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(5, 3, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(5, 4, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(6, 1, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(6, 2, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(6, 3, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(6, 4, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(7, 1, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(7, 2, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(7, 3, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(7, 4, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(8, 1, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(8, 2, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(8, 3, 1280, 960,"viniaOpening"));
+		trans2.add(ss.grabImage(8, 4, 1280, 960,"viniaOpening"));
+	//	trans2.add(ss.grabImage(9, 1, 1280, 960,"viniaOpening"));
+
+
+		sparkle.add(ss.grabImage(1, 1, 124, 101, "sparkle"));
+        sparkle.add(ss.grabImage(1, 2, 124, 101, "sparkle"));
+        sparkle.add(ss.grabImage(1, 3, 124, 101, "sparkle"));
+        sparkle.add(ss.grabImage(1, 4, 124, 101, "sparkle"));
+        sparkle.add(ss.grabImage(2, 1, 124, 101, "sparkle"));
+        sparkle.add(ss.grabImage(2, 2, 124, 101, "sparkle"));
+        sparkle.add(ss.grabImage(2, 3, 124, 101, "sparkle"));
+        sparkle.add(ss.grabImage(2, 4, 124, 101, "sparkle"));
 		
 		
 		
@@ -185,6 +237,17 @@ public class MapReader {
 	 	     	y = 0;
 	 	       	for(int j = 0; j < curr.size(); j++) {
 	 	       		int theID = curr.get(j) - 1;
+		 	       	if(theID == 327){
+		 	       		if(x == 4560) handler.addObject(new Stair(x, y, ID.NonEnemy, 0, handler));
+		 	       		else if(x == 3168) handler.addObject(new Stair(x, y, ID.NonEnemy, 1, handler));
+		 	       		else if(y == 1200) handler.addObject(new Stair(x, y, ID.NonEnemy, 2, handler));
+		 	       		else if(y == 1632) handler.addObject(new Stair(x, y, ID.NonEnemy, 3, handler));
+		 	       		else if(y == 2112) handler.addObject(new Stair(x, y, ID.NonEnemy, 4, handler));
+		 	       		else if(y == 4800) handler.addObject(new Stair(x, y, ID.NonEnemy, 5, handler));
+		 	       		else if(y == 1920) handler.addObject(new Stair(x, y, ID.NonEnemy, 6, handler));
+		 	       		else if(y == 1488) handler.addObject(new Stair(x, y, ID.NonEnemy, 7, handler));
+		 	       		else if(y == 3360) handler.addObject(new Stair(x, y, ID.NonEnemy, 9, handler));
+		 	       	}
 	 	       		if(theID == 334){
 	 	       			handler.addObject(new Chest(x, y, ID.NonEnemy));
 	 	       		}
@@ -193,22 +256,18 @@ public class MapReader {
 	 	       			gateNum += 1;
 	 	       		}
 		 	       if(theID == 365) {
-		 	    	   handler.addObject(new Pillar(x, y, ID.NonEnemy, 366));
+		 	    	   handler.addObject(new Pillar(x, y, ID.NonEnemy, 366, handler));
 		 	       }
 		 	       if(theID == 366) {
-		 	    	   handler.addObject(new Pillar(x, y, ID.NonEnemy, 367));
+		 	    	   handler.addObject(new Pillar(x, y, ID.NonEnemy, 367, handler));
 		 	       }
 		 	       if(theID == 367) {
-		 	    	   handler.addObject(new Pillar(x, y, ID.NonEnemy, 368));
+		 	    	   handler.addObject(new Pillar(x, y, ID.NonEnemy, 368, handler));
 		 	       }
 		 	       if(theID == 380){
 		 	    	  handler.addObject(new Lever(x, y, ID.NonEnemy, handler));
 		 	       }
-		 	       if(theID == 284) {// && x == 1920 && y == 288) {
-		 	    	   
-		 	    	  handler.addObject(new Trap(x, y, ID.NonEnemy, handler));
-		 	    	  System.out.println(x + " " + y);
-		 	       }
+		 	      
 	 	       		if(Game.collisionTiles.get(new Integer(0)).containsKey(String.valueOf(theID))) {
 		 	       		Game.collisionTiles.get(new Integer(0)).get(String.valueOf(theID)).add(x);
 		 	       		Game.collisionTiles.get(new Integer(0)).get(String.valueOf(theID)).add(y);
@@ -299,17 +358,32 @@ public class MapReader {
 		
 	}
 	public void tick() {
+		if(Game.gameState == Game.STATE.levelTwoTran) {
+			//shipY -= 1;
+			if(shipX < 7000 && !introTitle) {
+				if(shipY < 3250) {
+					shipX += (.0025 * shipX);
+				}
+				else shipY -= 2;
+			}
+			else {
+				if(!introTitle) {
+					introTitle = true;
+				}
+			}
+					
+			return;
+		}
 		ArrayList<Integer> curr = layers.get(3);
        	for(int j = 0; j < curr.size(); j++) {
        		
        		int curID = curr.get(j);
-       		if(curID == 282 || curID == 283 || curID == 284 || curID == 300) {
+       		if(curID == 282 || curID == 283 || curID == 284 || curID == 301) {
        			
        			if(Game.animationDungeon.get("torch").contains(String.valueOf(curID))) {
-       				
        				//g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("torch").get(Game.animationDungeonCounter.get("torch")))), x, y, null);
        				torchCounter++;
-       				if(torchCounter == 5) {
+       				if(torchCounter == 300) {
        					
        					Game.animationDungeonCounter.put("torch", Game.animationDungeonCounter.get("torch") + 1);
        					torchCounter = 0;
@@ -382,7 +456,7 @@ public class MapReader {
 	       					if(animationHoldA == 0) {
 	       						trapCounterA++;
 	       					}
-		       				if(trapCounterA == 4000 || animationHoldA != 0) {
+		       				if(trapCounterA == 12000 || animationHoldA != 0) {
 		       					if(Game.animationDungeonCounter.get("floorTrapA") == 0 || Game.animationDungeonCounter.get("floorTrapA") == 2) {
 			       					Game.animationDungeonCounter.put("floorTrapA", Game.animationDungeonCounter.get("floorTrapA") + 1);
 			       					trapCounterA = 0;
@@ -444,7 +518,7 @@ public class MapReader {
 	       					if(animationHoldB == 0) {
 	       						trapCounterB++;
 	       					}
-		       				if(trapCounterB == 4000 || animationHoldB != 0) {
+		       				if(trapCounterB == 12000 || animationHoldB != 0) {
 		       					if(Game.animationDungeonCounter.get("floorTrapB") == 0 || Game.animationDungeonCounter.get("floorTrapB") == 2) {
 			       					Game.animationDungeonCounter.put("floorTrapB", Game.animationDungeonCounter.get("floorTrapB") + 1);
 			       					trapCounterB = 0;
@@ -504,7 +578,74 @@ public class MapReader {
 	 * @param g
 	 */
 	public void render(Graphics g) {
-		
+		if(Game.gameState == Game.STATE.levelTwoTran) {
+			if(!introTitle) {
+				Game.camX = tempX;
+				Game.camY = tempY;
+				g.translate(-Game.camX, -Game.camY);
+				g.drawImage(transition.get(15), Game.camX, Game.camY, null);
+				g.drawImage(grogoShip, shipX, shipY, null);
+			}
+			else {
+				g.drawImage(trans2.get(textCount), 0, 0, null);
+				if(textCount == 7 && changeCount == 0) {
+					AudioPlayer.getSound("chapStart").play(1, (float).1);
+					try {
+						Thread.sleep(3700);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+				
+				if(textCount != 30) {
+					//System.out.println(textCount);
+					changeCount++;
+					if(changeCount % 8 == 0) {
+						changeCount = 0;
+						if(textCount == 14) {
+							countControl++;
+							if(countControl == 20) textCount++;
+						}
+						else textCount++;
+					}
+				}
+				
+				
+				
+				
+				if(textCount == 30) {
+					g.drawImage(trans2.get(textCount), 0, 0, null);
+				}
+				if(textCount == 30 && !across) {
+					g.drawImage(sparkle.get(sparkleCount), 1010, 117, null);
+					if(sparkleCount == 1 && changeCount == 0) AudioPlayer.getSound("starClick").play(1, (float).7);
+					changeCount++;
+					if(changeCount % 5 == 0) {
+						changeCount = 0;
+						sparkleCount++;
+					}
+					if(sparkleCount == 8) {
+						across = true;
+						sparkleCount = 0;
+						//Placeholder, load up levelTwo
+						try {
+							Thread.sleep(3000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						System.exit(0);
+					}
+					
+				}
+				
+				
+				
+			}
+			return;
+		}
 		
 		for(int i = 0; i< handler.objects.size();i++) {
 			if(handler.objects.get(i).id == ID.Povy) {
@@ -512,18 +653,20 @@ public class MapReader {
 			}
 		}
 		
+		
 		//String[] cur;
 		int x, y;
 		int curID = 0;
 		for(int i = 0; i < layers.size(); i++) {
 			//layer where Povy will appear above some objects and below others
 			if(i == 4) {
-
+				
 				for(int m = 0; m< handler.objects.size();m++) {
 	    			if(handler.objects.get(m).id == ID.NonEnemy) {
 	    				handler.objects.get(m).render(g);
 	    			}
 				}
+				
 				//cur = layers.get(i).split(",");
 				int thisX = 0;
 		     	int thisY = 0;
@@ -588,6 +731,7 @@ public class MapReader {
 				
 				unusedTiles.clear();
 				
+				handler.chestDisplayRender(g);
 				
 				
 			}
@@ -612,16 +756,7 @@ public class MapReader {
 	       			if(Game.animationDungeon.get("torch").contains(String.valueOf(curID))) {
 	       				
 	       				g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("torch").get(Game.animationDungeonCounter.get("torch")))), x, y, null);
-	       				torchCounter++;
-	       				if(torchCounter == 96) {
-	       					
-	       					Game.animationDungeonCounter.put("torch", Game.animationDungeonCounter.get("torch") + 1);
-	       					torchCounter = 0;
-	       					if(Game.animationDungeonCounter.get("torch") == Game.animationDungeon.get("torch").size()) {
-		       					
-		       					Game.animationDungeonCounter.put("torch", new Integer(0));
-		       				}
-	       				}
+	       				
 	       				
 	       			}
 	       			else if(String.valueOf(curID).contains("282")) {
@@ -720,7 +855,7 @@ public class MapReader {
 	       			}
 	       			
 	       			else {
-	       				if(curID != 335 && curID != 215 && curID != 381 && curID != 366 && curID != 367 && curID != 368 && i != 4) {
+	       				if(curID != 335 && curID != 215 && curID != 381 && curID != 366 && curID != 367 && curID != 368 && i != 4 && curID != 328) {
 	       					
 	       					g.drawImage(Game.dungeonTiles.get(curID), x, y, null);
 	       					
@@ -734,8 +869,110 @@ public class MapReader {
 	       		}
 	       		
 	       	 }
-	       	if(i == layers.size()-1 && Game.gameState == Game.STATE.Transition) {
-	       		g.drawImage(transition.get(idleCount), Game.camX, Game.camY, null);
+	       	if(i == layers.size()-1 && (Game.gameState == Game.STATE.Game || Game.gameState == Game.STATE.AfterZatolib)) {
+	       		for(int j = 0; j < handler.objects.size(); j++) {
+					//System.out.println(handler.objects.get(j).getID());
+					if(handler.objects.get(j).id == ID.Povy) {
+						povy = (Povy) handler.objects.get(j);
+			       		for(int p = 0; p < handler.objects.size(); p++) {
+			       			if(handler.objects.get(p).id == ID.SpaceShip) {
+			       				if(povy.getBounds().intersects(handler.objects.get(p).getBounds())) {
+			       					SpaceShip s = (SpaceShip)handler.objects.get(p);
+									if(!s.isSelected()) {
+										g.drawImage(Game.crystalConfirm.get(Game.crysConfCount), (int)s.getX()+300, (int)s.getY()-50, null);
+										changeCount++;
+										if(changeCount % 20 == 0) {
+											Game.crysConfCount++;
+											changeCount = 0;
+										}
+										if(Game.crysConfCount == 2) {
+											Game.crysConfCount = 0;
+										}
+										return;
+									}
+			       				}
+			       			}
+							if(handler.objects.get(p).id == ID.NonEnemy) {
+								if(povy.getBounds().intersects(handler.objects.get(p).getBounds())) {
+									if(handler.objects.get(p) instanceof Chest) {
+										Chest c = (Chest)handler.objects.get(p);
+										if(!c.isOpen()) {
+											g.drawImage(Game.crystalConfirm.get(Game.crysConfCount), (int)c.getX(), (int)c.getY()-50, null);
+											changeCount++;
+											if(changeCount % 20 == 0) {
+												Game.crysConfCount++;
+												changeCount = 0;
+											}
+											if(Game.crysConfCount == 2) {
+												Game.crysConfCount = 0;
+											}
+										}
+									}
+									if(handler.objects.get(p) instanceof Stair) {
+										//System.out.println("huhhh");
+										Stair temp = (Stair)handler.objects.get(p);
+										if(temp.getNum() != 9) {
+											g.drawImage(Game.crystalConfirm.get(Game.crysConfCount), (int)handler.objects.get(p).getX(), (int)handler.objects.get(p).getY()-50, null);
+											changeCount++;
+											if(changeCount % 20 == 0) {
+												Game.crysConfCount++;
+												changeCount = 0;
+											}
+											if(Game.crysConfCount == 2) {
+												Game.crysConfCount = 0;
+											}
+										}
+									}
+									if(handler.objects.get(p) instanceof Gate) {
+										Gate ga = (Gate)handler.objects.get(p);
+										if(!ga.isOpened()) {
+											g.drawImage(Game.crystalConfirm.get(Game.crysConfCount), (int)ga.getX()+24, (int)ga.getY()-40, null);
+											changeCount++;
+											if(changeCount % 20 == 0) {
+												Game.crysConfCount++;
+												changeCount = 0;
+											}
+											if(Game.crysConfCount == 2) {
+												Game.crysConfCount = 0;
+											}
+										}
+									}
+									if(handler.objects.get(p) instanceof Lever) {
+										Lever l = (Lever)handler.objects.get(p);
+										if(!l.isPushed()) {
+											g.drawImage(Game.crystalConfirm.get(Game.crysConfCount), (int)l.getX(), (int)l.getY()-50, null);
+											changeCount++;
+											if(changeCount % 20 == 0) {
+												Game.crysConfCount++;
+												changeCount = 0;
+											}
+											if(Game.crysConfCount == 2) {
+												Game.crysConfCount = 0;
+											}
+										}
+									}
+									if(handler.objects.get(p) instanceof Pillar) {
+										Pillar pi = (Pillar)handler.objects.get(p);
+										if(pi.canSelect() && !povy.isHit()) {
+											g.drawImage(Game.crystalConfirm.get(Game.crysConfCount), (int)pi.getX(), (int)pi.getY()-80, null);
+											changeCount++;
+											if(changeCount % 20 == 0) {
+												Game.crysConfCount++;
+												changeCount = 0;
+											}
+											if(Game.crysConfCount == 2) {
+												Game.crysConfCount = 0;
+											}
+										}
+									}
+								}
+							}
+			       		}
+					}
+	       		}
+	       	}
+	    	if(i == layers.size()-1 && Game.gameState == Game.STATE.Transition && Game.stair) {
+	    		g.drawImage(transition.get(idleCount), Game.camX, Game.camY, null);
 	       		
 				changeCount++;
 				if(changeCount % 4 == 0) {
@@ -743,10 +980,74 @@ public class MapReader {
 				}
 				
 				if(idleCount == 15) {
+					
+					
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+						
+					
+					
+					for(int j = 0; j < handler.objects.size(); j++) {
+						//System.out.println(handler.objects.get(j).getID());
+						if(handler.objects.get(j).id == ID.Povy) {
+							povy = (Povy)handler.objects.get(j);
+							//System.out.println("found povy");
+							for(int p = 0; p < handler.objects.size(); p++) {
+								if(handler.objects.get(p).getID() == ID.NonEnemy) {
+									if(povy.getBounds().intersects(handler.objects.get(p).getBounds())) {
+										//System.out.println("intersects");
+										//System.out.println((handler.objects.get(p).getID()));
+										if(handler.objects.get(p) instanceof Stair) {
+											//System.out.println("we mad eit");
+											Game.gameState = Game.STATE.Game;
+											Stair temp = (Stair)handler.objects.get(p);
+											temp.activate();
+											povy.stairCaseDescent();
+											break;
+										}
+									}
+								}
+							}
+						}
+					}
+					Game.battleReturn = true;
+					
+					
+				}
+				return;
+	    		
+	    	}
+	       	if(i == layers.size()-1 && Game.gameState == Game.STATE.Transition && !Game.stair) {
+	       		g.drawImage(transition.get(idleCount), Game.camX, Game.camY, null);
+	       		if(Game.levTwo) {
+	       			g.drawImage(grogoShip, shipX, shipY, null);
+	       		}
+	       		//System.out.println("girrlllll");
+				changeCount++;
+				if(changeCount % 4 == 0) {
+					idleCount++;
+				}
+				
+				if(idleCount == 15) {
+					if(Game.levTwo) {
+						changeCount = 0;
+						tempX = Game.camX;
+						tempY = Game.camY;
+						handler.clear();
+						Game.gameState = Game.STATE.levelTwoTran;
+						Game.levTwo = false;
+						AudioPlayer.getSound("explosion").play(1, (float).8);
+						return;
+					}
 					changeCount = 0;
 					Game.battleReturn = true;
 					Game.camX = 0;
 					Game.camY = 0;
+					//System.out.println("HOWWW");
 					Game.gameState = Game.STATE.Battle;
 				}
 			}
@@ -790,6 +1091,7 @@ public class MapReader {
 					idleCount = 0;
 					changeCount = 0;
 					
+					
 					if(AudioPlayer.getMusic("afterBattle").playing()) {
 						AudioPlayer.getMusic("afterBattle").stop();
 						AudioPlayer.getMusic("dungeon").loop(1, (float).1);
@@ -808,6 +1110,8 @@ public class MapReader {
 						}
 					}
 					Game.battleReturn = false;
+					if(Game.stair) Game.stair = false;
+					//if(Game.stairBuffer) Game.stairBuffer = false;
 				}
 	       	}
 		}

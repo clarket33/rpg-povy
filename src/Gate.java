@@ -35,7 +35,7 @@ public class Gate extends GameObject{
 			g.drawImage(Game.dungeonTiles.get(215), (int)x, (int)y, null);
 			g.drawImage(Game.dungeonTiles.get(215), (int)x+48, (int)y, null);
 		}
-		g.drawRect((int)x, (int)y-48, 96, 144);
+		//g.drawRect((int)x, (int)y-48, 96, 144);
 		
 		
 	}
@@ -104,6 +104,19 @@ public class Gate extends GameObject{
 	public int getMaxHealth() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	public boolean isOpened() {
+		if(canBeOpened && !opened) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public Rectangle areaCoverage() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

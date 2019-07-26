@@ -1275,7 +1275,7 @@ public class Battle{
 			
 			if(animationCount == 30) {
 				if(enemy.getID() == ID.Zatolib) {
-					Game.gameState = Game.STATE.Game;
+					Game.gameState = Game.STATE.AfterZatolib;
 					HUD.allyCount = 0;
 					Battle.useAlly = false;
 					Battle.contact = false;
@@ -1289,8 +1289,10 @@ public class Battle{
 					handler.removeObject(enemy);
 					for(int j = 0; j < handler.objects.size(); j++) {
 						if(handler.objects.get(j).getID() == ID.Povy) {
-							handler.objects.get(j).setX(1520*3);
-							handler.objects.get(j).setY(1058*3);
+							handler.objects.get(j).setX(4368);
+							handler.objects.get(j).setY(3260);
+							handler.addObject(new Zatolib(1480*3, 1070*3, ID.Zatolib, handler));
+							//FightText.enemyState = FightText.ENEMYSTATE.GROGZATOLIB;
 						}
 						/**
 						if(handler.objects.get(j).getID() == ID.Zatolib) {

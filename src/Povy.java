@@ -11,13 +11,6 @@ import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 
-
-
-
-
-
-
-
 /**
  * Povy is the main character of the game, the user controls him with the arrow keys and tries
  * to save the universe
@@ -39,8 +32,8 @@ public class Povy extends GameObject{
 	private ArrayList<BufferedImage> movingLeft;
 	private ArrayList<BufferedImage> movingUpLeft;
 	private ArrayList<BufferedImage> movingDownLeft;
-	private ArrayList<BufferedImage> rotation;
-	private ArrayList<BufferedImage> hurt;
+	private ArrayList<BufferedImage> grogIdleR, grogIdleL, grogSideR, grogSideL, grogUpR, grogUpL;
+	private ArrayList<BufferedImage> hurt, hurtElec, hurtLeft, hurtElecLeft;
 	private ArrayList<BufferedImage> pummel;
 	private ArrayList<BufferedImage> itemTake;
 	private ArrayList<BufferedImage> laserBlaster, die, rise, crystalAttack, actualCrystal;
@@ -51,12 +44,12 @@ public class Povy extends GameObject{
 	private int pummelCount = 0;
 	private int potionCount = 0, laserCount = 0;
 	public static int laserBulletX = 0;
-	private boolean hit = false;
-	private int hitSpeed = 0, hitCount = 0;
-	private int pummelTotal = 0;
+	private boolean hit = false, electricHit = false;
+	private int hitSpeed = 0, hitCount = 0, hurtElecCount = 0;
+	private int pummelTotal = 0, grogCount = 0;
 	private boolean invincible = false;
 	private String suitColor;
-	private int curDirection;
+	private int curDirection = 1;
 	
 	/**
 	 * creates a new Povy
@@ -111,6 +104,13 @@ public class Povy extends GameObject{
 	}
 		
 	/**
+	 * aids in having Povy face right out of a staircase
+	 */
+	public void stairCaseDescent() {
+		curDirection = 1;
+	}
+	
+	/**
 	 * makes Povy invincible(able to avoid combat for a short period of time)
 	 */
 	public void isInvincible() {
@@ -118,15 +118,41 @@ public class Povy extends GameObject{
 	}
 	
 	/**
+	 * checks if povy is hit
+	 * @return
+	 */
+	public boolean isHit() {
+		return hit;
+	}
+
+	
+	/**
 	 * tick method for Povy
 	 */
 	public void tick() {
-		if(Game.gameState == Game.STATE.Game) {
+		//System.out.println(Game.gameState);
+		if(Game.gameState == Game.STATE.Game || Game.gameState == Game.STATE.AfterZatolib) {
+			if(Game.gameState == Game.STATE.AfterZatolib) this.height = 125;
+			//System.out.println(velX);
+			if(hit == true) {
+				hitSpeed++;
+				if(hitSpeed == 100) {
+					hitSpeed = 0;
+					hit = false;
+					if(electricHit) electricHit = false;
+				}
+				
+				
+				//return;
+			}
 			x += velX;
 			y += velY;
-			if(!invincible && Game.gameState == Game.STATE.Game) {
+			if(!invincible && Game.gameState == Game.STATE.Game && !Game.battleReturn) {
 				enemyCollision();
 				obstacleCollision();
+			}
+			if(Game.gameState == Game.STATE.AfterZatolib && !FightText.levOver) {
+				enemyCollision();
 			}
 			
 			if(Game.gameState == Game.STATE.Game && HUD.HEALTH <= 0) {
@@ -150,7 +176,7 @@ public class Povy extends GameObject{
 		if(Game.battleReturn == true && Game.gameState == Game.STATE.Game) {
 			this.setVelX(0);
 			this.setVelY(0);
-			this.isInvincible();
+			if(!Game.stair)this.isInvincible();
 		}
 		
 		for(int i = 0; i < handler.objects.size(); i++) {
@@ -178,27 +204,29 @@ public class Povy extends GameObject{
 				for(int i = 0; i < Game.collisionTiles.get(new Integer(0)).get(cur).size(); i+=2) {
 					if(getBoundsLeft().intersects(new Rectangle(Game.collisionTiles.get(new Integer(0)).get(cur).get(i), Game.collisionTiles.get(new Integer(0)).get(cur).get(i+1),
 							48, 48))) {
-						x = Game.clampUpLeft((int)x, Game.collisionTiles.get(new Integer(0)).get(cur).get(i)+35);
+						if(Game.gameState == Game.STATE.AfterZatolib) x = Game.clampUpLeft((int)x, Game.collisionTiles.get(new Integer(0)).get(cur).get(i)+30);
+						else x = Game.clampUpLeft((int)x, Game.collisionTiles.get(new Integer(0)).get(cur).get(i)+35);
 						//break;
 							
 					}
 					if(getBoundsRight().intersects(new Rectangle(Game.collisionTiles.get(new Integer(0)).get(cur).get(i), Game.collisionTiles.get(new Integer(0)).get(cur).get(i+1),
 							48, 48))) {	
-						
-						x = Game.clampDownRight((int)x, Game.collisionTiles.get(new Integer(0)).get(cur).get(i)-55);
+						if(Game.gameState == Game.STATE.AfterZatolib) x = Game.clampDownRight((int)x, Game.collisionTiles.get(new Integer(0)).get(cur).get(i)-63);
+						else x = Game.clampDownRight((int)x, Game.collisionTiles.get(new Integer(0)).get(cur).get(i)-55);
 						//break;
 						
 					}
 					if(getBoundsUp().intersects(new Rectangle(Game.collisionTiles.get(new Integer(0)).get(cur).get(i), Game.collisionTiles.get(new Integer(0)).get(cur).get(i+1),
 							48, 48))) {
-						y = Game.clampUpLeft((int)y, Game.collisionTiles.get(new Integer(0)).get(cur).get(i+1)-25);
+						if(Game.gameState == Game.STATE.AfterZatolib)  y = Game.clampUpLeft((int)y, Game.collisionTiles.get(new Integer(0)).get(cur).get(i+1)-80);
+						else y = Game.clampUpLeft((int)y, Game.collisionTiles.get(new Integer(0)).get(cur).get(i+1)-25);
 						//break;
 						
 					}
 					if(getBoundsDown().intersects(new Rectangle(Game.collisionTiles.get(new Integer(0)).get(cur).get(i), Game.collisionTiles.get(new Integer(0)).get(cur).get(i+1),
 							48, 48))) {
-						
-						y = Game.clampDownRight((int)y, Game.collisionTiles.get(new Integer(0)).get(cur).get(i+1)-100);
+						if(Game.gameState == Game.STATE.AfterZatolib) y = Game.clampDownRight((int)y, Game.collisionTiles.get(new Integer(0)).get(cur).get(i+1)-154);
+						else y = Game.clampDownRight((int)y, Game.collisionTiles.get(new Integer(0)).get(cur).get(i+1)-100);
 						//break;
 						
 					}
@@ -216,12 +244,51 @@ public class Povy extends GameObject{
 		for(int i = 0; i < handler.objects.size(); i++) {
 			if(handler.objects.get(i).id != ID.Povy && handler.objects.get(i).id != ID.NonEnemy && handler.objects.get(i).id != ID.SpaceShip) {
 				if(getBounds().intersects(handler.objects.get(i).getBounds())) {
+					if(handler.objects.get(i).id == ID.ElephantGuard) {
+						//AudioPlayer.getMusic("dungeon").stop();
+						FightText.enemyState = FightText.ENEMYSTATE.ELEPHANT;
+						this.velX = 0;
+						this.velY = 0;
+						hit = false;
+						Game.ft.assignBattle(this, handler.objects.get(i));
+						return true;
+					}
+					if(handler.objects.get(i).id == ID.Zatolib) {
+						
+						if(Game.gameState == Game.STATE.AfterZatolib) {
+							FightText.enemyState = FightText.ENEMYSTATE.GROGZATOLIB;
+							//System.out.println("HOW");
+							this.velX = 0;
+							this.velY = 0;
+							hit = false;
+							return true;
+						}
+						AudioPlayer.getMusic("zatFight").loop(1, (float).5);
+						FightText.enemyState = FightText.ENEMYSTATE.ZATOLIB;
+						this.velX = 0;
+						this.velY = 0;
+						hit = false;
+						Game.ft.assignBattle(this, handler.objects.get(i));
+						return true;
+					}
+					if(handler.objects.get(i).id == ID.Lightning) {
+						if(hit == false) {
+							HUD.HEALTH -= 4;
+							hit = true;
+							electricHit = true;
+							AudioPlayer.getSound("electric").play(1, (float).5);
+						}
+						
+						return false;
+					}
+					
 					AudioPlayer.getMusic("dungeon").stop();
 					AudioPlayer.getSound("fightStart").play(1, (float).1);
 					Game.gameState = Game.STATE.Transition;
-					hit = false;
 					Battle.battleState = null;
 					Game.battle = new Battle(handler, this.copy(), handler.objects.get(i));
+					this.velX = 0;
+					this.velY = 0;
 					KeyInput.keyDown[0] = false;
 					KeyInput.keyDown[1] = false;
 					KeyInput.keyDown[2] = false;
@@ -241,16 +308,6 @@ public class Povy extends GameObject{
 		while(itr.hasNext()) {
 			String cur = itr.next();
 			if(cur.contains("281") || cur.contains("282") || cur.contains("283")) {
-				if(hit == true) {
-					hitSpeed++;
-					if(hitSpeed == 100) {
-						hitSpeed = 0;
-						hit = false;
-					}
-					
-					
-					return;
-				}
 				for(int i = 0; i < Game.collisionTiles.get(new Integer(0)).get(cur).size(); i+=2) {
 					
 					if(hit == false && getBounds().intersects(new Rectangle(Game.collisionTiles.get(new Integer(0)).get(cur).get(i), Game.collisionTiles.get(new Integer(0)).get(cur).get(i+1),
@@ -294,12 +351,16 @@ public class Povy extends GameObject{
 	 * @return bounds of upper lower body
 	 */
 	public Rectangle getBoundsUp() {
+		if(Game.gameState == Game.STATE.AfterZatolib) return new Rectangle((int)(x+25), (int)(y+128), 20, 7);
 		return new Rectangle((int)(x+25), (int)(y+74), 20, 7);
 	}
 	/**
 	 * @return bounds to check enemy collision(all of lower body)
 	 */
 	public Rectangle getBounds() {
+		if(Game.gameState == Game.STATE.AfterZatolib) {
+			return new Rectangle((int)x + 14, (int)y + 132, 45, 18);
+		}
 		if(Game.gameState == Game.STATE.Battle) {
 			if(Battle.battleState == Battle.BATTLESTATE.EnemyTurn && Battle.enemy.id == ID.Zatolib) {
 				Zatolib z = (Zatolib) Battle.enemy;
@@ -318,6 +379,7 @@ public class Povy extends GameObject{
 	 * @return bounds of lower lower body
 	 */
 	public Rectangle getBoundsDown() {
+		if(Game.gameState == Game.STATE.AfterZatolib) return new Rectangle((int)(x+25), (int)(y+151), 20, 7);
 		return new Rectangle((int)(x+25), (int)(y+97), 20, 7);
 	}
 	/**
@@ -325,6 +387,7 @@ public class Povy extends GameObject{
 	 * @return bounds of lower left body
 	 */
 	public Rectangle getBoundsLeft() {
+		if(Game.gameState == Game.STATE.AfterZatolib) return new Rectangle((int)(x+10), (int)(y+136), 7, 10);
 		return new Rectangle((int)(x+10), (int)(y+82), 7, 10);
 	}
 	/**
@@ -332,6 +395,7 @@ public class Povy extends GameObject{
 	 * @return bounds of lower right body
 	 */
 	public Rectangle getBoundsRight() {
+		if(Game.gameState == Game.STATE.AfterZatolib) return new Rectangle((int)(x+54), (int)(y+137), 7, 10);
 		return new Rectangle((int)(x+54), (int)(y+83), 7, 10);
 	}
 	
@@ -343,19 +407,149 @@ public class Povy extends GameObject{
 		//g.setColor(Color.green);
 		//g.fillRect((int)x, (int)y, 50, 50);
 		//g.fillRect((int)x + 14, (int)y + 78, 45, 18);
+		if(Game.gameState == Game.STATE.Transition && Game.levTwo) {
+			return;
+		}
+		if(Game.gameState == Game.STATE.AfterZatolib) {
+			if(velX != 0 || velY != 0) {
+				if(velY < 0) {
+					if(velX >= 0 && curDirection > 0) {
+						g.drawImage(grogUpR.get(grogCount), (int)x, (int)y, null);
+						
+						speedControl++;
+						if(speedControl % 7 == 0) {
+							grogCount++;
+						}
+						
+						
+						if(grogCount == 4) {
+							grogCount = 0;
+						}
+						return;
+					}
+					else if(velX <= 0 && curDirection < 0) {
+						g.drawImage(grogUpL.get(grogCount), (int)x-20, (int)y, null);
+						
+						speedControl++;
+						if(speedControl % 7 == 0) {
+							grogCount++;
+						}
+						
+						if(grogCount == 4) {
+							grogCount = 0;
+						}
+						return;
+					}
+				}
+				else if(velY >= 0) {
+					if(velX >= 0 && curDirection > 0) {
+						g.drawImage(grogSideR.get(grogCount), (int)x, (int)y, null);
+						
+						speedControl++;
+						if(speedControl % 7 == 0) {
+							grogCount++;
+						}
+						
+						if(grogCount == 4) {
+							grogCount = 0;
+						}
+						return;
+					}
+					else if(velX <= 0 && curDirection < 0) {
+						g.drawImage(grogSideL.get(grogCount), (int)x-20, (int)y, null);
+						
+						speedControl++;
+						if(speedControl % 7 == 0) {
+							grogCount++;
+						}
+						
+						if(grogCount == 4) {
+							grogCount = 0;
+						}
+						return;
+					}
+					
+				}
+			}
+			if(curDirection < 0) {
+				g.drawImage(grogIdleL.get(grogCount), (int)x-20, (int)y, null);
+				speedControl++;
+				if(speedControl % 7 == 0) {
+					grogCount++;
+				}
+				if(grogCount == 4) {
+					grogCount = 0;
+					speedControl = 0;
+				}
+				return;
+			}
+			
+			g.drawImage(grogIdleR.get(grogCount), (int)x, (int)y, null);
+			
+			speedControl++;
+			if(speedControl % 7 == 0) {
+				grogCount++;
+			}
+			
+			
+			if(grogCount == 4) {
+				grogCount = 0;
+			}
+			return;	
+		}
 		if(Game.gameState == Game.STATE.Game) {
+			
 			if(invincible) {
 				invCounter++;
 				if(invCounter % 4 == 0) {
 					return;
 				}
-				if(invCounter >= 100) {
+				if(invCounter >= 250) {
 					invCounter = 0;
 					invincible = false;
 				}
 			}
 		}
 		if(hit && Game.gameState == Game.STATE.Game) {
+			if(electricHit) {
+				if(curDirection < 0) {
+					g.drawImage(hurtElecLeft.get(hurtElecCount), (int)x, (int)y, null);
+					
+					speedControl++;
+					if(speedControl % 6 == 0) {
+						hurtElecCount++;
+					}
+					
+					if(hurtElecCount == 4) {
+						hurtElecCount = 0;
+					}
+					return;
+				}
+				g.drawImage(hurtElec.get(hurtElecCount), (int)x, (int)y, null);
+				
+				speedControl++;
+				if(speedControl % 6 == 0) {
+					hurtElecCount++;
+				}
+				
+				if(hurtElecCount == 4) {
+					hurtElecCount = 0;
+				}
+				return;
+			}
+			if(curDirection < 0) {
+				g.drawImage(hurtLeft.get(hitCount), (int)x, (int)y, null);
+				
+				speedControl++;
+				if(speedControl % 6 == 0) {
+					hitCount++;
+				}
+				
+				if(hitCount == 2) {
+					hitCount = 0;
+				}
+				return;
+			}
 			g.drawImage(hurt.get(hitCount), (int)x, (int)y, null);
 			
 			speedControl++;
@@ -406,7 +600,7 @@ public class Povy extends GameObject{
 			}
 			if(velX != 0 || velY != 0) {
 				if(velY < 0) {
-					if(velX >= 0) {
+					if(velX >= 0 && curDirection > 0) {
 						g.drawImage(movingUp.get(moveCount), (int)x, (int)y, null);
 						
 						speedControl++;
@@ -420,7 +614,7 @@ public class Povy extends GameObject{
 						}
 						return;
 					}
-					else if(velX < 0) {
+					else if(velX <= 0 && curDirection < 0) {
 						g.drawImage(movingUpLeft.get(moveCount), (int)x, (int)y, null);
 						
 						speedControl++;
@@ -435,7 +629,7 @@ public class Povy extends GameObject{
 					}
 				}
 				else if(velY > 0) {
-					if(velX >= 0) {
+					if(velX >= 0 && curDirection > 0) {
 						g.drawImage(movingDown.get(moveCount), (int)x, (int)y, null);
 						
 						speedControl++;
@@ -448,7 +642,7 @@ public class Povy extends GameObject{
 						}
 						return;
 					}
-					else if(velX < 0) {
+					else if(velX <= 0 && curDirection < 0) {
 						g.drawImage(movingDownLeft.get(moveCount), (int)x, (int)y, null);
 						
 						speedControl++;
@@ -464,7 +658,7 @@ public class Povy extends GameObject{
 					
 				}
 				else {
-					if(velX > 0) {
+					if(velX >= 0 && curDirection > 0) {
 						g.drawImage(moving.get(moveCount), (int)x, (int)y, null);
 						
 						speedControl++;
@@ -478,7 +672,7 @@ public class Povy extends GameObject{
 						}
 						return;
 					}
-					else if(velX < 0) {
+					else if(velX <= 0 && curDirection < 0) {
 						g.drawImage(movingLeft.get(moveCount), (int)x, (int)y, null);
 						
 						speedControl++;
@@ -858,6 +1052,61 @@ public class Povy extends GameObject{
 		}
 		if(Game.gameState == Game.STATE.Transition || Game.gameState == Game.STATE.Paused) {
 			
+			
+			if(hit) {
+				if(electricHit) {
+					if(curDirection < 0) {
+						g.drawImage(hurtElecLeft.get(hurtElecCount), (int)x, (int)y, null);
+						
+						speedControl++;
+						if(speedControl % 6 == 0) {
+							hurtElecCount++;
+						}
+						
+						if(hurtElecCount == 4) {
+							hurtElecCount = 0;
+						}
+						return;
+					}
+					g.drawImage(hurtElec.get(hurtElecCount), (int)x, (int)y, null);
+					
+					speedControl++;
+					if(speedControl % 6 == 0) {
+						hurtElecCount++;
+					}
+					
+					if(hurtElecCount == 4) {
+						hurtElecCount = 0;
+					}
+					return;
+				}
+				if(curDirection < 0) {
+					g.drawImage(hurtLeft.get(hitCount), (int)x, (int)y, null);
+					
+					speedControl++;
+					if(speedControl % 6 == 0) {
+						hitCount++;
+					}
+					
+					if(hitCount == 2) {
+						hitCount = 0;
+					}
+					return;
+				}
+				g.drawImage(hurt.get(hitCount), (int)x, (int)y, null);
+				
+				speedControl++;
+				if(speedControl % 6 == 0) {
+					hitCount++;
+				}
+				
+				if(hitCount == 2) {
+					hitCount = 0;
+				}
+				return;
+			}
+			
+			
 			if(curDirection < 0) {
 				g.drawImage(facingLeftIdle.get(idleCount), (int)x, (int)y, null);
 				speedControl++;
@@ -916,8 +1165,16 @@ public class Povy extends GameObject{
 		movingLeft = new ArrayList<BufferedImage>();
 		movingUpLeft = new ArrayList<BufferedImage>();
 		movingDownLeft = new ArrayList<BufferedImage>();
-		rotation = new ArrayList<BufferedImage>();
+		grogIdleR = new ArrayList<BufferedImage>();
+		grogIdleL = new ArrayList<BufferedImage>();
+		grogSideR = new ArrayList<BufferedImage>();
+		grogSideL = new ArrayList<BufferedImage>();
+		grogUpR = new ArrayList<BufferedImage>();
+		grogUpL = new ArrayList<BufferedImage>();
 		hurt = new ArrayList<BufferedImage>();
+		hurtElec = new ArrayList<BufferedImage>();
+		hurtLeft = new ArrayList<BufferedImage>();
+		hurtElecLeft = new ArrayList<BufferedImage>();
 		pummel = new ArrayList<BufferedImage>();
 		itemTake = new ArrayList<BufferedImage>();
 		laserBlaster = new ArrayList<BufferedImage>();
@@ -935,6 +1192,10 @@ public class Povy extends GameObject{
 			
 		}
 	}
+	
+	/**
+	 * sets hit to true
+	 */
 	public void getsHit() {
 		if(hit == false) {
 			this.hit = true;
@@ -942,6 +1203,13 @@ public class Povy extends GameObject{
 			takeDamage(4);
 			Game.pillarOrder = 1;
 		}
+	}
+	
+	/**
+	 * sets hit to false
+	 */
+	public void notHit() {
+		hit = false;
 	}
 	
 	public void changeOutfitHelper(String rightBoard, String leftBoard, SpriteSheet ss) {
@@ -1021,6 +1289,19 @@ public class Povy extends GameObject{
 		hurt.add(ss.grabImage(9, 1, 96, 108,rightBoard));
 		hurt.add(ss.grabImage(9, 2, 96, 108,rightBoard));
 		
+		hurtLeft.add(ss.grabImage(9, 1, 72, 108,leftBoard));
+		hurtLeft.add(ss.grabImage(9, 2, 72, 108,leftBoard));
+		
+		hurtElec.add(ss.grabImage(25, 2, 96, 108,rightBoard));
+		hurtElec.add(ss.grabImage(25, 3, 96, 108,rightBoard));
+		hurtElec.add(ss.grabImage(25, 4, 96, 108,rightBoard));
+		hurtElec.add(ss.grabImage(26, 1, 96, 108,rightBoard));
+		
+		hurtElecLeft.add(ss.grabImage(25, 2, 72, 108,leftBoard));
+		hurtElecLeft.add(ss.grabImage(25, 3, 72, 108,leftBoard));
+		hurtElecLeft.add(ss.grabImage(25, 4, 72, 108,leftBoard));
+		hurtElecLeft.add(ss.grabImage(26, 1, 72, 108,leftBoard));
+		
 		pummel.add(ss.grabImage(13, 1, 96, 108,rightBoard));
 		pummel.add(ss.grabImage(13, 2, 96, 108,rightBoard));
 		pummel.add(ss.grabImage(13, 3, 96, 108,rightBoard));
@@ -1082,6 +1363,73 @@ public class Povy extends GameObject{
 		rise.add(ss.grabImage(23, 1, 96, 108,rightBoard));
 		rise.add(ss.grabImage(23, 2, 96, 108,rightBoard));
 		rise.add(ss.grabImage(23, 3, 96, 108,rightBoard));
+		
+		if(!rightBoard.contains("povyPurple")) {
+			grogIdleR.add(ss.grabImage(8, 5, 324, 160,"grogo"));
+			grogIdleR.add(ss.grabImage(9, 1, 324, 160,"grogo"));
+			grogIdleR.add(ss.grabImage(9, 2, 324, 160,"grogo"));
+			grogIdleR.add(ss.grabImage(9, 3, 324, 160,"grogo"));
+			
+			grogSideR.add(ss.grabImage(9, 4, 324, 160,"grogo"));
+			grogSideR.add(ss.grabImage(9, 5, 324, 160,"grogo"));
+			grogSideR.add(ss.grabImage(10, 1, 324, 160,"grogo"));
+			grogSideR.add(ss.grabImage(10, 2, 324, 160,"grogo"));
+			
+			grogUpR.add(ss.grabImage(10, 3, 324, 160,"grogo"));
+			grogUpR.add(ss.grabImage(10, 4, 324, 160,"grogo"));
+			grogUpR.add(ss.grabImage(10, 5, 324, 160,"grogo"));
+			grogUpR.add(ss.grabImage(11, 1, 324, 160,"grogo"));
+			
+			grogIdleL.add(ss.grabImage(8, 5, 100, 160,"grogo2"));
+			grogIdleL.add(ss.grabImage(9, 1, 100, 160,"grogo2"));
+			grogIdleL.add(ss.grabImage(9, 2, 100, 160,"grogo2"));
+			grogIdleL.add(ss.grabImage(9, 3, 100, 160,"grogo2"));
+			
+			grogSideL.add(ss.grabImage(9, 4, 100, 160,"grogo2"));
+			grogSideL.add(ss.grabImage(9, 5, 100, 160,"grogo2"));
+			grogSideL.add(ss.grabImage(10, 1, 100, 160,"grogo2"));
+			grogSideL.add(ss.grabImage(10, 2, 100, 160,"grogo2"));
+			
+			grogUpL.add(ss.grabImage(10, 3, 100, 160,"grogo2"));
+			grogUpL.add(ss.grabImage(10, 4, 100, 160,"grogo2"));
+			grogUpL.add(ss.grabImage(10, 5, 100, 160,"grogo2"));
+			grogUpL.add(ss.grabImage(11, 1, 100, 160,"grogo2"));
+		}
+		else if(rightBoard.contains("povyPurple")) {
+			
+			grogIdleR.add(ss.grabImage(11, 2, 324, 160,"grogo"));
+			grogIdleR.add(ss.grabImage(11, 3, 324, 160,"grogo"));
+			grogIdleR.add(ss.grabImage(11, 4, 324, 160,"grogo"));
+			grogIdleR.add(ss.grabImage(11, 5, 324, 160,"grogo"));
+			
+			grogSideR.add(ss.grabImage(12, 1, 324, 160,"grogo"));
+			grogSideR.add(ss.grabImage(12, 2, 324, 160,"grogo"));
+			grogSideR.add(ss.grabImage(12, 3, 324, 160,"grogo"));
+			grogSideR.add(ss.grabImage(12, 4, 324, 160,"grogo"));
+			
+			grogUpR.add(ss.grabImage(12, 5, 324, 160,"grogo"));
+			grogUpR.add(ss.grabImage(13, 1, 324, 160,"grogo"));
+			grogUpR.add(ss.grabImage(13, 2, 324, 160,"grogo"));
+			grogUpR.add(ss.grabImage(13, 3, 324, 160,"grogo"));
+			
+			grogIdleL.add(ss.grabImage(11, 2, 100, 160,"grogo2"));
+			grogIdleL.add(ss.grabImage(11, 3, 100, 160,"grogo2"));
+			grogIdleL.add(ss.grabImage(11, 4, 100, 160,"grogo2"));
+			grogIdleL.add(ss.grabImage(11, 5, 100, 160,"grogo2"));
+			
+			grogSideL.add(ss.grabImage(12, 1, 100, 160,"grogo2"));
+			grogSideL.add(ss.grabImage(12, 2, 100, 160,"grogo2"));
+			grogSideL.add(ss.grabImage(12, 3, 100, 160,"grogo2"));
+			grogSideL.add(ss.grabImage(12, 4, 100, 160,"grogo2"));
+			
+			grogUpL.add(ss.grabImage(12, 5, 100, 160,"grogo2"));
+			grogUpL.add(ss.grabImage(13, 1, 100, 160,"grogo2"));
+			grogUpL.add(ss.grabImage(13, 2, 100, 160,"grogo2"));
+			grogUpL.add(ss.grabImage(13, 3, 100, 160,"grogo2"));
+			
+			
+		}
+		
 	}
 	
 	@Override
@@ -1102,4 +1450,12 @@ public class Povy extends GameObject{
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public Rectangle areaCoverage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }

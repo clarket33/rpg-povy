@@ -59,7 +59,7 @@ public class Lever extends GameObject{
 	 * returns bounds that if the user is within, it can interact with it
 	 */
 	public Rectangle getBounds() {
-		return new Rectangle((int)x-48, (int)y-48, 144, 144);
+		return new Rectangle((int)x-24, (int)y-24, 96, 96);
 	}
 	@Override
 	public GameObject copy() {
@@ -102,6 +102,21 @@ public class Lever extends GameObject{
 	public int getMaxHealth() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	/**
+	 * returns if pushed or not
+	 * @return
+	 */
+	public boolean isPushed() {
+		if(pushed) return true;
+		return false;
+	}
+
+	@Override
+	public Rectangle areaCoverage() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

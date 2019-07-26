@@ -107,29 +107,69 @@ public class Menu extends MouseAdapter implements MouseMotionListener{
 				Game.map = new MapReader(handler);
 				AudioPlayer.getMusic("dungeon").loop(1, (float).1);
 				
-				handler.addObject(new Povy(2000*3, 224, ID.Povy, handler, "blue")); //near chest
+				//handler.addObject(new Povy(2000*3, 224, ID.Povy, handler, "blue")); //near chest
 				//handler.addObject(new Povy(255*3, 40*3, ID.Povy, handler, "blue")); //original
 				//handler.addObject(new Povy(2000*3, 864*3, ID.Povy, handler, "blue")); //before final spike trap
-				//handler.addObject(new Povy(900*3, 1008*3, ID.Povy, handler, "blue")); //near zatolib
+				//handler.addObject(new Povy(4320, 3072, ID.Povy, handler, "blue")); //near zatolib
 				//handler.addObject(new Povy(192*3, 1184*3, ID.Povy, handler, "blue")); //elephant
-				//handler.addObject(new Povy(686*3, 160*3, ID.Povy, handler, "blue")); //first trap
+				handler.addObject(new Povy(686*3, 160*3, ID.Povy, handler, "blue")); //first trap
+				//handler.addObject(new Povy(1520*3, 1392*3, ID.Povy, handler, "blue")); // lightning test
+				//handler.addObject(new Povy(1056, 1584, ID.Povy, handler, "blue")); //stair case test
+				//handler.addObject(new Povy(6816, 1344, ID.Povy, handler, "blue")); //tracker test (spikes)
+				//handler.addObject(new Povy(2448, 2928, ID.Povy, handler, "blue")); //pillar test
 				
 				
 				handler.addObject(new Grogo(182*3, 24*3, ID.Grogo, handler));
-				handler.addObject(new Golem(550*3, 216*3, ID.Golem, handler, Golem.GolemType.firstGolem));
-				handler.addObject(new Golem(1753*3, 98*3, ID.Golem, handler, Golem.GolemType.normal));
-				handler.addObject(new Golem(2349*3, 510*3, ID.Golem, handler, Golem.GolemType.normal));
-				handler.addObject(new Golem(2259*3, 1729*3, ID.Golem, handler, Golem.GolemType.normal));
-				handler.addObject(new Golem(765*3, 509*3, ID.Golem, handler, Golem.GolemType.normal));
-				handler.addObject(new Golem(298*3, 1769*3, ID.Golem, handler, Golem.GolemType.treasureGuard));
+				handler.addObject(new Golem(550*3, 216*3, ID.Golem, handler, Golem.GolemType.firstGolem, 0));
+				handler.addObject(new Golem(1753*3, 98*3, ID.Golem, handler, Golem.GolemType.tracker, 3));
+				handler.addObject(new Golem(7104, 1104, ID.Golem, handler, Golem.GolemType.tracker, 1));
+				handler.addObject(new Golem(2259*3, 1729*3, ID.Golem, handler, Golem.GolemType.normal, 0));
+				handler.addObject(new Golem(298*3, 1769*3, ID.Golem, handler, Golem.GolemType.treasureGuard, 0));
+				handler.addObject(new Golem(420, 4662, ID.Golem, handler, Golem.GolemType.standStill, 0));
+				handler.addObject(new Golem(2592, 3408, ID.Golem, handler, Golem.GolemType.tracker, 2));
 				
-				handler.addObject(new Rat(2165*3, 170*3, ID.Rat, handler, 0));
-				handler.addObject(new Rat(1424*3, 252*3, ID.Rat, handler, 1));
-				handler.addObject(new Rat(2335*3, 1097*3, ID.Rat, handler, 0));
-				handler.addObject(new Rat(435*3, 1566*3, ID.Rat, handler, 0));
+				handler.addObject(new Rat(2180*3, 170*3, ID.Rat, handler, 2));
+				handler.addObject(new Rat(1424*3, 252*3, ID.Rat, handler, 0));
+				handler.addObject(new Rat(6408, 1896, ID.Rat, handler, 1));
+				
+				handler.addObject(new LightningTrap(2880, 96, ID.Lightning, 3));
+				handler.addObject(new LightningTrap(3072, 240, ID.Lightning, 3));
+
+				handler.addObject(new LightningTrap(5712, 1152, ID.Lightning, 4));
+				handler.addObject(new LightningTrap(6288, 1344, ID.Lightning, 4));
+				handler.addObject(new LightningTrap(6864, 1152, ID.Lightning, 5));
+				handler.addObject(new LightningTrap(6288, 1344, ID.Lightning, 5));
+				handler.addObject(new LightningTrap(5952, 1152, ID.Lightning, 6));
+				handler.addObject(new LightningTrap(6480, 1488, ID.Lightning, 6));
 				
 				
-				handler.addObject(new Zatolib(1550*3, 1058*3, ID.Zatolib, handler));
+				
+				handler.addObject(new LightningTrap(1296*3, 1376*3, ID.Lightning, 0));
+				handler.addObject(new LightningTrap(1696*3, 1584*3, ID.Lightning, 0));
+				handler.addObject(new LightningTrap(1712*3, 1440*3, ID.Lightning, 1));
+				handler.addObject(new LightningTrap(1232*3, 1632*3, ID.Lightning, 1));
+				
+				
+				handler.addObject(new LightningTrap(2256, 5288, ID.Lightning, 2));
+				handler.addObject(new LightningTrap(2256, 5616, ID.Lightning, 2));
+				
+				handler.addObject(new LightningTrap(2448, 5516, ID.Lightning, 2));
+				handler.addObject(new LightningTrap(2448, 5116, ID.Lightning, 2));
+				
+				handler.addObject(new LightningTrap(2640, 5088, ID.Lightning, 2));
+				handler.addObject(new LightningTrap(2640, 5616, ID.Lightning, 2));
+				
+				handler.addObject(new LightningTrap(2832, 5416, ID.Lightning, 2));
+				handler.addObject(new LightningTrap(2832, 5216, ID.Lightning, 2));
+				
+				handler.addObject(new LightningTrap(3024, 5188, ID.Lightning, 2));
+				handler.addObject(new LightningTrap(3024, 5588, ID.Lightning, 2));
+				
+				handler.addObject(new LightningTrap(3216, 5116, ID.Lightning, 2));
+				handler.addObject(new LightningTrap(3216, 5616, ID.Lightning, 2));
+				
+				handler.addObject(new Zatolib(1480*3, 1070*3, ID.Zatolib, handler));
+				
 				
 				
 				handler.addObject(new ElephantGuard(192*3, 1010*3, ID.ElephantGuard, handler));

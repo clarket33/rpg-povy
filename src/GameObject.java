@@ -23,6 +23,7 @@ public abstract class GameObject {
 	public abstract void takeDamage(int damage);
 	public abstract int getHealth();
 	public abstract int getMaxHealth();
+	public abstract Rectangle areaCoverage();
 	/**
 	 * sets x coordinate of the game object
 	 * @param x

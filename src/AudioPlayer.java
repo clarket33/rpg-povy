@@ -24,8 +24,9 @@ public class AudioPlayer {
 			soundMap.put("thump", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Small_Impact_1_6.wav"));
 			musicMap.put("crystalScene", new Music("res/audio/Epic Action Loops/Epic Action Loop - Low Intensity.wav"));
 			musicMap.put("title", new Music("res/audio/Sound temple - Space Ambient Music.ogg"));
+			musicMap.put("zatFight", new Music("res/Dungeon/rpg-dungeon-pack v1.1(wonderdot)/Dungeon Music Pack/Through the Mines (Quest).ogg"));
 			musicMap.put("opening", new Music("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/Stingers_Jingles/Fantasy/TD_Game_Over_Slow_Loop.wav"));
-			soundMap.put("chap0Start", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/Stingers_Jingles/Racing/FA_Win_Stinger_2.ogg"));
+			soundMap.put("chapStart", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/Stingers_Jingles/Racing/FA_Win_Stinger_2.ogg"));
 			musicMap.put("dungeonFight", new Music("res/Dungeon/rpg-dungeon-pack v1.1(wonderdot)/Dungeon Music Pack/Dungeon Warriors (Menu).ogg"));
 			musicMap.put("dungeon", new Music("res/Dungeon/rpg-dungeon-pack v1.1(wonderdot)/Dungeon Music Pack/Massacre at the Abyss (Battle).ogg"));
 			soundMap.put("fightStart", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/Stingers_Jingles/Racing/FA_Lose_Stinger_1_1.wav"));
@@ -66,6 +67,9 @@ public class AudioPlayer {
 			soundMap.put("crystalPath", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Magic_Portal_Loop.wav"));
 			musicMap.put("gameOver", new Music("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/Stingers_Jingles/Fantasy/TD_Game_Over_Slow_Loop.wav"));
 			soundMap.put("starClick", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Stinger/LQ_Correct_Answer_04.wav"));
+			soundMap.put("electric", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/UI/CGM3_Error_Button_05_1.wav"));
+			soundMap.put("stairs", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Small_Impact_1_6.wav"));
+			soundMap.put("spark", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Collect Item/FA_Collect_Coin_1_2.wav"));
 			
 		} catch(SlickException e) {
 			e.printStackTrace();

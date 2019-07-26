@@ -358,7 +358,7 @@ public class ElephantGuard extends GameObject{
 				}
 				else if(velX==0) {
 					generateAttack();
-					//attackNum = 1;
+					//attackNum = 0;
 					//Trunk attack
 					if(attackNum == 0) {
 						g.drawImage(attack1.get(attack1Count), (int)x, (int)y, null);
@@ -370,7 +370,7 @@ public class ElephantGuard extends GameObject{
 						if(attack1Count == 8 && changeCount % 20 == 0) {
 							AudioPlayer.getSound("menuSlider").play(1, (float).5);
 						}
-						if(attack1Count >= 8 && attack1Count <= 12) {
+						if(attack1Count >= 8 && attack1Count <= 14) {
 							attack1Count++;
 							changeCount = 0;
 						}
@@ -383,7 +383,7 @@ public class ElephantGuard extends GameObject{
 						else {
 							Battle.takeDamage = false;
 						}
-						if(attack1Count == 11 || attack1Count == 12 || attack1Count == 13) {
+						if(attack1Count >= 13 && attack1Count <= 17) {
 							Battle.contact = true;
 						}
 						else {
@@ -462,7 +462,7 @@ public class ElephantGuard extends GameObject{
 						if(changeCount % 20 == 0) {
 							attack3Count++;
 						}
-						if(attack3Count >= 2 && attack3Count <= 9) {
+						if(attack3Count >= 2 && attack3Count <= 11) {
 							attack3Count++;
 							changeCount = 0;
 						}
@@ -474,7 +474,7 @@ public class ElephantGuard extends GameObject{
 						else {
 							Battle.takeDamage = false;
 						}
-						if(attack3Count == 8 || attack3Count == 9 || attack3Count == 10) {
+						if(attack3Count == 8 || attack3Count == 9 || attack3Count == 10 || attack3Count == 11 || attack3Count == 12) {
 							Battle.contact = true;
 						}
 						else {
@@ -541,7 +541,7 @@ public class ElephantGuard extends GameObject{
 			}
 		}
 		
-		g.drawRect((int)x-550, (int)y+90, 1400, 160);
+		//g.drawRect((int)x-550, (int)y+90, 1400, 160);
 		
 	}
 
@@ -587,6 +587,12 @@ public class ElephantGuard extends GameObject{
 		// TODO Auto-generated method stub
 		int num;
 		return num = this.maxHealth;
+	}
+
+	@Override
+	public Rectangle areaCoverage() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

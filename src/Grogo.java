@@ -242,6 +242,12 @@ public class Grogo extends GameObject{
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public Rectangle areaCoverage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 
 }

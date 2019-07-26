@@ -37,12 +37,26 @@ public class Handler {
 	
 		
 		for(int i = 0; i < objects.size(); i++) {
-			if(!Game.shouldRender((int)objects.get(i).getX(), (int)objects.get(i).getY())) {
+			if(Game.shouldRender((int)objects.get(i).getX(), (int)objects.get(i).getY())) {
 				objects.get(i).render(g);
 			//System.out.println(objects.get(i).id);
 			}
 		}
 	
+	}
+	
+	public void chestDisplayRender(Graphics g) {
+		for(int i = 0; i < objects.size(); i++) {
+			if(Game.shouldRender((int)objects.get(i).getX(), (int)objects.get(i).getY())) {
+				if(objects.get(i).getID() == ID.NonEnemy) {
+					if(objects.get(i) instanceof Chest) {
+						Chest c = (Chest)objects.get(i);
+						c.iconDisplay(g);
+					}
+				}
+			//System.out.println(objects.get(i).id);
+			}
+		}
 	}
 	
 	/**

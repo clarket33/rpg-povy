@@ -194,10 +194,12 @@ public class Zatolib extends GameObject{
 
 			x += velX;
 			y += velY;
-			
 			//x = Game.clamp((int)x, 0, Game.WIDTH-56);
 			//y = Game.clamp((int)y, 0, Game.HEIGHT-76);
 			collision();
+		}
+		if(Game.gameState == Game.STATE.AfterZatolib) {
+			this.height = 170;
 		}
 		if(Game.gameState == Game.STATE.Battle && Battle.battleState == Battle.BATTLESTATE.EnemyTurn) {
 			if(health <= 0) {
@@ -247,7 +249,7 @@ public class Zatolib extends GameObject{
 				//return new Rectangle((int)x + 85,(int)y+109, 59, 24);
 			return new Rectangle((int)x + 100, (int)y + 170, 67, 27);
 		}
-		return new Rectangle((int)x-20, (int)y-20, 5, 5);//450, 400);
+		return new Rectangle((int)x-100, (int)y+50, 300, 250);//450, 400);
 	}
 	
 	
@@ -255,8 +257,18 @@ public class Zatolib extends GameObject{
 	 * renders the enemy
 	 */
 	public void render(Graphics g) {
+	//	g.drawRect((int)x-100, (int)y+50, 300, 250);
+		if(Game.gameState == Game.STATE.AfterZatolib) {
+			g.drawImage(die.get(4), (int)x, (int)y, null);
+			return;
+		}
+		if(Game.gameState == Game.STATE.Transition && Game.levTwo) {
+			g.drawImage(die.get(4), (int)x, (int)y, null);
+			return;
+		}
+		
 		if(Game.gameState == Game.STATE.Battle) {
-			/**
+			
 			g.setFont(new Font("Cooper Black", 1, 50));
 			if(health >= (maxHealth - (maxHealth / 3))) {
 				g.setColor(Color.GREEN);
@@ -270,8 +282,9 @@ public class Zatolib extends GameObject{
 			
 			String display = String.valueOf(health);
 			g.drawString(display, (int)this.getX() + 60, (int)this.getY()-10);
-			**/
+			
 		}
+		
 		
 		if(Game.gameState == Game.STATE.KeyFromGrogo) {
 			g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
@@ -372,7 +385,7 @@ public class Zatolib extends GameObject{
 						animationCount = 0;
 						changeCount = 0;
 					}
-					g.drawRect((int)x + 112, (int)y + 170, 67, 27);
+					//g.drawRect((int)x + 112, (int)y + 170, 67, 27);
 				}
 				else if(velX==0) {
 					//hair whip
@@ -633,7 +646,7 @@ public class Zatolib extends GameObject{
 				if(changeCount % 20 == 0) {
 					idleCount++;
 				}
-				if(idleCount == 4) {
+				if(idleCount == 5) {
 					idleCount = 0;
 					changeCount = 0;
 				}
@@ -641,14 +654,14 @@ public class Zatolib extends GameObject{
 		}
 		
 		else if(Game.gameState == Game.STATE.Transition || Game.gameState == Game.STATE.Paused) {
-			if(idleCount == 4) {
-				idleCount = 0;
-				changeCount = 0;
-			}
 			g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
 			changeCount++;
 			if(changeCount % 5 == 0) {
 				idleCount++;
+			}
+			if(idleCount == 5) {
+				idleCount = 0;
+				changeCount = 0;
 			}
 		}
 		
@@ -697,6 +710,12 @@ public class Zatolib extends GameObject{
 		// TODO Auto-generated method stub
 		int num;
 		return num = this.maxHealth;
+	}
+
+	@Override
+	public Rectangle areaCoverage() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

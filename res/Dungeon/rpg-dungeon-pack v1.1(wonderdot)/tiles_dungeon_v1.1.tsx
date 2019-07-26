@@ -516,6 +516,11 @@
    <object id="1" x="0.181818" y="0.545455" width="15.8182" height="14.7273"/>
   </objectgroup>
  </tile>
+ <tile id="327">
+  <objectgroup draworder="index">
+   <object id="1" x="0.375" y="0.25" width="15.625" height="15.5"/>
+  </objectgroup>
+ </tile>
  <tile id="331">
   <objectgroup draworder="index">
    <object id="1" x="2.18182" y="0" width="13.4545" height="15.8182"/>

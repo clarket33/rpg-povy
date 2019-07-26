@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class HUD {
 	public int bounds = 0;
-	public static int HEALTH = 64;
+	public static int HEALTH = 4;
 	public static int maxHealth = 64;
 	public static int allyCount = 0;
 	

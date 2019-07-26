@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
+
+
 /**
  * A Rat is a weak enemy found in the dungeon, has one attack, low health
  * @author clarkt5
@@ -21,10 +23,10 @@ public class Rat extends GameObject{
 	private ArrayList<BufferedImage> attack1;
 	private ArrayList<BufferedImage> attack2;
 	private ArrayList<BufferedImage> facingRightIdle;
-	private ArrayList<BufferedImage> die;
+	private ArrayList<BufferedImage> die, up, down;
 	private Random healthGenerator;
 	private int health = 0;
-	private int animationCount = 0;
+	private int animationCount = 0, vertCount = 0;
 	private int attack1Count, dieCount = 0;
 	private int idleCount = 0;
 	private int changeCount = 0;
@@ -33,6 +35,7 @@ public class Rat extends GameObject{
 	private int idt;
 	private boolean setVel = false;
 	private int curDirection;
+	private Povy p;
 	
 	/**
 	 * creates the rat
@@ -44,7 +47,7 @@ public class Rat extends GameObject{
 	 */
 	public Rat(float x, float y, ID id, Handler handler, int idt){
 		super(x, y, id);
-		this.height = 78;
+		this.height = 65;
 		this.handler = handler;
 		this.idt = idt;
 		healthGenerator = new Random();
@@ -58,7 +61,11 @@ public class Rat extends GameObject{
 		else if(health == 2) {
 			health = 19;
 		}
-	
+		
+		for(int i = 0; i < handler.objects.size(); i++) {
+			if(handler.objects.get(i).getID() == ID.Povy) p = (Povy) handler.objects.get(i);
+		}
+		
 		maxHealth = health;
 		
 		SpriteSheet ss = new SpriteSheet(Game.sprite_sheet);
@@ -110,8 +117,18 @@ public class Rat extends GameObject{
 		die.add(ss.grabImage(4, 3, 150, 85,"rat"));
 		die.add(ss.grabImage(4, 4, 150, 85,"rat"));
 		
+		up = new ArrayList<BufferedImage>();
+		up.add(ss.grabImage(4, 5, 150, 85,"rat"));
+		up.add(ss.grabImage(4, 6, 150, 85,"rat"));
+		up.add(ss.grabImage(5, 1, 150, 85,"rat"));
 		
-		velX = -4;
+		down = new ArrayList<BufferedImage>();
+		down.add(ss.grabImage(5, 2, 150, 85,"rat"));
+		down.add(ss.grabImage(5, 3, 150, 85,"rat"));
+		down.add(ss.grabImage(5, 4, 150, 85,"rat"));
+		
+		
+		if(idt == 0) velX = -4;
 	}
 	
 	/**
@@ -121,17 +138,130 @@ public class Rat extends GameObject{
 		return new Rat(x, y, id, handler, idt);
 	}
 	
+	/**
+	 * for tracking rats
+	 * @return rectangle of coverage the enemy will follow you in
+	 */
+	public Rectangle areaCoverage() {
+		if(idt == 2) {
+			return new Rectangle(6528, 240, 576, 1008);
+			
+		}
+		return null;
+		
+	}
+	
 	
 	public void tick() {
 		if(Game.gameState == Game.STATE.Game) {
-			x += velX;
-			y += velY;
-		
+			if(idt != 2) {
+				x += velX;
+				y += velY;
 			
-			//x = Game.clamp((int)x, 0, Game.WIDTH-56);
-			//y = Game.clamp((int)y, 0, Game.HEIGHT-76);
-			collision();
+				
+				//x = Game.clamp((int)x, 0, Game.WIDTH-56);
+				//y = Game.clamp((int)y, 0, Game.HEIGHT-76);
+				collision();
+			}
+			
+			else {
+				if(p.getBounds().intersects(areaCoverage())) {
+					float diffX = x - p.getX() + (float)40;
+					float diffY = y - p.getY() - (float)20;
+					float distance = (float)Math.sqrt((x-p.getX())*(x-p.getX()) +  
+							(y-p.getY())*(y-p.getY()));
+					velX = ((float) (-1.0/distance) * diffX);
+					velY = (((float) (-1.0/distance) * diffY));
+					
+					velX *= 2.75;
+					if(velY<0) velY *= 1.75;
+					else velY *= 2.75;
+					if(velX<0 && velY <0) velY /= 1.2;
+					
+				}
+				else {
+					velX = 0;
+					velY = 0;
+				}
+				
+				if(velX > 2.5) {
+					velX = (float)2.5;
+				}
+				else if(velX < -2.5) {
+					velX = (float)-2.5;
+				}
+				
+				if(velY > 2.5) {
+					velY = (float)2.5;
+				}
+				else if(velY < -2.5) {
+					velY = (float)-2.5;
+				}
+				
+				
+				x += velX;
+				y += velY;
+			
+			
+				
+				//214
+				if(x > 7010) x = 7010;
+				
+				if(x < 6400) x = 6400;
+				
+				
+				//left bound lever
+				if(x > 6690  && y > 850 && velX > 0) { 
+					if(y < 898 && x < 6738) x = 6690;
+				}
+				
+				//uper bound lever
+				if((x > 6720 && x < 6800) && y > 830 && velY > 0) { 
+					if(y < 898) y = 830;
+				}
+				
+				//right bound lever
+				if(x < 6835  && y > 850 && velX < 0) { 
+					if(y < 898 && x > 6720) x = 6835;
+					//System.out.println(y);
+				}
+				
+				//down bound lever
+				if((x > 6720 && x < 6800) && y < 940 && velY < 0) { 
+					if(y > 890) y = 940;
+					//System.out.println(y);
+				}
+				
+				//left bound chest
+				if(x > 6940  && y > 460 && velX > 0) { 
+					if(y < 520) x = 6940;
+				}
+				
+				//lower bound chest
+				if((x > 6975) && y > 480 && velY < 0) { 
+					if(y < 575) y = 575;
+				}
+				//upper bound chest
+				if((x > 6975) && y < 480 && velY > 0) { 
+					if(y > 450) y = 450;
+					//System.out.println(y);
+				}
+				
+			
+			}
+			
+			
+			if(velX > 0) {
+				curDirection = 1;
+			}
+			else if(velX < 0) {
+				curDirection = -1;
+			}
 		}
+		
+		
+		
+		
 		if(Game.gameState == Game.STATE.Battle && Battle.battleState == Battle.BATTLESTATE.EnemyTurn) {
 			if(health <= 0) {
 				Battle.battleState = Battle.BATTLESTATE.BattleEnd;
@@ -144,12 +274,6 @@ public class Rat extends GameObject{
 			x += velX;
 		}
 		
-		if(velX > 0) {
-			curDirection = 1;
-		}
-		else if(velX < 0) {
-			curDirection = -1;
-		}
 	}
 	
 	/**
@@ -204,7 +328,9 @@ public class Rat extends GameObject{
 			return new Rectangle((int)x + 23, (int)y + 30, 110, 43);
 		}
 		
-		return new Rectangle((int)x + 23, (int)y + 30, 110, 43);
+		if(idt == 2 && (velY >.5 || velY <-.5))	return new Rectangle((int)x+48, (int)y, 53, 84);
+		else return new Rectangle((int)x + 23, (int)y + 30, 110, 43);
+		
 	}
 	
 	public void render(Graphics g) {
@@ -225,8 +351,80 @@ public class Rat extends GameObject{
 			g.drawString(display, (int)this.getX() + 20, (int)this.getY()-10);
 		}
 		//g.setColor(Color.green);
-		//g.fillRect((int)x, (int)y, 50, 50);
+		if(idt == 2 && (velY >.5 || velY <-.5)) //g.drawRect((int)x+48, (int)y, 53, 84);
 		if(Game.gameState == Game.STATE.Game) {
+			if(idt == 2) {
+				if(velY > .5) {
+					g.drawImage(down.get(vertCount), (int)x, (int)y, null);
+					changeCount++;
+					if(changeCount % 10 == 0) {
+						vertCount++;
+					}
+					if(vertCount == 3) {
+						vertCount = 0;
+						changeCount = 0;
+					}
+				}
+				else if(velY < -.5) {
+					g.drawImage(up.get(vertCount), (int)x, (int)y, null);
+					changeCount++;
+					if(changeCount % 10 == 0) {
+						vertCount++;
+					}
+					if(vertCount == 3) {
+						vertCount = 0;
+						changeCount = 0;
+					}
+				}
+				else {
+					if(velY == 0) {
+						if(curDirection > 0) {
+							g.drawImage(facingRightIdle.get(idleCount), (int)x, (int)y, null);
+							changeCount++;
+							if(changeCount % 2 == 0) {
+								idleCount++;
+							}
+							if(idleCount == 4) {
+								idleCount = 0;
+								changeCount = 0;
+							}
+							return;
+						}
+						g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
+						changeCount++;
+						if(changeCount % 5 == 0) {
+							idleCount++;
+						}
+						if(idleCount == 4) {
+							idleCount = 0;
+							changeCount = 0;
+						}
+					}
+					if(velX > 0) {
+						g.drawImage(movingRight.get(animationCount), (int)x, (int)y, null);
+						changeCount++;
+						if(changeCount % 10 == 0) {
+							animationCount++;
+						}
+						if(animationCount == 4) {
+							animationCount = 0;
+							changeCount = 0;
+						}
+					}
+					if(velX < 0) {
+						g.drawImage(movingLeft.get(animationCount), (int)x, (int)y, null);
+						changeCount++;
+						if(changeCount % 10 == 0) {
+							animationCount++;
+						}
+						if(animationCount == 4) {
+							animationCount = 0;
+							changeCount = 0;
+						}
+					}
+				}
+				return;
+			}
 			if(velX == 0) {
 				g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
 				changeCount++;
@@ -418,7 +616,7 @@ public class Rat extends GameObject{
 		}
 		
 		
-		g.drawRect((int)x + 23, (int)y + 30, 110, 43);
+		//g.drawRect((int)x + 23, (int)y + 30, 110, 43);
 		
 		
 		
@@ -447,6 +645,7 @@ public class Rat extends GameObject{
 		int num;
 		return num = this.maxHealth;
 	}
+
 
 	
 }

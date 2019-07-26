@@ -27,11 +27,13 @@ public class Game extends Canvas implements Runnable{
 	public static HUD hud;
 	private Window w;
 	private KeyToPovy ktp;
+	public static FightText ft;
 	private CrystalCutscene cc;
 	public static ExperienceBar expBarTracker;
 	public static MapReader map;
 	public static Battle battle;
 	public static ArrayList<BufferedImage> dungeonTiles;
+	public static ArrayList<BufferedImage> crystalConfirm;
 	public static Map<Integer, Map<String, ArrayList<Integer>>> collisionTiles;
 	public static Map<String, ArrayList<String>> animationDungeon;
 	public static Map<String, Integer> animationDungeonCounter;
@@ -41,7 +43,8 @@ public class Game extends Canvas implements Runnable{
 	public static boolean battleReturn = false;
 	public static boolean firstBattle = true, lastBattle = false;
 	public static AllyPouch allies;
-	public static int pillarOrder = 1;
+	public static int pillarOrder = 1, crysConfCount = 0;
+	public static boolean stair = false, levTwo = false;
 	
 	public enum STATE{
 		Menu,
@@ -53,7 +56,9 @@ public class Game extends Canvas implements Runnable{
 		Transition,
 		FinalCutscene,
 		Dead,
-		KeyFromGrogo
+		KeyFromGrogo,
+		AfterZatolib,
+		levelTwoTran
 	};
 	
 	public static STATE gameState = STATE.Menu;
@@ -124,6 +129,8 @@ public class Game extends Canvas implements Runnable{
 			
 			sprite_sheet.put("dialogue", loader.loadImage("/cutsceneText.png"));
 			sprite_sheet.put("grogoTalking", loader.loadImage("/grogoTalking.png"));
+			sprite_sheet.put("elephantTalking", loader.loadImage("/elephantEmblem.png"));
+			sprite_sheet.put("zatolibTalking", loader.loadImage("/zatolib_emblem.png"));
 			
 			sprite_sheet.put("allyMenu", loader.loadImage("/allyMenu.png"));
 			sprite_sheet.put("allyMeter", loader.loadImage("/allyMeter.png"));
@@ -136,6 +143,11 @@ public class Game extends Canvas implements Runnable{
 			sprite_sheet.put("sparkle", loader.loadImage("/sparkle.png"));
 			sprite_sheet.put("menuButtons", loader.loadImage("/MenuOptions.png"));
 			sprite_sheet.put("leverShadow", loader.loadImage("/leverShad.png"));
+			sprite_sheet.put("menuButtons", loader.loadImage("/MenuOptions.png"));
+			sprite_sheet.put("lightningTrap", loader.loadImage("/lightning_trap.png"));
+			sprite_sheet.put("lightningTrap1", loader.loadImage("/lightning_trap1.png"));
+			sprite_sheet.put("crystalConfirm", loader.loadImage("/crystalConfirm.png"));
+			sprite_sheet.put("viniaOpening", loader.loadImage("/ViniaOpening.png"));
 			
 			
 		}catch(Exception e) {
@@ -145,11 +157,16 @@ public class Game extends Canvas implements Runnable{
 		collisionTiles = new HashMap<Integer, Map<String, ArrayList<Integer>>>();
 		animationDungeon = new HashMap<String, ArrayList<String>>();
 		animationDungeonCounter = new HashMap<String, Integer>();
+		SpriteSheet ss = new SpriteSheet(sprite_sheet);
+		crystalConfirm = new ArrayList<BufferedImage>();
+		crystalConfirm.add(ss.grabImage(1, 1, 48, 48,"crystalConfirm"));
+		crystalConfirm.add(ss.grabImage(1, 2, 48, 48,"crystalConfirm"));
 		handler = new Handler(this);
 		pause = new PauseScreen();
 		allies = new AllyPouch();
 		hud = new HUD();
 		ktp = new KeyToPovy(handler);
+		ft = new FightText(handler);
 		cc = new CrystalCutscene(handler);
 		menu = new Menu(this, handler, hud);
 		itemPouch = new ItemPouch();
@@ -159,6 +176,7 @@ public class Game extends Canvas implements Runnable{
 		this.addKeyListener(new KeyInput(handler, this));
 		this.addKeyListener(ktp);
 		this.addKeyListener(cc);
+		this.addKeyListener(ft);
 		this.addMouseMotionListener(pause);
 		this.addMouseMotionListener(menu);
 		this.addMouseListener(pause);
@@ -226,9 +244,12 @@ public class Game extends Canvas implements Runnable{
 	
 	private void tick() {
 		
-		if(gameState == STATE.Game || gameState == STATE.KeyFromGrogo) {
+		if(gameState == STATE.levelTwoTran){
+			map.tick();
+		}
+		if(gameState == STATE.Game || gameState == STATE.KeyFromGrogo || gameState == STATE.AfterZatolib) {
 			hud.tick();
-			handler.tick();	
+			if(FightText.enemyState == FightText.ENEMYSTATE.INACTIVE) handler.tick();	
 			map.tick();
 		}
 		else if (gameState == STATE.Menu) {
@@ -320,15 +341,19 @@ public class Game extends Canvas implements Runnable{
 		
 		g.setColor(Color.black);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
+		if( gameState == STATE.levelTwoTran) {
+			map.render(g);
+		}
 		if(gameState == STATE.KeyFromGrogo) {
 			map.render(g);
 			hud.render(g);
 			ktp.render(g);
 			
 		}
-		else if(gameState == STATE.Game) {
+		else if(gameState == STATE.Game || gameState == STATE.AfterZatolib) {
 			map.render(g);
 			hud.render(g);
+			if(FightText.enemyState != FightText.ENEMYSTATE.INACTIVE) ft.render(g);
 		}
 		else if (gameState == STATE.Menu) {
 			menu.render(g);

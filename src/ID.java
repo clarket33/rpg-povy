@@ -15,6 +15,7 @@ public enum ID {
 	Rat(),
 	Zatolib(),
 	SpaceShip(),
+	Lightning(),
 	NonEnemy();
 	
 }

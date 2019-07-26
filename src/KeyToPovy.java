@@ -59,6 +59,7 @@ public class KeyToPovy extends KeyAdapter{
 		
 		done = false;
 		
+		
 		dialogue = new HashMap<Integer, char[]>();
 	    String str = "Hey, you, what are you in for?";
 	    String str1 = "Geez, your whole planet! I've heard legends about the white crystal,";
@@ -68,12 +69,29 @@ public class KeyToPovy extends KeyAdapter{
 	    String str5 = "I nabbed a key off of a guard awhile ago but it doesn't work on my";
 	    String str6 = "door. Here, try on yours.";
 	    String str7 = "Recieved Dungeon Key!";
-	    String str8 = "The guard outside must have my key. Get it from him and free me.";
-	    //next scene
-	    String str9 = "My ship needs to be around here somewhere.";
-	    String str10 = "GG with that battle, now open this up!";	
-	    String str11 = "Thanks man, I'll help you get out of here.";	
-	    String str12 = "Gained Grogo as an ally! Be sure to utilize him in battle!";
+	    String str8 = "The guard outside must have my key. You'll have to battle him to free me.";
+	    
+	    String str9 = "During battle you have the option of two basic attacks, a laser";
+	    String str10 = "blaster and a pummel attack.";
+	    
+	    String str11 = "Pummel is more consistent, but your laser blaster has a chance";
+	    String str12 = "to deal more damage!";
+	    
+	    String str13 = "As you gain allies to aid in your journey, you may utilize their abilities";
+	    String str14 = "in battle as the ally meter gets filled.";
+	    
+	    String str15 = "The meter charges as you take damage, so be sure to keep an eye on it!";
+	    
+	    String str16 = "There are also chests throughout the dungeon that contain items that will";
+	    String str17 = "help in and out of battle.";
+	    
+	    String str18 = "And if the battle isn't going well, don't be afraid to attempt an escape!";
+	    
+	    String str19 = "Now that you know what you're doing, go get that key!";
+	  //next scene
+	    String str20 = "Awesome job with that battle, now open this up!";	
+	    String str21 = "Thanks, let's find my ship and get out of here!";	
+	    String str22 = "Gained Grogo as an ally! Be sure to utilize him in battle!";
 	    dialogue.put(new Integer(0), str.toCharArray());
 	    dialogue.put(new Integer(1), str1.toCharArray());
 	    dialogue.put(new Integer(2), str2.toCharArray());
@@ -87,9 +105,25 @@ public class KeyToPovy extends KeyAdapter{
 	    dialogue.put(new Integer(10), str10.toCharArray());
 	    dialogue.put(new Integer(11), str11.toCharArray());
 	    dialogue.put(new Integer(12), str12.toCharArray());
+	    dialogue.put(new Integer(13), str13.toCharArray());
+	    dialogue.put(new Integer(14), str14.toCharArray());
+	    dialogue.put(new Integer(15), str15.toCharArray());
+	    dialogue.put(new Integer(16), str16.toCharArray());
+	    dialogue.put(new Integer(17), str17.toCharArray());
+	    dialogue.put(new Integer(18), str18.toCharArray());
+	    dialogue.put(new Integer(19), str19.toCharArray());
+	    dialogue.put(new Integer(20), str20.toCharArray());
+	    dialogue.put(new Integer(21), str21.toCharArray());
+	    dialogue.put(new Integer(22), str22.toCharArray());
 	    
 	    copy = new char[dialogue.get(new Integer(0)).length];
+	    for(int i = 0; i < dialogue.get(new Integer(0)).length; i++) {
+	    	copy[i] = ' ';
+	    }
 	    copy2 = new char[dialogue.get(new Integer(2)).length];
+	    for(int i = 0; i < dialogue.get(new Integer(2)).length; i++) {
+	    	copy2[i] = ' ';
+	    }
 	}
 	
 	
@@ -99,7 +133,8 @@ public class KeyToPovy extends KeyAdapter{
 	 */
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		if(key == KeyEvent.VK_ENTER && buffer >= 10) {
+		if((key == KeyEvent.VK_ENTER || key == KeyEvent.VK_E) && buffer >= 10) {
+			//System.out.println(doneCount);
 			if(Game.gameState == Game.STATE.KeyFromGrogo) {
 				if(!speedChanged) {
 					speedChanged = true;
@@ -107,13 +142,13 @@ public class KeyToPovy extends KeyAdapter{
 				}
 				if(done) {
 					buffer = 0;
-					if(doneCount == 0 || doneCount == 7 || doneCount >= 10 ) {
+					if(doneCount == 0 || doneCount == 7 || doneCount == 8 || doneCount == 15 || doneCount >= 18) {
 						doneCount += 1;
 					}
 					else {
 						doneCount += 2;
 					}
-					if(doneCount >= 13) {
+					if(doneCount >= 23) {
 						Game.gameState = Game.STATE.Game;
 						for(int i = 0; i < handler.objects.size(); i++) {
 							if(handler.objects.get(i).getID() == ID.Povy) {
@@ -133,16 +168,28 @@ public class KeyToPovy extends KeyAdapter{
 					speedChanged = false;
 					done = false;
 					
-					if(doneCount == 10 && Game.firstBattle == true) {
+					if(doneCount == 20 && Game.firstBattle == true) {
 						Game.gameState = Game.STATE.Game;
 						copy = new char[dialogue.get(new Integer(doneCount)).length];
+						 for(int i = 0; i < dialogue.get(new Integer(doneCount)).length; i++) {
+						    copy[i] = ' ';
+						 }
 						copy2 = new char[dialogue.get(new Integer(doneCount)).length];
+						for(int i = 0; i < dialogue.get(new Integer(doneCount)).length; i++) {
+						   copy2[i] = ' ';
+						}
 						return;
 					}
 					copy = new char[dialogue.get(new Integer(doneCount)).length];
+					for(int i = 0; i < dialogue.get(new Integer(doneCount)).length; i++) {
+					    copy[i] = ' ';
+					 }
 					copy2 = new char[dialogue.get(new Integer(doneCount)).length];
+					for(int i = 0; i < dialogue.get(new Integer(doneCount)).length; i++) {
+					   copy2[i] = ' ';
+					}
 					
-					if(doneCount == 11) {
+					if(doneCount == 21) {
 						for(int i = 0; i < handler.objects.size(); i++) {
 							if(handler.objects.get(i) instanceof Gate) {
 								Gate temp = (Gate)handler.objects.get(i);
@@ -154,7 +201,7 @@ public class KeyToPovy extends KeyAdapter{
 						}
 						return;
 					}
-					if(doneCount == 12) {
+					if(doneCount == 22) {
 						AudioPlayer.getSound("newAlly").play(1, (float).3);
 						for(int i = 0; i < handler.objects.size(); i++) {
 							if(handler.objects.get(i).getID() == ID.Grogo) {
@@ -185,7 +232,7 @@ public class KeyToPovy extends KeyAdapter{
 	 * @param g
 	 */
 	public void render(Graphics g) {
-		if(doneCount >= 13) {
+		if(doneCount >= 23) {
 			return;
 		}
 		if(Game.gameState == Game.STATE.KeyFromGrogo) {
@@ -201,7 +248,7 @@ public class KeyToPovy extends KeyAdapter{
 					g.drawImage(dungeonKey, Game.camX + 210, Game.camY + 700, null);
 				}
 				else {
-					if(doneCount != 12) {
+					if(doneCount != 22) {
 						g.drawImage(grogoEmblem.get(talkCount), Game.camX + 210, Game.camY + 700, null);
 						changeCount++;
 						if(changeCount % 2 == 0) {
@@ -218,7 +265,7 @@ public class KeyToPovy extends KeyAdapter{
 				g.drawImage(text.get(animate), Game.camX + 120, Game.camY + 625, null);
 				
 				changeCount++;
-				if(changeCount % 10 == 0) {
+				if(changeCount % 30 == 0) {
 					animate++;
 				}
 				if(animate == 3) {
@@ -226,13 +273,13 @@ public class KeyToPovy extends KeyAdapter{
 					changeCount = 0;
 				}
 				
-				if(doneCount < 13)handleScene(doneCount,g);
+				if(doneCount < 23)handleScene(doneCount,g);
 				
 	
 				if(doneCount == 7) {
 					g.drawImage(dungeonKey, Game.camX + 210, Game.camY + 700, null);
 				}
-				else if(doneCount != 12){
+				else if(doneCount != 22){
 					g.drawImage(grogoEmblem.get(0), Game.camX + 210, Game.camY + 700, null);
 				}
 			}
@@ -247,7 +294,7 @@ public class KeyToPovy extends KeyAdapter{
 	 */
 	private void handleScene(int sceneNumber, Graphics g) {
 		if(count == dialogue.get(new Integer(sceneNumber)).length) {
-			if(doneCount == 0 || doneCount == 7 || doneCount >= 10) {
+			if(doneCount == 0 || doneCount == 7 || doneCount == 8 || doneCount == 15 || doneCount >= 18) {
 				done = true;
 			}
 			else {

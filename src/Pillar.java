@@ -21,6 +21,7 @@ public class Pillar extends GameObject{
 	private boolean selected = false;
 	private int num;
 	private int order;
+	private Handler handler;
 	
 	/**
 	 * 
@@ -29,8 +30,9 @@ public class Pillar extends GameObject{
 	 * @param id
 	 * uses a random integer to randomize the item that is stored
 	 */
-	public Pillar(float x, float y, ID id, int num) {
+	public Pillar(float x, float y, ID id, int num, Handler handler) {
 		super(x, y, id);
+		this.handler = handler;
 		this.num = num;
 		if(num == 367) {
 			order = 1;
@@ -56,7 +58,7 @@ public class Pillar extends GameObject{
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
 			g.drawImage(Game.dungeonTiles.get(num), (int)x, (int)y, null);
-			g.drawRect((int)x, (int)y-48, 48, 144);
+		//	g.drawRect((int)x, (int)y-48, 48, 144);
 			if(Game.pillarOrder != 4) {
 				//draw select button above pillars
 			}
@@ -85,6 +87,10 @@ public class Pillar extends GameObject{
 				if(Game.pillarOrder == order) {
 					AudioPlayer.getSound("gateOpen").play(1, (float).1);
 					Game.pillarOrder++;
+					if(Game.pillarOrder == 4) {
+						handler.addObject(new Stair(3072, 3024, ID.NonEnemy, 8, handler));
+						HUD.HEALTH = HUD.maxHealth;
+					}
 					return true;
 				}
 				else {
@@ -99,6 +105,20 @@ public class Pillar extends GameObject{
 			}
 		}
 		return true;
+	}
+	
+	public boolean canSelect() {
+		if(Game.pillarOrder != 4) {
+			if(selected == false) {
+				return true;
+			}
+			if(order == 1) {
+				if(Game.pillarOrder == 3) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	public void deSelect() {
@@ -126,6 +146,12 @@ public class Pillar extends GameObject{
 	public int getMaxHealth() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public Rectangle areaCoverage() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	
