@@ -12,9 +12,10 @@ public class KeyInput extends KeyAdapter{
 	private GameObject povy;
 	public static int numItems = 0, numOutfits = 0, numAllies = 0;
 	public static boolean[] keyDown = new boolean[4];
-	public KeyInput(Handler handler, Game game) {
+	private Menu menu;
+	public KeyInput(Handler handler, Menu menu) {
 		this.handler = handler;
-		
+		this.menu = menu;
 		keyDown[0] = false;
 		keyDown[1] = false;
 		keyDown[2] = false;
@@ -318,10 +319,13 @@ public class KeyInput extends KeyAdapter{
 			if(Game.gameState == Game.STATE.Paused && PauseScreen.pauseState == PauseScreen.PauseState.ItemScreen || (Game.gameState == Game.STATE.Battle && Battle.itemSelected && !PauseScreen.itemSelect)) {
 				if((key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D || key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) 
 						|| (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A || key == KeyEvent.VK_UP || key == KeyEvent.VK_W)) {
+					//System.out.println("over Back : " + PauseScreen.backToRegFromItem + ", " + "over an Item: " + PauseScreen.overItem);
+					//System.out.println("y coord : " + PauseScreen.overItemY + " num : " + PauseScreen.curItemOver);
 					if(!PauseScreen.backToRegFromItem && !PauseScreen.overItem) {
 						if(numItems != Game.itemPouch.getItemAmnt()) {
 							PauseScreen.overItem = true;
 							PauseScreen.overItemY = 198;
+							//System.out.println("lalala");
 							int num = (PauseScreen.overItemY - 198) / 82;
 							PauseScreen.curItemOver = Game.itemPouch.getItem(num);
 							PauseScreen.backToRegFromItem = false;
@@ -330,6 +334,8 @@ public class KeyInput extends KeyAdapter{
 						else {
 							numItems = 0;
 							PauseScreen.overItemY = 198;
+							int num = (PauseScreen.overItemY - 198) / 82;
+							PauseScreen.curItemOver = Game.itemPouch.getItem(num);
 							PauseScreen.backToRegFromItem = true;
 							PauseScreen.overItem = false;
 							return;
@@ -337,39 +343,7 @@ public class KeyInput extends KeyAdapter{
 					}
 					
 				}
-				if(key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A){
-					if(!PauseScreen.backToRegFromItem) {
-						numItems = 0;
-						PauseScreen.overItemY = 198;
-						PauseScreen.backToRegFromItem = true;
-						PauseScreen.overItem = false;
-						
-						return;
-					}
-					else {
-						if(numItems != Game.itemPouch.getItemAmnt()) {
-							PauseScreen.overItem = true;
-							PauseScreen.overItemY = 198;
-							int num = (PauseScreen.overItemY - 198) / 82;
-							PauseScreen.curItemOver = Game.itemPouch.getItem(num);
-							PauseScreen.backToRegFromItem = false;
-						}
-						return;
-						
-					}
-				}
-				if(key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D){
-					if(PauseScreen.backToRegFromItem) {
-						if(numItems != Game.itemPouch.getItemAmnt()) {
-							PauseScreen.overItem = true;
-							PauseScreen.overItemY = 198;
-							int num = (PauseScreen.overItemY - 198) / 82;
-							PauseScreen.curItemOver = Game.itemPouch.getItem(num);
-							PauseScreen.backToRegFromItem = false;
-						}
-						return;
-					}
-				}
+				
 				if((key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S)) {
 					if(PauseScreen.backToRegFromItem) {
 						if(numItems != Game.itemPouch.getItemAmnt()) {
@@ -398,6 +372,7 @@ public class KeyInput extends KeyAdapter{
 						return;
 					}	
 				}
+				
 				if((key == KeyEvent.VK_UP || key == KeyEvent.VK_W)) {
 					if(PauseScreen.backToRegFromItem) {
 						if(numItems != Game.itemPouch.getItemAmnt()) {
@@ -411,8 +386,8 @@ public class KeyInput extends KeyAdapter{
 						return;
 					}
 					if(PauseScreen.overItem) {
-						numItems--;
 						PauseScreen.overItemY -= 82;
+						numItems = (PauseScreen.overItemY-198)/82;
 						if(numItems < 0 ) {
 							numItems = 0;
 							PauseScreen.overItemY = 198;
@@ -513,8 +488,8 @@ public class KeyInput extends KeyAdapter{
 					}
 					if(key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A){
 						if(PauseScreen.overAnOutfit) {
-							numOutfits--;
 							PauseScreen.xValForDrawingAttire -= 232;
+							numOutfits = (PauseScreen.xValForDrawingAttire-182)/232;
 							if(numOutfits < 0) {
 								numOutfits = 0;
 								PauseScreen.xValForDrawingAttire = 182;
@@ -752,6 +727,58 @@ public class KeyInput extends KeyAdapter{
 						return;
 					}
 				}
+			}
+		}
+		if(Game.gameState == Game.STATE.Menu) {
+			if((key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D || key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) 
+					|| (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A || key == KeyEvent.VK_UP || key == KeyEvent.VK_W)) {
+				if(!Menu.overLoad && !Menu.overNew && !Menu.overOptions && !Menu.overQuit) {
+					Menu.overNew = true; 
+					return;
+				}
+			}
+			if(key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D){
+				if(Menu.overNew) {
+					Menu.overNew = false; 
+					Menu.overOptions = true;
+				}
+				if(Menu.overLoad) {
+					Menu.overLoad = false; 
+					Menu.overQuit = true;
+				}
+			}
+			else if(key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) {
+				if(Menu.overNew) {
+					Menu.overNew = false; 
+					Menu.overLoad = true;
+				}
+				if(Menu.overOptions) {
+					Menu.overOptions = false; 
+					Menu.overQuit = true;
+				}
+			}
+			else if(key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
+				if(Menu.overOptions) {
+					Menu.overOptions = false; 
+					Menu.overNew = true;
+				}
+				if(Menu.overQuit) {
+					Menu.overQuit = false; 
+					Menu.overLoad = true;
+				}
+			}
+			else if(key == KeyEvent.VK_UP || key == KeyEvent.VK_W) {
+				if(Menu.overQuit) {
+					Menu.overQuit = false; 
+					Menu.overOptions = true;
+				}
+				if(Menu.overLoad) {
+					Menu.overLoad = false; 
+					Menu.overNew = true;
+				}
+			}
+			else if(key == KeyEvent.VK_ENTER || key == KeyEvent.VK_E) {
+				menu.press();
 			}
 		}
 		

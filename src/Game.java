@@ -1,11 +1,17 @@
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 
 
 /**
@@ -123,7 +129,7 @@ public class Game extends Canvas implements Runnable{
 			
 			sprite_sheet.put("healthIcon", loader.loadImage("/healthIcon.png"));
 			sprite_sheet.put("allyIcon", loader.loadImage("/allyIcon.png"));
-			sprite_sheet.put("allyIcon1", loader.loadImage("/allyIcon1.png"));
+			//sprite_sheet.put("allyIcon1", loader.loadImage("/allyIcon1.png"));
 			sprite_sheet.put("pummelIcon", loader.loadImage("/pummelIcon.png"));
 			sprite_sheet.put("laserIcon", loader.loadImage("/laserIcon.png"));
 			
@@ -157,6 +163,22 @@ public class Game extends Canvas implements Runnable{
 		collisionTiles = new HashMap<Integer, Map<String, ArrayList<Integer>>>();
 		animationDungeon = new HashMap<String, ArrayList<String>>();
 		animationDungeonCounter = new HashMap<String, Integer>();
+		
+		
+		
+		try {
+		     GraphicsEnvironment ge = 
+		         GraphicsEnvironment.getLocalGraphicsEnvironment();
+		     ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("res/pixelated/SFPixelate.ttf")));
+		     for(int i = 0; i < ge.getAllFonts().length; i++) {
+		    	 System.out.println(ge.getAllFonts()[i]);
+		     }
+		     
+		} catch (IOException|FontFormatException e) {
+		     //Handle exception
+		}
+		
+		
 		SpriteSheet ss = new SpriteSheet(sprite_sheet);
 		crystalConfirm = new ArrayList<BufferedImage>();
 		crystalConfirm.add(ss.grabImage(1, 1, 48, 48,"crystalConfirm"));
@@ -173,7 +195,7 @@ public class Game extends Canvas implements Runnable{
 		costumePouch = new CostumePouch(handler);
 		costumePouch.addCostume(new Costume(0, 0, ID.NonEnemy, "blue", handler));
 		this.addMouseListener(menu);
-		this.addKeyListener(new KeyInput(handler, this));
+		this.addKeyListener(new KeyInput(handler, menu));
 		this.addKeyListener(ktp);
 		this.addKeyListener(cc);
 		this.addKeyListener(ft);
@@ -318,10 +340,26 @@ public class Game extends Canvas implements Runnable{
 	 * @return
 	 */
 	public static boolean shouldRender(int x, int y) {
-		if(x > (Game.camX + 1260 + 240) || x < (Game.camX - 240)) {
+		if(x > (Game.camX + 1280 + 300) || x < (Game.camX - 300)) {
 			return false;
 		}
-		if(y > (Game.camY + 1260 + 240) || y < (Game.camY - 240)) {
+		if(y > (Game.camY + 960 + 300) || y < (Game.camY - 300)) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * if spike is on screen, play its sound
+	 * @param x x value
+	 * @param y y valu
+	 * @return
+	 */
+	public static boolean canHear(int x, int y) {
+		if(x > (Game.camX + 1280) || x < (Game.camX)) {
+			return false;
+		}
+		if(y > (Game.camY + 960) || y < (Game.camY)) {
 			return false;
 		}
 		return true;
@@ -339,8 +377,6 @@ public class Game extends Canvas implements Runnable{
 		}
 		Graphics g = bs.getDrawGraphics();
 		
-		g.setColor(Color.black);
-		g.fillRect(0, 0, WIDTH, HEIGHT);
 		if( gameState == STATE.levelTwoTran) {
 			map.render(g);
 		}

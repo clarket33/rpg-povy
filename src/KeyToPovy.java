@@ -251,7 +251,7 @@ public class KeyToPovy extends KeyAdapter{
 					if(doneCount != 22) {
 						g.drawImage(grogoEmblem.get(talkCount), Game.camX + 210, Game.camY + 700, null);
 						changeCount++;
-						if(changeCount % 2 == 0) {
+						if(changeCount % 6 == 0) {
 							talkCount++;
 						}
 						if(talkCount == 2) {

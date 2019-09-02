@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -9,11 +8,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
+
+import com.sun.javafx.geom.Rectangle;
+import com.sun.javafx.tk.FontMetrics;
 /**
  * The Pause Screen is the pause menu, triggered by the user pressing SPACE while in the game state. In this menu,
  * the user can view items held, allies in their ally pouch, current levels in all skills and how close they are to upgardes
@@ -261,7 +261,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 					}
 					yItemP += 82;
 				}
-				int num = (yItemP - 198) / 82;
+				int num = (overItemY - 198) / 82;
 				curItemOver = Game.itemPouch.getItem(num);
 			}
 			else if(pauseState == PauseState.ItemUse) {
@@ -471,6 +471,35 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 	public void tick() {
 		
 	}
+	
+	
+	
+	
+	/**
+	 * Draw a String centered in the middle of a Rectangle.
+	 *
+	 * @param g The Graphics instance.
+	 * @param text The String to draw.
+	 * @param rect The Rectangle to center the text in.
+	 */
+	public void drawCenteredString(Graphics g, String text, Rectangle rect, Font font) {
+	    // Get the FontMetrics
+	    java.awt.FontMetrics metrics = g.getFontMetrics(font);
+	    // Determine the X coordinate for the text
+	    int x = rect.x + (rect.width - metrics.stringWidth(text)) / 2;
+	    // Determine the Y coordinate for the text (note we add the ascent, as in java 2d 0 is top of the screen)
+	    int y = rect.y + ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
+	    // Set the font
+	    g.setFont(font);
+	    // Draw the String
+	    g.drawString(text, x, y);
+	}
+	
+	
+	
+	
+	
+	
 	/**
 	 * draw images to the screen based on the state of the game and location of mouse
 	 * @param g
@@ -502,7 +531,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 					}
 					
 					if(overItem == true) {
-						Font fo = new Font("verdana", 1, 20);
+						Font fo = new Font("Cooper Black", 1, 40);
 						g.setColor(new Color(106, 215, 48));
 						g.setFont(fo);
 						g.drawImage(itemCover, Game.camX+482, Game.camY + overItemY, null);
@@ -521,7 +550,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 					//System.out.println("we mad eit");
 					g.drawImage(itemMenu.get(0), 0, 0, null);
 					Game.itemPouch.render(g);
-					Font fo = new Font("verdana", 1, 20);
+					Font fo = new Font("Cooper Black", 1, 40);
 					g.setColor(new Color(106, 215, 48));
 					g.setFont(fo);
 					g.drawImage(itemCover, Game.camX+482, Game.camY + overItemY, null);
@@ -571,7 +600,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				g.drawImage(expMenuBattle.get(2), Game.camX, Game.camY, null);
 			}
 			if(!ExperienceBar.levelUp) {
-				Font fo = new Font("verdana", 1, 20);
+				Font fo = new Font("Cooper Black", 1, 40);
 				g.setColor(new Color(106, 215, 48));
 				g.setFont(fo);
 				Game.expBarTracker.render(g);
@@ -584,18 +613,23 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 			}
 			else {
 				g.setFont(new Font("Cooper Black",1,40));
-				g.setColor(new Color(106, 215, 48));
+				g.setColor(new Color(106, 190, 48));
+				
 				g.drawString("Upgrade Available!", Game.camX + 420, Game.camY + 370);
 				g.drawString("Select an area to upgrade by selecting an icon:", Game.camX + 140, Game.camY + 410);
 				
-				Font fo = new Font("verdana", 1, 20);
+				Font fo = new Font("Cooper Black", 1, 40);
 				g.setColor(new Color(106, 215, 48));
 				g.setFont(fo);
-				Game.expBarTracker.render(g);
+				
+				
+				
+				
 				if(overHealth) {
 					g.drawImage(healthIcon.get(1), Game.camX + 142, Game.camY + 429, null);
-					g.drawImage(text, Game.camX + 120, Game.camY + 687, null);
-					g.drawString("Status of Povy's health. Current level: " + ExperienceBar.healthLevel + " (" + HUD.maxHealth + " max health)", Game.camX + 340, Game.camY + 830);
+					g.drawImage(text, Game.camX + 108, Game.camY + 687, null);
+					drawCenteredString(g, "Health", new Rectangle(Game.camX+13, Game.camY+780, Game.WIDTH, 50), fo);
+					drawCenteredString(g, "Current Level: " + ExperienceBar.healthLevel + " (" + HUD.maxHealth + " Max Health)", new Rectangle(Game.camX+8, Game.camY+830, Game.WIDTH, 50), fo);
 				}
 				else {
 					g.drawImage(healthIcon.get(0), Game.camX + 142, Game.camY + 429, null);
@@ -603,24 +637,36 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				
 				if(overAlly) {
 					g.drawImage(allyIcon.get(1), Game.camX + 142, Game.camY + 499, null);
-					g.drawImage(text, Game.camX + 120, Game.camY + 687, null);
-					g.drawString("The effectiveness of Povy's allies. Current level: " + ExperienceBar.allyLevel, Game.camX + 350, Game.camY + 830);
+					g.drawImage(text, Game.camX + 108, Game.camY + 687, null);
+					g.setColor(Color.pink);
+					//g.drawString("The effectiveness of Povy's allies. Current level: " + ExperienceBar.allyLevel, Game.camX + 350, Game.camY + 830);
+					drawCenteredString(g, "Allies", new Rectangle(Game.camX+8, Game.camY + 780, Game.WIDTH, 50), fo);
+					drawCenteredString(g,  "Current Level: " + ExperienceBar.allyLevel, new Rectangle(Game.camX+8, Game.camY+830, Game.WIDTH, 50), fo);
 				}
 				else g.drawImage(allyIcon.get(0), Game.camX + 142, Game.camY + 499, null);
 				
 				if(overPummel) {
 					g.drawImage(pummelIcon.get(1), Game.camX + 142, Game.camY + 569, null);
-					g.drawImage(text, Game.camX + 120, Game.camY + 687, null);
-					g.drawString("The strength of Povy's pummel attack. Current level: " + ExperienceBar.pummelLevel, Game.camX + 350, Game.camY + 830);
+					g.drawImage(text, Game.camX + 108, Game.camY + 687, null);
+					g.setColor(Color.orange);
+					//g.drawString("The strength of Povy's pummel attack. Current level: " + ExperienceBar.pummelLevel, Game.camX + 350, Game.camY + 830);
+					//drawCenteredString(g, "THE STRENGTH OF POVY'S PUMMEL ATTACK. CURRENT LEVEL: " + ExperienceBar.pummelLevel, new Rectangle(Game.camX+15, Game.camY + 780, Game.WIDTH, 50), fo);
+					drawCenteredString(g, "Pummel", new Rectangle(Game.camX+8, Game.camY + 780, Game.WIDTH, 50), fo);
+					drawCenteredString(g,  "Current Level: " + ExperienceBar.pummelLevel, new Rectangle(Game.camX+8, Game.camY+830, Game.WIDTH, 50), fo);
 				}
 				else g.drawImage(pummelIcon.get(0), Game.camX + 142, Game.camY + 569, null);
 				
 				if(overLaser) {
 					g.drawImage(laserIcon.get(1), Game.camX + 142, Game.camY + 639, null);
-					g.drawImage(text, Game.camX + 120, Game.camY + 687, null);
-					g.drawString("The power of Povy's Laser Blaster. Current level: " + ExperienceBar.laserLevel, Game.camX + 350, Game.camY + 830);
+					g.drawImage(text, Game.camX + 108, Game.camY + 687, null);
+					g.setColor(new Color(240, 20, 20));
+					//g.drawString("The power of Povy's Laser Blaster. Current level: " + ExperienceBar.laserLevel, Game.camX + 350, Game.camY + 830);
+					//drawCenteredString(g, "THE POWER OF POVY'S LASER BLASTER. CURRENT LEVEL: " + ExperienceBar.laserLevel, new Rectangle(Game.camX, Game.camY + 780, Game.WIDTH, 50), fo);
+					drawCenteredString(g, "Laser Blaster", new Rectangle(Game.camX+8, Game.camY + 780, Game.WIDTH, 50), fo);
+					drawCenteredString(g,  "Current Level: " + ExperienceBar.laserLevel, new Rectangle(Game.camX+8, Game.camY+830, Game.WIDTH, 50), fo);
 				}
 				else g.drawImage(laserIcon.get(0), Game.camX + 142, Game.camY + 639, null);
+				
 				
 			}
 			
@@ -658,17 +704,26 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				}
 				
 				if(overItem == true) {
-					Font fo = new Font("verdana", 1, 20);
+					Font fo = new Font("Cooper Black", 1, 33);
 					g.setColor(new Color(106, 215, 48));
 					g.setFont(fo);
 					g.drawImage(itemCover, Game.camX+482, Game.camY + overItemY, null);
-					g.drawImage(text, Game.camX + 120, Game.camY + 625, null);
+					if(overItemY > 460) g.drawImage(text, Game.camX + 120, Game.camY + overItemY - 300, null);
+					else g.drawImage(text, Game.camX + 120, Game.camY + overItemY + 75, null);
 					if(curItemOver != null) {
 						curItemOverLst = curItemOver.itemDescript();
 						int ySpot = 0;
-						for(int i = 0; i < curItemOverLst.size(); i++) {
-							g.drawString(curItemOverLst.get(i), Game.camX + 390, Game.camY + 750 + ySpot);
-							ySpot += 25;
+						if(curItemOverLst.size() == 1) {
+							if(overItemY > 460) drawCenteredString(g, curItemOverLst.get(0), new Rectangle(Game.camX+20, Game.camY +overItemY - 200, Game.WIDTH, 50), fo);
+							else drawCenteredString(g, curItemOverLst.get(0), new Rectangle(Game.camX+20, Game.camY + overItemY + 200, Game.WIDTH, 50), fo);
+						}
+						else{
+							for(int i = 0; i < curItemOverLst.size(); i++) {
+								if(overItemY > 460) drawCenteredString(g, curItemOverLst.get(i), new Rectangle(Game.camX+20, Game.camY + overItemY - 220 + ySpot, Game.WIDTH, 50), fo);
+								else  drawCenteredString(g, curItemOverLst.get(i), new Rectangle(Game.camX+20, Game.camY + overItemY + 150 + ySpot, Game.WIDTH, 50), fo);
+								//g.drawString(curItemOverLst.get(i), Game.camX + 390, Game.camY + 750 + ySpot);
+								ySpot += 35;
+							}
 						}
 					}
 				}
@@ -676,17 +731,24 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 			if(pauseState == PauseState.ItemUse) {
 				g.drawImage(itemMenu.get(0), Game.camX, Game.camY, null);
 				Game.itemPouch.render(g);
-				Font fo = new Font("verdana", 1, 20);
+				Font fo = new Font("Cooper Black", 1, 33);
 				g.setColor(new Color(106, 215, 48));
 				g.setFont(fo);
 				g.drawImage(itemCover, Game.camX+482, Game.camY + overItemY, null);
-				g.drawImage(text, Game.camX + 120, Game.camY + 625, null);
+				if(overItemY > 460) g.drawImage(text, Game.camX + 120, Game.camY + overItemY - 300, null);
+				else g.drawImage(text, Game.camX + 120, Game.camY + overItemY + 75, null);
 				if(curItemOver != null) {
 					curItemOverLst = curItemOver.itemDescript();
 					int ySpot = 0;
-					for(int i = 0; i < curItemOverLst.size(); i++) {
-						g.drawString(curItemOverLst.get(i), Game.camX + 390, Game.camY + 750 + ySpot);
-						ySpot += 25;
+					if(curItemOverLst.size() == 1) {
+						drawCenteredString(g, curItemOverLst.get(0), new Rectangle(Game.camX+20, Game.camY + 740, Game.WIDTH, 50), fo);
+					}
+					else{
+						for(int i = 0; i < curItemOverLst.size(); i++) {
+							drawCenteredString(g, curItemOverLst.get(i), new Rectangle(Game.camX+20, Game.camY + 700 + ySpot, Game.WIDTH, 50), fo);
+							//g.drawString(curItemOverLst.get(i), Game.camX + 390, Game.camY + 750 + ySpot);
+							ySpot += 35;
+						}
 					}
 				}
 				if(overYes) g.drawImage(useItem.get(1), Game.camX, Game.camY, null);
@@ -695,7 +757,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				return;
 			}
 			if(pauseState == PauseState.ProgressScreen) {
-				Font fo = new Font("verdana", 1, 20);
+				Font fo = new Font("Cooper Black", 1, 40);
 				g.setColor(new Color(106, 215, 48));
 				g.setFont(fo);
 				if(goBackFromProg) g.drawImage(expMenuPause.get(1), Game.camX, Game.camY, null);
@@ -703,8 +765,9 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				Game.expBarTracker.render(g);
 				if(overHealth) {
 					g.drawImage(healthIcon.get(1), Game.camX + 142, Game.camY + 429, null);
-					g.drawImage(text, Game.camX + 120, Game.camY + 687, null);
-					g.drawString("Status of Povy's health. Current level: " + ExperienceBar.healthLevel + " (" + HUD.maxHealth + " max health)", Game.camX + 340, Game.camY + 830);
+					g.drawImage(text, Game.camX + 108, Game.camY + 687, null);
+					drawCenteredString(g, "Health", new Rectangle(Game.camX+13, Game.camY+780, Game.WIDTH, 50), fo);
+					drawCenteredString(g, "Current Level: " + ExperienceBar.healthLevel + " (" + HUD.maxHealth + " Max Health)", new Rectangle(Game.camX+8, Game.camY+830, Game.WIDTH, 50), fo);
 				}
 				else {
 					g.drawImage(healthIcon.get(0), Game.camX + 142, Game.camY + 429, null);
@@ -712,22 +775,33 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				
 				if(overAlly) {
 					g.drawImage(allyIcon.get(1), Game.camX + 142, Game.camY + 499, null);
-					g.drawImage(text, Game.camX + 120, Game.camY + 687, null);
-					g.drawString("The effectiveness of Povy's allies. Current level: " + ExperienceBar.allyLevel, Game.camX + 350, Game.camY + 830);
+					g.drawImage(text, Game.camX + 108, Game.camY + 687, null);
+					g.setColor(Color.pink);
+					//g.drawString("The effectiveness of Povy's allies. Current level: " + ExperienceBar.allyLevel, Game.camX + 350, Game.camY + 830);
+					drawCenteredString(g, "Allies", new Rectangle(Game.camX+8, Game.camY + 780, Game.WIDTH, 50), fo);
+					drawCenteredString(g,  "Current Level: " + ExperienceBar.allyLevel, new Rectangle(Game.camX+8, Game.camY+830, Game.WIDTH, 50), fo);
 				}
 				else g.drawImage(allyIcon.get(0), Game.camX + 142, Game.camY + 499, null);
 				
 				if(overPummel) {
 					g.drawImage(pummelIcon.get(1), Game.camX + 142, Game.camY + 569, null);
-					g.drawImage(text, Game.camX + 120, Game.camY + 687, null);
-					g.drawString("The strength of Povy's pummel attack. Current level: " + ExperienceBar.pummelLevel, Game.camX + 350, Game.camY + 830);
+					g.drawImage(text, Game.camX + 108, Game.camY + 687, null);
+					g.setColor(Color.orange);
+					//g.drawString("The strength of Povy's pummel attack. Current level: " + ExperienceBar.pummelLevel, Game.camX + 350, Game.camY + 830);
+					//drawCenteredString(g, "THE STRENGTH OF POVY'S PUMMEL ATTACK. CURRENT LEVEL: " + ExperienceBar.pummelLevel, new Rectangle(Game.camX+15, Game.camY + 780, Game.WIDTH, 50), fo);
+					drawCenteredString(g, "Pummel", new Rectangle(Game.camX+8, Game.camY + 780, Game.WIDTH, 50), fo);
+					drawCenteredString(g,  "Current Level: " + ExperienceBar.pummelLevel, new Rectangle(Game.camX+8, Game.camY+830, Game.WIDTH, 50), fo);
 				}
 				else g.drawImage(pummelIcon.get(0), Game.camX + 142, Game.camY + 569, null);
 				
 				if(overLaser) {
 					g.drawImage(laserIcon.get(1), Game.camX + 142, Game.camY + 639, null);
-					g.drawImage(text, Game.camX + 120, Game.camY + 687, null);
-					g.drawString("The power of Povy's Laser Blaster. Current level: " + ExperienceBar.laserLevel, Game.camX + 350, Game.camY + 830);
+					g.drawImage(text, Game.camX + 108, Game.camY + 687, null);
+					g.setColor(new Color(240, 20, 20));
+					//g.drawString("The power of Povy's Laser Blaster. Current level: " + ExperienceBar.laserLevel, Game.camX + 350, Game.camY + 830);
+					//drawCenteredString(g, "THE POWER OF POVY'S LASER BLASTER. CURRENT LEVEL: " + ExperienceBar.laserLevel, new Rectangle(Game.camX, Game.camY + 780, Game.WIDTH, 50), fo);
+					drawCenteredString(g, "Laser Blaster", new Rectangle(Game.camX+8, Game.camY + 780, Game.WIDTH, 50), fo);
+					drawCenteredString(g,  "Current Level: " + ExperienceBar.laserLevel, new Rectangle(Game.camX+8, Game.camY+830, Game.WIDTH, 50), fo);
 				}
 				else g.drawImage(laserIcon.get(0), Game.camX + 142, Game.camY + 639, null);
 				

@@ -351,7 +351,7 @@ public class Rat extends GameObject{
 			g.drawString(display, (int)this.getX() + 20, (int)this.getY()-10);
 		}
 		//g.setColor(Color.green);
-		if(idt == 2 && (velY >.5 || velY <-.5)) //g.drawRect((int)x+48, (int)y, 53, 84);
+		//if(idt == 2 && (velY >.5 || velY <-.5)) //g.drawRect((int)x+48, (int)y, 53, 84);
 		if(Game.gameState == Game.STATE.Game) {
 			if(idt == 2) {
 				if(velY > .5) {

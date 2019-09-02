@@ -40,7 +40,6 @@ public class Golem extends GameObject{
 	public enum GolemType{
 		firstGolem,
 		normal,
-		treasureGuard,
 		tracker,
 		standStill
 	};
@@ -214,7 +213,7 @@ public class Golem extends GameObject{
 						else velY *= 2.75;
 						if(velX<0 && velY <0) velY /= 1.2;
 					}
-					else if(num == 3) {
+					else if(num == 3 || num == 4) {
 						velX *= 4;
 						if(velY<0) velY *= 1.75;
 						else velY *= 2.75;
@@ -225,7 +224,7 @@ public class Golem extends GameObject{
 					velX = 0;
 					velY = 0;
 				}
-				if(num ==2 || num == 1 || num == 3) {
+				if(num ==2 || num == 1 || num == 3 || num == 4) {
 					if(velX > 2.5) {
 						velX = (float)2.5;
 					}
@@ -285,6 +284,36 @@ public class Golem extends GameObject{
 					if(x > 6920) x = 6920;
 					
 					if(x < 4900) x = 4900;
+				}
+				else if(num == 4) {
+					if(x < 100) x = 100;
+					
+					
+					//left bound lever
+					if(x > 150  && y > 5206 && velX > 0) { 
+						if(y < 5254 && x < 180) x = 150;
+					}
+					
+					//uper bound lever
+					if((x > 150) && y > 5180 && velY > 0) { 
+						if(y < 5240 && x < 280) {
+							y = 5180;
+						}
+					}
+					
+					//right bound lever
+					if(x < 280  && y > 5206 && velX < 0) { 
+						if(y < 5254 && x > 230) x = 280;
+						//System.out.println(y);
+					}
+					
+					//down bound lever
+					if((x > 150 && x < 280) && y < 5280 && velY < 0) { 
+						if(y > 5200) y = 5280;
+						//System.out.println(y);
+					}
+					
+					
 				}
 				
 			}
@@ -346,6 +375,7 @@ public class Golem extends GameObject{
 			if(num == 1) return new Rectangle(6960, 1152, 384, 3024);
 			if(num == 2) return new Rectangle(2304, 2784, 672, 1008);
 			if(num == 3) return new Rectangle(4944, 240, 2160, 288);
+			if(num == 4) return new Rectangle(192, 5136, 1056, 528);
 		}
 		return null;
 		
@@ -361,7 +391,6 @@ public class Golem extends GameObject{
 		}
 		else if(Game.gameState == Game.STATE.Game) {
 			if(golemState == GolemType.firstGolem) return new Rectangle((int)x + 50, (int)y - 130, 180, 400);
-			if(golemState == GolemType.treasureGuard) return new Rectangle((int)x + 10, (int)y - 200, 180, 575);
 			if(golemState == GolemType.tracker) return new Rectangle((int)x + 90, (int)y + 140, 110, 60);
 		}
 		if(velX < 0) return new Rectangle((int)x + 59, (int)y + 134, 165, 52);
@@ -404,7 +433,7 @@ public class Golem extends GameObject{
 			}
 		}
 		if(Game.gameState == Game.STATE.Game) {
-			if(velY > 0 && num != 3) {
+			if(velY > 0 && num != 3 && num != 4) {
 				g.drawImage(walkDown.get(walkYCount), (int)x, (int)y, null);
 				changeCount++;
 				if(changeCount % 10 == 0) {
@@ -417,7 +446,7 @@ public class Golem extends GameObject{
 				//g.drawRect((int)x + 10, (int)y - 200, 180, 575);
 				return;
 			}
-			else if(velY < 0 && num != 3) {
+			else if(velY < 0 && num != 3 && num != 4) {
 				g.drawImage(walkUp.get(walkYCount), (int)x, (int)y, null);
 				changeCount++;
 				if(changeCount % 10 == 0) {
@@ -433,7 +462,7 @@ public class Golem extends GameObject{
 				return;
 			}
 			else if (velY == 0 && golemState == GolemType.tracker){
-				if(curDirection > 0) {
+				if(curDirection > 0 || num == 4) {
 					g.drawImage(facingRightIdle.get(idleCount), (int)x+50, (int)y, null);
 					changeCount++;
 					if(changeCount % 10 == 0) {
@@ -457,19 +486,7 @@ public class Golem extends GameObject{
 				
 			}
 			if(velX == 0) {
-				if(golemState == GolemType.treasureGuard) {
-					g.drawImage(facingRightIdle.get(idleCount), (int)x, (int)y, null);
-					changeCount++;
-					if(changeCount % 10 == 0) {
-						idleCount++;
-					}
-					if(idleCount == 5) {
-						idleCount = 0;
-						changeCount = 0;
-					}
-					//g.drawRect((int)x + 10, (int)y - 200, 180, 575);
-					return;
-				}
+				
 				g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
 				changeCount++;
 				if(changeCount % 10 == 0) {
@@ -693,18 +710,7 @@ public class Golem extends GameObject{
 				}
 				return;
 			}
-			if(golemState == GolemType.treasureGuard) {
-				g.drawImage(facingRightIdle.get(idleCount), (int)x, (int)y, null);
-				changeCount++;
-				if(changeCount % 2 == 0) {
-					idleCount++;
-				}
-				if(idleCount == 5) {
-					idleCount = 0;
-					changeCount = 0;
-				}
-				return;
-			}
+			
 			g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
 			changeCount++;
 			if(changeCount % 5 == 0) {

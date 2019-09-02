@@ -28,7 +28,7 @@ public class Menu extends MouseAdapter implements MouseMotionListener{
 	private float menuX = 0;
 	private boolean right = true;
 	private int changeCount = 0, sparkleX, sparkleY;
-	private boolean overNew = false, overLoad = false, overQuit = false, overOptions = false;
+	public static boolean overNew = true, overLoad = false, overQuit = false, overOptions = false;
 	private ArrayList<BufferedImage> sparkle = new ArrayList<BufferedImage>();
 	private ArrayList<BufferedImage> menu = new ArrayList<BufferedImage>();
 	
@@ -89,8 +89,16 @@ public class Menu extends MouseAdapter implements MouseMotionListener{
 	 * either starts a new game or quits
 	 */
 	public void mousePressed(MouseEvent e) {
-		int mx = e.getX();
-		int my = e.getY();
+		press();
+		
+	}
+	
+	public void mouseReleased(MouseEvent e) {
+		
+	}
+	
+	public void press() {
+
 		if(Game.gameState == Game.STATE.Menu) {
 			//play button
 			/**
@@ -99,7 +107,7 @@ public class Menu extends MouseAdapter implements MouseMotionListener{
 			}
 			**/
 			
-			if(mouseOver(mx, my, 17, 627, 374, 88)) {
+			if(overNew) {
 				AudioPlayer.getSound("click").play(1, (float).1);
 				AudioPlayer.getMusic("title").stop();
 				
@@ -108,15 +116,16 @@ public class Menu extends MouseAdapter implements MouseMotionListener{
 				AudioPlayer.getMusic("dungeon").loop(1, (float).1);
 				
 				//handler.addObject(new Povy(2000*3, 224, ID.Povy, handler, "blue")); //near chest
-				//handler.addObject(new Povy(255*3, 40*3, ID.Povy, handler, "blue")); //original
+				handler.addObject(new Povy(255*3, 40*3, ID.Povy, handler, "blue")); //original
 				//handler.addObject(new Povy(2000*3, 864*3, ID.Povy, handler, "blue")); //before final spike trap
 				//handler.addObject(new Povy(4320, 3072, ID.Povy, handler, "blue")); //near zatolib
 				//handler.addObject(new Povy(192*3, 1184*3, ID.Povy, handler, "blue")); //elephant
-				handler.addObject(new Povy(686*3, 160*3, ID.Povy, handler, "blue")); //first trap
+				//handler.addObject(new Povy(686*3, 160*3, ID.Povy, handler, "blue")); //first trap
 				//handler.addObject(new Povy(1520*3, 1392*3, ID.Povy, handler, "blue")); // lightning test
 				//handler.addObject(new Povy(1056, 1584, ID.Povy, handler, "blue")); //stair case test
 				//handler.addObject(new Povy(6816, 1344, ID.Povy, handler, "blue")); //tracker test (spikes)
 				//handler.addObject(new Povy(2448, 2928, ID.Povy, handler, "blue")); //pillar test
+				//handler.addObject(new Povy(1440, 5232, ID.Povy, handler, "blue")); //golem treasure tracker test
 				
 				
 				handler.addObject(new Grogo(182*3, 24*3, ID.Grogo, handler));
@@ -124,7 +133,12 @@ public class Menu extends MouseAdapter implements MouseMotionListener{
 				handler.addObject(new Golem(1753*3, 98*3, ID.Golem, handler, Golem.GolemType.tracker, 3));
 				handler.addObject(new Golem(7104, 1104, ID.Golem, handler, Golem.GolemType.tracker, 1));
 				handler.addObject(new Golem(2259*3, 1729*3, ID.Golem, handler, Golem.GolemType.normal, 0));
-				handler.addObject(new Golem(298*3, 1769*3, ID.Golem, handler, Golem.GolemType.treasureGuard, 0));
+				
+				
+				
+				handler.addObject(new Golem(298*3, 1769*3, ID.Golem, handler, Golem.GolemType.tracker, 4));
+				
+				
 				handler.addObject(new Golem(420, 4662, ID.Golem, handler, Golem.GolemType.standStill, 0));
 				handler.addObject(new Golem(2592, 3408, ID.Golem, handler, Golem.GolemType.tracker, 2));
 				
@@ -168,7 +182,7 @@ public class Menu extends MouseAdapter implements MouseMotionListener{
 				handler.addObject(new LightningTrap(3216, 5116, ID.Lightning, 2));
 				handler.addObject(new LightningTrap(3216, 5616, ID.Lightning, 2));
 				
-				handler.addObject(new Zatolib(1480*3, 1070*3, ID.Zatolib, handler));
+				handler.addObject(new Zatolib(1480*3, 1025*3, ID.Zatolib, handler));
 				
 				
 				
@@ -179,24 +193,19 @@ public class Menu extends MouseAdapter implements MouseMotionListener{
 				
 				
 				
-				Game.gameState = Game.STATE.Game;		
+				Game.gameState = Game.STATE.KeyFromGrogo;		
 			}
 			
 			
 			
 			//quit
-			if(mouseOver(mx, my, 889, 831, 374, 88)) {
+			if(overQuit) {
 				AudioPlayer.getMusic("title").stop();
 				AudioPlayer.getSound("click").play(1, (float).1);
 				System.exit(0);
 			}
 			
 		}
-		
-	}
-	
-	public void mouseReleased(MouseEvent e) {
-		
 	}
 	
 	public void tick() {

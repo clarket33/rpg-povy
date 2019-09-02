@@ -44,14 +44,15 @@ public class Grogo extends GameObject{
 		idle.add(ss.grabImage(1, 2, 324, 160,"grogo"));
 		idle.add(ss.grabImage(1, 3, 324, 160,"grogo"));
 		idle.add(ss.grabImage(1, 4, 324, 160,"grogo"));
-		idle.add(ss.grabImage(1, 5, 324, 160,"grogo"));
 		
+		walkRight.add(ss.grabImage(1, 5, 324, 160,"grogo"));
 		walkRight.add(ss.grabImage(2, 1, 324, 160,"grogo"));
 		walkRight.add(ss.grabImage(2, 2, 324, 160,"grogo"));
 		walkRight.add(ss.grabImage(2, 3, 324, 160,"grogo"));
 		walkRight.add(ss.grabImage(2, 4, 324, 160,"grogo"));
 		walkRight.add(ss.grabImage(2, 5, 324, 160,"grogo"));
 		
+		walkLeft.add(ss.grabImage(1, 5, 100, 160,"grogo2"));
 		walkLeft.add(ss.grabImage(2, 1, 100, 160,"grogo2"));
 		walkLeft.add(ss.grabImage(2, 2, 100, 160,"grogo2"));
 		walkLeft.add(ss.grabImage(2, 3, 100, 160,"grogo2"));
@@ -81,13 +82,7 @@ public class Grogo extends GameObject{
 		fireAttack.add(ss.grabImage(6, 5, 324, 160,"grogo"));
 		fireAttack.add(ss.grabImage(7, 1, 324, 160,"grogo"));
 		fireAttack.add(ss.grabImage(7, 2, 324, 160,"grogo"));
-		fireAttack.add(ss.grabImage(7, 3, 324, 160,"grogo"));
-		fireAttack.add(ss.grabImage(7, 4, 324, 160,"grogo"));
-		fireAttack.add(ss.grabImage(7, 5, 324, 160,"grogo"));
-		fireAttack.add(ss.grabImage(8, 1, 324, 160,"grogo"));
-		fireAttack.add(ss.grabImage(8, 2, 324, 160,"grogo"));
-		fireAttack.add(ss.grabImage(8, 3, 324, 160,"grogo"));
-		fireAttack.add(ss.grabImage(8, 4, 324, 160,"grogo"));
+		
 		
 		idleAnimation = 0;
 		walkAnimation = 0;
@@ -127,20 +122,20 @@ public class Grogo extends GameObject{
 					if(changeCount % 15 == 0) {
 						fireAnimation++;
 					}
-					if(fireAnimation >= 11 && fireAnimation <= 17) {
+					if(fireAnimation >= 4 && fireAnimation <= 19) {
 						Battle.contact = true;
 					}
 					else {
 						Battle.contact = false;
 					}
-					if((fireAnimation >= 7 && fireAnimation <= 20) && changeCount % 15 == 0) {
+					if((fireAnimation >= 4 && fireAnimation <= 17) && changeCount % 15 == 0) {
 						Battle.takeDamage = true;
 						AudioPlayer.getSound("fire").play(1, (float).1);
 					}
 					else {
 						Battle.takeDamage = false;
 					}
-					if(fireAnimation == 29) {
+					if(fireAnimation == 21) {
 						fireAnimation = 0;
 						changeCount = 0;
 						velX = -3;
@@ -150,10 +145,10 @@ public class Grogo extends GameObject{
 				else if(velX > 0) {
 					g.drawImage(walkRight.get(walkAnimation), (int)x, (int)y, null);
 					changeCount++;
-					if(changeCount % 15 == 0) {
+					if(changeCount % 7 == 0) {
 						walkAnimation++;
 					}
-					if(walkAnimation == 5) {
+					if(walkAnimation == 6) {
 						walkAnimation = 0;
 						changeCount = 0;
 					}
@@ -161,10 +156,10 @@ public class Grogo extends GameObject{
 				else if(velX < 0) {
 					g.drawImage(walkLeft.get(walkAnimation), (int)x, (int)y, null);
 					changeCount++;
-					if(changeCount % 15 == 0) {
+					if(changeCount % 7 == 0) {
 						walkAnimation++;
 					}
-					if(walkAnimation == 5) {
+					if(walkAnimation == 6) {
 						walkAnimation = 0;
 						changeCount = 0;
 					}
@@ -178,7 +173,7 @@ public class Grogo extends GameObject{
 			if(changeCount % 10 == 0) {
 				idleAnimation++;
 			}
-			if(idleAnimation == 5) {
+			if(idleAnimation == 4) {
 				idleAnimation = 0;
 				changeCount = 0;
 			}

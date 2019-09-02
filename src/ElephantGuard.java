@@ -274,7 +274,7 @@ public class ElephantGuard extends GameObject{
 			if(velX == 0) {
 				g.drawImage(idle.get(idleCount), (int)x, (int)y, null);
 				changeCount++;
-				if(changeCount % 2 == 0) {
+				if(changeCount % 4 == 0) {
 					idleCount++;
 				}
 				if(idleCount == 4) {

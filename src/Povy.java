@@ -93,6 +93,7 @@ public class Povy extends GameObject{
 		actualCrystal.add(ss.grabImage(3, 2, 680, 96,"crystalAttack"));
 		
 		changeOutfit(suitColor, ss);
+		curDirection = -1;
 		
 	}
 	
@@ -247,6 +248,8 @@ public class Povy extends GameObject{
 					if(handler.objects.get(i).id == ID.ElephantGuard) {
 						//AudioPlayer.getMusic("dungeon").stop();
 						FightText.enemyState = FightText.ENEMYSTATE.ELEPHANT;
+						AudioPlayer.getMusic("dungeon").stop();
+						AudioPlayer.getMusic("zatFight").loop(1, (float).5);
 						this.velX = 0;
 						this.velY = 0;
 						hit = false;
@@ -263,6 +266,7 @@ public class Povy extends GameObject{
 							hit = false;
 							return true;
 						}
+						AudioPlayer.getMusic("dungeon").stop();
 						AudioPlayer.getMusic("zatFight").loop(1, (float).5);
 						FightText.enemyState = FightText.ENEMYSTATE.ZATOLIB;
 						this.velX = 0;
@@ -365,10 +369,13 @@ public class Povy extends GameObject{
 			if(Battle.battleState == Battle.BATTLESTATE.EnemyTurn && Battle.enemy.id == ID.Zatolib) {
 				Zatolib z = (Zatolib) Battle.enemy;
 				if(z.getAttackDam() == 1) {
-					return new Rectangle((int)x + 410, (int)y + 78, 31, 13);
+					return new Rectangle((int)x + 560, (int)y + 78, 31, 13);
 				}
 				if(z.getAttackDam() == 2) {
-					return new Rectangle((int)x + 96, (int)y + 78, 31, 13);
+					return new Rectangle((int)x + 60, (int)y + 78, 31, 13);
+				}
+				if(z.getAttackDam() == 0) {
+					return new Rectangle((int)x + 10, (int)y + 78, 31, 13);
 				}
 			}
 		}
@@ -1365,67 +1372,75 @@ public class Povy extends GameObject{
 		rise.add(ss.grabImage(23, 3, 96, 108,rightBoard));
 		
 		if(!rightBoard.contains("povyPurple")) {
-			grogIdleR.add(ss.grabImage(8, 5, 324, 160,"grogo"));
-			grogIdleR.add(ss.grabImage(9, 1, 324, 160,"grogo"));
-			grogIdleR.add(ss.grabImage(9, 2, 324, 160,"grogo"));
-			grogIdleR.add(ss.grabImage(9, 3, 324, 160,"grogo"));
+			grogIdleR.add(ss.grabImage(7, 3, 324, 160,"grogo"));
+			grogIdleR.add(ss.grabImage(7, 4, 324, 160,"grogo"));
+			grogIdleR.add(ss.grabImage(7, 5, 324, 160,"grogo"));
+			grogIdleR.add(ss.grabImage(8, 1, 324, 160,"grogo"));
 			
-			grogSideR.add(ss.grabImage(9, 4, 324, 160,"grogo"));
-			grogSideR.add(ss.grabImage(9, 5, 324, 160,"grogo"));
-			grogSideR.add(ss.grabImage(10, 1, 324, 160,"grogo"));
-			grogSideR.add(ss.grabImage(10, 2, 324, 160,"grogo"));
+			grogSideR.add(ss.grabImage(8, 2, 324, 160,"grogo"));
+			grogSideR.add(ss.grabImage(8, 3, 324, 160,"grogo"));
+			grogSideR.add(ss.grabImage(8, 4, 324, 160,"grogo"));
+			grogSideR.add(ss.grabImage(8, 5, 324, 160,"grogo"));
+			grogSideR.add(ss.grabImage(9, 1, 324, 160,"grogo"));
+			grogSideR.add(ss.grabImage(9, 2, 324, 160,"grogo"));
 			
-			grogUpR.add(ss.grabImage(10, 3, 324, 160,"grogo"));
-			grogUpR.add(ss.grabImage(10, 4, 324, 160,"grogo"));
-			grogUpR.add(ss.grabImage(10, 5, 324, 160,"grogo"));
-			grogUpR.add(ss.grabImage(11, 1, 324, 160,"grogo"));
+			grogUpR.add(ss.grabImage(9, 3, 324, 160,"grogo"));
+			grogUpR.add(ss.grabImage(9, 4, 324, 160,"grogo"));
+			grogUpR.add(ss.grabImage(9, 5, 324, 160,"grogo"));
+			grogUpR.add(ss.grabImage(10, 1, 324, 160,"grogo"));
 			
-			grogIdleL.add(ss.grabImage(8, 5, 100, 160,"grogo2"));
-			grogIdleL.add(ss.grabImage(9, 1, 100, 160,"grogo2"));
-			grogIdleL.add(ss.grabImage(9, 2, 100, 160,"grogo2"));
-			grogIdleL.add(ss.grabImage(9, 3, 100, 160,"grogo2"));
+			grogIdleL.add(ss.grabImage(7, 3, 100, 160,"grogo2"));
+			grogIdleL.add(ss.grabImage(7, 4, 100, 160,"grogo2"));
+			grogIdleL.add(ss.grabImage(7, 5, 100, 160,"grogo2"));
+			grogIdleL.add(ss.grabImage(8, 1, 100, 160,"grogo2"));
 			
-			grogSideL.add(ss.grabImage(9, 4, 100, 160,"grogo2"));
-			grogSideL.add(ss.grabImage(9, 5, 100, 160,"grogo2"));
-			grogSideL.add(ss.grabImage(10, 1, 100, 160,"grogo2"));
-			grogSideL.add(ss.grabImage(10, 2, 100, 160,"grogo2"));
+			grogSideL.add(ss.grabImage(8, 2, 100, 160,"grogo2"));
+			grogSideL.add(ss.grabImage(8, 3, 100, 160,"grogo2"));
+			grogSideL.add(ss.grabImage(8, 4, 100, 160,"grogo2"));
+			grogSideL.add(ss.grabImage(8, 5, 100, 160,"grogo2"));
+			grogSideL.add(ss.grabImage(9, 1, 100, 160,"grogo2"));
+			grogSideL.add(ss.grabImage(9, 2, 100, 160,"grogo2"));
 			
-			grogUpL.add(ss.grabImage(10, 3, 100, 160,"grogo2"));
-			grogUpL.add(ss.grabImage(10, 4, 100, 160,"grogo2"));
-			grogUpL.add(ss.grabImage(10, 5, 100, 160,"grogo2"));
-			grogUpL.add(ss.grabImage(11, 1, 100, 160,"grogo2"));
+			grogUpL.add(ss.grabImage(9, 3, 100, 160,"grogo2"));
+			grogUpL.add(ss.grabImage(9, 4, 100, 160,"grogo2"));
+			grogUpL.add(ss.grabImage(9, 5, 100, 160,"grogo2"));
+			grogUpL.add(ss.grabImage(10, 1, 100, 160,"grogo2"));
 		}
 		else if(rightBoard.contains("povyPurple")) {
 			
-			grogIdleR.add(ss.grabImage(11, 2, 324, 160,"grogo"));
-			grogIdleR.add(ss.grabImage(11, 3, 324, 160,"grogo"));
-			grogIdleR.add(ss.grabImage(11, 4, 324, 160,"grogo"));
-			grogIdleR.add(ss.grabImage(11, 5, 324, 160,"grogo"));
+			grogIdleR.add(ss.grabImage(10, 2, 324, 160,"grogo"));
+			grogIdleR.add(ss.grabImage(10, 3, 324, 160,"grogo"));
+			grogIdleR.add(ss.grabImage(10, 4, 324, 160,"grogo"));
+			grogIdleR.add(ss.grabImage(10, 5, 324, 160,"grogo"));
 			
+			grogSideR.add(ss.grabImage(11, 1, 324, 160,"grogo"));
+			grogSideR.add(ss.grabImage(11, 2, 324, 160,"grogo"));
+			grogSideR.add(ss.grabImage(11, 3, 324, 160,"grogo"));
+			grogSideR.add(ss.grabImage(11, 4, 324, 160,"grogo"));
+			grogSideR.add(ss.grabImage(11, 5, 324, 160,"grogo"));
 			grogSideR.add(ss.grabImage(12, 1, 324, 160,"grogo"));
-			grogSideR.add(ss.grabImage(12, 2, 324, 160,"grogo"));
-			grogSideR.add(ss.grabImage(12, 3, 324, 160,"grogo"));
-			grogSideR.add(ss.grabImage(12, 4, 324, 160,"grogo"));
 			
+			grogUpR.add(ss.grabImage(12, 2, 324, 160,"grogo"));
+			grogUpR.add(ss.grabImage(12, 3, 324, 160,"grogo"));
+			grogUpR.add(ss.grabImage(12, 4, 324, 160,"grogo"));
 			grogUpR.add(ss.grabImage(12, 5, 324, 160,"grogo"));
-			grogUpR.add(ss.grabImage(13, 1, 324, 160,"grogo"));
-			grogUpR.add(ss.grabImage(13, 2, 324, 160,"grogo"));
-			grogUpR.add(ss.grabImage(13, 3, 324, 160,"grogo"));
 			
-			grogIdleL.add(ss.grabImage(11, 2, 100, 160,"grogo2"));
-			grogIdleL.add(ss.grabImage(11, 3, 100, 160,"grogo2"));
-			grogIdleL.add(ss.grabImage(11, 4, 100, 160,"grogo2"));
-			grogIdleL.add(ss.grabImage(11, 5, 100, 160,"grogo2"));
+			grogIdleL.add(ss.grabImage(10, 2, 100, 160,"grogo2"));
+			grogIdleL.add(ss.grabImage(10, 3, 100, 160,"grogo2"));
+			grogIdleL.add(ss.grabImage(10, 4, 100, 160,"grogo2"));
+			grogIdleL.add(ss.grabImage(10, 5, 100, 160,"grogo2"));
 			
+			grogSideL.add(ss.grabImage(11, 1, 100, 160,"grogo2"));
+			grogSideL.add(ss.grabImage(11, 2, 100, 160,"grogo2"));
+			grogSideL.add(ss.grabImage(11, 3, 100, 160,"grogo2"));
+			grogSideL.add(ss.grabImage(11, 4, 100, 160,"grogo2"));
+			grogSideL.add(ss.grabImage(11, 5, 100, 160,"grogo2"));
 			grogSideL.add(ss.grabImage(12, 1, 100, 160,"grogo2"));
-			grogSideL.add(ss.grabImage(12, 2, 100, 160,"grogo2"));
-			grogSideL.add(ss.grabImage(12, 3, 100, 160,"grogo2"));
-			grogSideL.add(ss.grabImage(12, 4, 100, 160,"grogo2"));
 			
+			grogUpL.add(ss.grabImage(12, 2, 100, 160,"grogo2"));
+			grogUpL.add(ss.grabImage(12, 3, 100, 160,"grogo2"));
+			grogUpL.add(ss.grabImage(12, 4, 100, 160,"grogo2"));
 			grogUpL.add(ss.grabImage(12, 5, 100, 160,"grogo2"));
-			grogUpL.add(ss.grabImage(13, 1, 100, 160,"grogo2"));
-			grogUpL.add(ss.grabImage(13, 2, 100, 160,"grogo2"));
-			grogUpL.add(ss.grabImage(13, 3, 100, 160,"grogo2"));
 			
 			
 		}

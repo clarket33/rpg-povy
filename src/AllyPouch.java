@@ -26,7 +26,7 @@ public class AllyPouch {
 		grogoIdle.add(ss.grabImage(1, 2, 324, 160,"grogo"));
 		grogoIdle.add(ss.grabImage(1, 3, 324, 160,"grogo"));
 		grogoIdle.add(ss.grabImage(1, 4, 324, 160,"grogo"));
-		grogoIdle.add(ss.grabImage(1, 5, 324, 160,"grogo"));
+		
 		
 		
 	}
@@ -59,7 +59,7 @@ public class AllyPouch {
 					if(changeCount % 5 == 0) {
 						idleAnimation++;
 					}
-					if(idleAnimation == 5) {
+					if(idleAnimation == 4) {
 						idleAnimation = 0;
 						changeCount = 0;
 					}
@@ -70,7 +70,7 @@ public class AllyPouch {
 					if(changeCount % 2 == 0) {
 						idleAnimation++;
 					}
-					if(idleAnimation == 5) {
+					if(idleAnimation == 4) {
 						idleAnimation = 0;
 						changeCount = 0;
 					}

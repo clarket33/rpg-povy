@@ -33,7 +33,7 @@ public class Chest extends GameObject{
 	public Chest(float x, float y, ID id) {
 		super(x, y, id);
 		rand = new Random();
-		int val = rand.nextInt(37);
+		int val = rand.nextInt(14);
 		
 		text = null;
 		try {
@@ -43,13 +43,13 @@ public class Chest extends GameObject{
 	    }
 		
 		
-		if(val >= 0 && val <=10)item = new Item(Item.ItemType.SmallHP);
-		else if(val >= 11 && val <= 12)item = new Item(Item.ItemType.MaxHP);
-		else if(val >= 13 && val <= 16)item = new Item(Item.ItemType.LargeHP);
-		else if(val >= 17 && val <= 24)item = new Item(Item.ItemType.SmallAttackBoost);
-		else if(val >= 25 && val <= 26)item = new Item(Item.ItemType.LargeAttackBoost);
-		else if(val >= 27 && val <= 34)item = new Item(Item.ItemType.SmallDefenseBoost);
-		else if(val >= 35 && val <= 36)item = new Item(Item.ItemType.LargeDefenseBoost);
+		if(val >= 0 && val <= 2)item = new Item(Item.ItemType.SmallHP);
+		else if(val == 11)item = new Item(Item.ItemType.MaxHP);
+		else if(val >= 9 && val <= 10)item = new Item(Item.ItemType.LargeHP);
+		else if(val >= 3 && val <= 5)item = new Item(Item.ItemType.SmallAttackBoost);
+		else if(val == 13)item = new Item(Item.ItemType.LargeAttackBoost);
+		else if(val == 12)item = new Item(Item.ItemType.LargeDefenseBoost);
+		else if(val >= 6 && val <= 8)item = new Item(Item.ItemType.SmallDefenseBoost);
 		
 		
 	}

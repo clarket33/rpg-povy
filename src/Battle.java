@@ -91,7 +91,7 @@ public class Battle{
 		animationCount = 0;
 		if(enemy.getID() == ID.Golem) {
 			Golem g = (Golem)enemy;
-			if(g.getgID() == Golem.GolemType.firstGolem || g.getgID() == Golem.GolemType.treasureGuard	) {
+			if(g.getgID() == Golem.GolemType.firstGolem) {
 				canRun = false;
 			}
 			else {
@@ -360,15 +360,15 @@ public class Battle{
 							if(enemy.getID() == ID.Zatolib) {
 								damage = damageMaker.nextInt(30);
 								if(lgABoost) {
-									if(damage <= 25) enemy.takeDamage((2 + (ExperienceBar.laserLevel *2))*2);
+									if(damage <= 21) enemy.takeDamage((3 + (ExperienceBar.laserLevel *2))*2);
 									else enemy.takeDamage((12 + (ExperienceBar.laserLevel*4))*2);
 								}
 								else if(smABoost) {
-									if(damage <= 25) enemy.takeDamage(2 + ((ExperienceBar.laserLevel+1) *2));
+									if(damage <= 21) enemy.takeDamage(3 + ((ExperienceBar.laserLevel+1) *2));
 									else enemy.takeDamage(12 + ((ExperienceBar.laserLevel+1)*4));
 								}
 								else {
-									if(damage <= 25) enemy.takeDamage(2 + (ExperienceBar.laserLevel *2));
+									if(damage <= 21) enemy.takeDamage(3 + (ExperienceBar.laserLevel *2));
 									else enemy.takeDamage(12 + (ExperienceBar.laserLevel*4));
 								}
 							}
@@ -503,11 +503,19 @@ public class Battle{
 						if(AudioPlayer.getMusic("dungeonFight").playing()) {
 							AudioPlayer.getMusic("dungeonFight").stop();
 							AudioPlayer.getSound("povyDies").play(1, (float).3);
+							lgABoost = false;
+							smABoost = false;
+							lgDBoost = false;
+							smDBoost = false;
 						}
 						return;
 					}
 					else if(HUD.HEALTH <= 0) {
 						Battle.battleState = Battle.BATTLESTATE.PlayerDies;
+						lgABoost = false;
+						smABoost = false;
+						lgDBoost = false;
+						smDBoost = false;
 						return;
 					}
 					battleState = BATTLESTATE.PlayerTurnStart;
@@ -627,19 +635,19 @@ public class Battle{
 				if(enemy.getID() == ID.Zatolib) {
 					Zatolib z = (Zatolib) enemy;
 					int attack = z.getAttackDam();
-					//eye laser
+					//lightning
 					if(attack == 2) {
 						damage = damageMaker.nextInt(5);
 						if(smDBoost) {
-							if(damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 8;
+							if(damage == 0 || damage == 1 || damage == 2) HUD.HEALTH -= 8;
 							else HUD.HEALTH -= 12;
 						}
 						else if(lgDBoost) {
-							if(damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 4;
+							if(damage == 0 || damage == 1 || damage == 2) HUD.HEALTH -= 4;
 							else HUD.HEALTH -= 8;
 						}
 						else {
-							if(damage == 0 || damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 12;
+							if(damage == 0 || damage == 1 || damage == 2) HUD.HEALTH -= 12;
 							else HUD.HEALTH -= 16;
 						}
 					}
@@ -655,12 +663,12 @@ public class Battle{
 							else HUD.HEALTH -= 8;
 						}
 						else {
-							if(damage == 0 || damage == 1 || damage == 2) HUD.HEALTH -= 12;
+							if(damage == 0 || damage == 1 || damage == 2 || damage == 3) HUD.HEALTH -= 12;
 							else HUD.HEALTH -= 16;
 						}
 						
 					}
-					//hair whip
+					//stomp
 					else {
 						damage = damageMaker.nextInt(5);
 						if(smDBoost) {
@@ -864,7 +872,40 @@ public class Battle{
 		int x, y;
 		int curID = 0;
 		for(int i = 0; i < layers.size(); i++) {
-			if(i == 1) {
+	       	cur = layers.get(i).split(",");
+	        x = 0;
+	     	y = 0;
+	       	for(int j = 0; j < cur.length; j++) {
+	       		curID = Integer.parseInt(cur[j].replace("\n", ""));
+	       		if(curID != 0) {
+	       			if(Game.animationDungeon.get("torch").contains(cur[j])) {
+	       				g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("torch").get(Game.animationDungeonCounter.get("torch")))), x, y, null);
+	       				torchCounter++;
+	       				if(torchCounter == 48) {
+	       					
+	       					Game.animationDungeonCounter.put("torch", Game.animationDungeonCounter.get("torch") + 1);
+	       					torchCounter = 0;
+	       					if(Game.animationDungeonCounter.get("torch") == Game.animationDungeon.get("torch").size()) {
+		       					
+		       					Game.animationDungeonCounter.put("torch", new Integer(0));
+		       				}
+	       				}
+	       				
+	       			}
+	       			
+	       			else {
+	       				
+	       				g.drawImage(Game.dungeonTiles.get(curID), x, y, null);
+	       			}
+	       		}
+	       		x += 48;
+	       		if(x == 1296) {
+	       			x = 0;
+	       			y += 48;
+	       		}
+	       		
+	       	 }
+	       	if(i == layers.size()-1) {
 				if(battleState == BATTLESTATE.PlayerTurnAction) {
 					enemy.render(g);
 					if(lgABoost) {
@@ -900,43 +941,10 @@ public class Battle{
 					}
 					enemy.render(g);
 				}
-				
 				Game.hud.render(g);
+				
+				
 			}
-		
-	       	cur = layers.get(i).split(",");
-	        x = 0;
-	     	y = 0;
-	       	for(int j = 0; j < cur.length; j++) {
-	       		curID = Integer.parseInt(cur[j].replace("\n", ""));
-	       		if(curID != 0) {
-	       			if(Game.animationDungeon.get("torch").contains(cur[j])) {
-	       				g.drawImage(Game.dungeonTiles.get(Integer.parseInt(Game.animationDungeon.get("torch").get(Game.animationDungeonCounter.get("torch")))), x, y, null);
-	       				torchCounter++;
-	       				if(torchCounter == 48) {
-	       					
-	       					Game.animationDungeonCounter.put("torch", Game.animationDungeonCounter.get("torch") + 1);
-	       					torchCounter = 0;
-	       					if(Game.animationDungeonCounter.get("torch") == Game.animationDungeon.get("torch").size()) {
-		       					
-		       					Game.animationDungeonCounter.put("torch", new Integer(0));
-		       				}
-	       				}
-	       				
-	       			}
-	       			
-	       			else {
-	       				
-	       				g.drawImage(Game.dungeonTiles.get(curID), x, y, null);
-	       			}
-	       		}
-	       		x += 48;
-	       		if(x == 1296) {
-	       			x = 0;
-	       			y += 48;
-	       		}
-	       		
-	       	 }
 		}
 		
 		if(escaped == 1) {
@@ -1242,8 +1250,8 @@ public class Battle{
 						enemyY = enemy.getY();
 						velX = enemy.getVelX();
 						velY = enemy.getVelY();
-						enemy.setX(3*288);
-						enemy.setY(3*112);
+						enemy.setX(3*250);
+						enemy.setY(3*67);
 						enemyOriginalX = (int)enemy.getX();
 					}
 				}
@@ -1291,7 +1299,7 @@ public class Battle{
 						if(handler.objects.get(j).getID() == ID.Povy) {
 							handler.objects.get(j).setX(4368);
 							handler.objects.get(j).setY(3260);
-							handler.addObject(new Zatolib(1480*3, 1070*3, ID.Zatolib, handler));
+							handler.addObject(new Zatolib(1480*3, 1025*3, ID.Zatolib, handler));
 							//FightText.enemyState = FightText.ENEMYSTATE.GROGZATOLIB;
 						}
 						/**

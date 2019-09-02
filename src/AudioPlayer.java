@@ -70,6 +70,11 @@ public class AudioPlayer {
 			soundMap.put("electric", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/UI/CGM3_Error_Button_05_1.wav"));
 			soundMap.put("stairs", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Misc/PP_Small_Impact_1_6.wav"));
 			soundMap.put("spark", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Collect Item/FA_Collect_Coin_1_2.wav"));
+			soundMap.put("pillarFinish", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Collect Item/PP_Special_Item.wav"));
+			soundMap.put("pillarTouch", new Sound("res/audio/soundFX/Game Music Stingers and UI SFX Pack 2/UI_SFX/Collect Item/FA_Collect_Item_1_1.wav"));
+			soundMap.put("spikesUp", new Sound("res/sounds/hit/hit_19.wav"));
+			soundMap.put("spikesDown", new Sound("res/sounds/hit/hit_12.wav"));
+			soundMap.put("thunder", new Sound("res/audio/thunder.wav"));
 			
 		} catch(SlickException e) {
 			e.printStackTrace();

@@ -72,7 +72,7 @@ public class CrystalCutscene extends KeyAdapter{
 	 */
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		if(key == KeyEvent.VK_ENTER) {
+		if(key == KeyEvent.VK_ENTER || key == KeyEvent.VK_E) {
 			if(Game.gameState == Game.STATE.Battle && Battle.battleState == Battle.BATTLESTATE.CrystalCutscene) {
 				if(crystalState == CRYSTALSTATE.PovyDead || crystalState == CRYSTALSTATE.PovyRise || crystalState == CRYSTALSTATE.UsingCrystal) {
 					if(done && buffer == 0) {

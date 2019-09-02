@@ -14,13 +14,14 @@ import java.util.ArrayList;
  */
 public class HUD {
 	public int bounds = 0;
-	public static int HEALTH = 4;
+	public static int HEALTH = 64;
 	public static int maxHealth = 64;
 	public static int allyCount = 0;
+	private int meterCount = 3, changeCount = 0;
 	
 	private ArrayList<BufferedImage> health = new ArrayList<BufferedImage>();
 	private ArrayList<BufferedImage> allyMeter = new ArrayList<BufferedImage>();
-	private ArrayList<BufferedImage> allyIcon = new ArrayList<BufferedImage>();
+	//private ArrayList<BufferedImage> allyIcon = new ArrayList<BufferedImage>();
 	
 	/**
 	 * Loads in the images of the Heads Up Display
@@ -34,13 +35,17 @@ public class HUD {
 		health.add(toBufferedImage(ss.grabImage(1, 4, 17, 17, "health").getScaledInstance(51, 51, Image.SCALE_AREA_AVERAGING)));
 		health.add(toBufferedImage(ss.grabImage(1, 5, 17, 17, "health").getScaledInstance(51, 51, Image.SCALE_AREA_AVERAGING)));
 		
-		allyMeter.add(ss.grabImage(1, 1, 150, 45,"allyMeter"));
-		allyMeter.add(ss.grabImage(1, 2, 150, 45,"allyMeter"));
-		allyMeter.add(ss.grabImage(1, 3, 150, 45,"allyMeter"));
-		allyMeter.add(ss.grabImage(2, 1, 150, 45,"allyMeter"));
+		allyMeter.add(ss.grabImage(1, 1, 450, 187,"allyMeter"));
+		allyMeter.add(ss.grabImage(1, 2, 450, 187,"allyMeter"));
+		allyMeter.add(ss.grabImage(1, 3, 450, 187,"allyMeter"));
+		allyMeter.add(ss.grabImage(2, 1, 450, 187,"allyMeter"));
+		allyMeter.add(ss.grabImage(2, 2, 450, 187,"allyMeter"));
+		allyMeter.add(ss.grabImage(2, 3, 450, 187,"allyMeter"));
+		allyMeter.add(ss.grabImage(3, 1, 450, 187,"allyMeter"));
+		allyMeter.add(ss.grabImage(3, 2, 450, 187,"allyMeter"));
+		allyMeter.add(ss.grabImage(3, 3, 450, 187,"allyMeter"));
 		
-		allyIcon.add(ss.grabImage(1, 1, 64, 45, "allyIcon1"));
-		allyIcon.add(ss.grabImage(1, 2, 64, 45, "allyIcon1"));
+		
 	}
 	
 	public void tick() {
@@ -103,8 +108,18 @@ public class HUD {
 		}
 		
 		if(Game.gameState == Game.STATE.Battle) {
-			g.drawImage(allyMeter.get(allyCount), 800, 20, null);
-			g.drawImage(allyIcon.get(0), 950, 20, null);
+			if(allyCount != 3) g.drawImage(allyMeter.get(allyCount), 800, 0, null);
+			else {
+				g.drawImage(allyMeter.get(meterCount), 800, 0, null);
+				changeCount++;
+				if(changeCount % 10 == 0) {
+					changeCount = 0;
+					meterCount++;
+				}
+				if(meterCount == 9) {
+					meterCount = 3;
+				}
+			}
 		}
 	}
 	/**

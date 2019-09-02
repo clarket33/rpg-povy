@@ -20,7 +20,7 @@ public class FightText extends KeyAdapter{
 	private int count = 0, countLine2 = 0, talkCount = 0;
 	private boolean done;
 	private ArrayList<BufferedImage> text;
-	private int doneCount = 2;
+	private int doneCount = 0;
 	private int changeCount = 0, animate = 1;
 	private Handler handler;
 	private int buffer = 300;
@@ -78,7 +78,7 @@ public class FightText extends KeyAdapter{
 	    String str6 = "And once I gain control of what's rightfully mine,";
 	    String str7 = "I will build an army to rule the galaxy!";
 	    
-	    String str8 = "And there is nothing you can do to stop me!";
+	    String str8 = "Prepare for your imminent death!";
 	    
 	    
 	    //grogo post fight
@@ -124,7 +124,7 @@ public class FightText extends KeyAdapter{
 	 */
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		if(key == KeyEvent.VK_ENTER) {
+		if(key == KeyEvent.VK_ENTER || key == KeyEvent.VK_E) {
 			if(Game.gameState == Game.STATE.Game || Game.gameState == Game.STATE.AfterZatolib) {
 				//System.out.println(buffer);
 				if(!speedChanged && buffer >= 10) {
@@ -144,6 +144,7 @@ public class FightText extends KeyAdapter{
 						//System.out.println("yert");
 						enemyState = ENEMYSTATE.INACTIVE;
 						levOver = true;
+						AudioPlayer.getMusic("dungeon").loop(1, (float).1);
 					}
 					if(doneCount >=11) {
 						return;
@@ -230,9 +231,9 @@ public class FightText extends KeyAdapter{
 				g.drawImage(text.get(0), Game.camX + 120, Game.camY + 625, null);
 				handleScene(doneCount,g);
 				if(doneCount == 0 || doneCount == 1) {
-					g.drawImage(elephantEmblem.get(talkCount), Game.camX + 210, Game.camY + 700, null);
+					g.drawImage(elephantEmblem.get(talkCount), Game.camX + 210, Game.camY + 680, null);
 					changeCount++;
-					if(changeCount % 2 == 0) {
+					if(changeCount % 8 == 0) {
 						talkCount++;
 					}
 					if(talkCount == 2) {
@@ -241,9 +242,9 @@ public class FightText extends KeyAdapter{
 					}
 				}
 				else if(doneCount >= 2 && doneCount <= 8) {
-					g.drawImage(zatolibEmblem.get(talkCount), Game.camX + 210, Game.camY + 700, null);
+					g.drawImage(zatolibEmblem.get(talkCount), Game.camX + 230, Game.camY + 700, null);
 					changeCount++;
-					if(changeCount % 2 == 0) {
+					if(changeCount % 8 == 0) {
 						talkCount++;
 					}
 					if(talkCount == 2) {
@@ -254,7 +255,7 @@ public class FightText extends KeyAdapter{
 				else {
 					g.drawImage(grogoEmblem.get(talkCount), Game.camX + 210, Game.camY + 700, null);
 					changeCount++;
-					if(changeCount % 2 == 0) {
+					if(changeCount % 8 == 0) {
 						talkCount++;
 					}
 					if(talkCount == 2) {
@@ -279,13 +280,13 @@ public class FightText extends KeyAdapter{
 				if(doneCount < 11)handleScene(doneCount,g);
 				
 	
-				if(doneCount == 0 || doneCount == 1) {
-					g.drawImage(elephantEmblem.get(0), Game.camX + 210, Game.camY + 700, null);
+				if(doneCount == 0 || doneCount == 1 && enemyState == ENEMYSTATE.ELEPHANT) {
+					g.drawImage(elephantEmblem.get(0), Game.camX + 210, Game.camY + 680, null);
 				}
-				else if(doneCount >= 2 && doneCount <= 8) {
-					g.drawImage(zatolibEmblem.get(0), Game.camX + 210, Game.camY + 700, null);
+				else if(doneCount >= 2 && doneCount <= 8 && enemyState == ENEMYSTATE.ZATOLIB) {
+					g.drawImage(zatolibEmblem.get(0), Game.camX + 230, Game.camY + 700, null);
 				}
-				else {
+				else if(doneCount > 8 && enemyState == ENEMYSTATE.GROGZATOLIB){
 					g.drawImage(grogoEmblem.get(0), Game.camX + 210, Game.camY + 700, null);
 				}
 			}

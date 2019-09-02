@@ -59,10 +59,7 @@ public class Pillar extends GameObject{
 		// TODO Auto-generated method stub
 			g.drawImage(Game.dungeonTiles.get(num), (int)x, (int)y, null);
 		//	g.drawRect((int)x, (int)y-48, 48, 144);
-			if(Game.pillarOrder != 4) {
-				//draw select button above pillars
-			}
-		
+			
 		
 	}
 	@Override
@@ -85,11 +82,12 @@ public class Pillar extends GameObject{
 			if(selected == false) {
 				selected = true;
 				if(Game.pillarOrder == order) {
-					AudioPlayer.getSound("gateOpen").play(1, (float).1);
+					AudioPlayer.getSound("pillarTouch").play(1, (float).1);
 					Game.pillarOrder++;
 					if(Game.pillarOrder == 4) {
 						handler.addObject(new Stair(3072, 3024, ID.NonEnemy, 8, handler));
 						HUD.HEALTH = HUD.maxHealth;
+						AudioPlayer.getSound("pillarFinish").play(1, (float).5);
 					}
 					return true;
 				}
