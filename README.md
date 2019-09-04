@@ -11,13 +11,12 @@ The story follows an alien named Povy, who stumbles upon a crystal that gives hi
 # Non-Combat Gameplay
 The non-combat gameplay is rather simple in that it mostly consists of navigating the map, solving puzzles, avoiding traps, and opening chests for items.
 
-![sc1](https://user-images.githubusercontent.com/43187188/51143670-09db5c80-181d-11e9-974a-1c32a6abc3a8.jpg)
-![sc3](https://user-images.githubusercontent.com/43187188/51143675-0cd64d00-181d-11e9-88e6-5c2bc3ede22c.jpg)
+
 
 
 # Combat Gameplay
 In the turn-based combat mode, Povy's attack menu consists of two regular attacks, laser blaster and pummel, which can be further upgraded with experience from defeating enemies. There is a run option to attempt escaping the battle and an item option to use an item acquired during gameplay (health, attack boost, defense boost). There is also an ally option: allies are different NPCs that Povy encounters throughout his journey. Every ally has a different type of way to aid Povy, and once they ally meter is fully charged(every 3 turns), Povy can call on one of them during battle. Lastly, there is a "special" option, which once a certain combo of moves is used, Povy can utilize the power he gained from the crystal. New combos and "special" attacks are unlocked as the game progresses and Povy learns to control the power bestowed upon him. Once a move is selected, the enemy-turn with consist of an action, usually an attack on Povy. Once an enemy is defeated, Povy will gain experience. Once enough experience is gained, the user can upgrade one of four areas: health, ally moves, laser blaster, or pummel.
 
-![sc5](https://user-images.githubusercontent.com/43187188/51143681-0fd13d80-181d-11e9-9006-92691a1621b6.PNG)
-![sc2](https://user-images.githubusercontent.com/43187188/51143672-0b0c8980-181d-11e9-9d4d-3572e25767dd.jpg)
-![sc4](https://user-images.githubusercontent.com/43187188/51143679-0ea01080-181d-11e9-96c9-a18cd302cac0.jpg)
+
+![screen2](https://user-images.githubusercontent.com/43187188/64223771-21964c80-cea3-11e9-8ad8-cf84c4c6d152.png)
+
