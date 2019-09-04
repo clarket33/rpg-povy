@@ -11,7 +11,7 @@ The story follows an alien named Povy, who stumbles upon a crystal that gives hi
 # Non-Combat Gameplay
 The non-combat gameplay is rather simple in that it mostly consists of navigating the map, solving puzzles, avoiding traps, and opening chests for items.
 
-
+![screen1](https://user-images.githubusercontent.com/43187188/64223804-3e328480-cea3-11e9-804e-f74e0f9c06de.PNG)
 
 
 # Combat Gameplay
