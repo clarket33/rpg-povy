@@ -15,7 +15,7 @@ public class ItemPouch {
 	
 	public ItemPouch() {
 		items = new LinkedHashMap<Item, Integer>();
-		/**
+		
 		addItem(new Item(Item.ItemType.SmallHP));
 		addItem(new Item(Item.ItemType.LargeHP));
 		addItem(new Item(Item.ItemType.MaxHP));
@@ -23,7 +23,7 @@ public class ItemPouch {
 		addItem(new Item(Item.ItemType.LargeDefenseBoost));
 		addItem(new Item(Item.ItemType.SmallAttackBoost));
 		addItem(new Item(Item.ItemType.SmallDefenseBoost));
-		**/
+		
 		
 		
 		
@@ -132,16 +132,16 @@ public class ItemPouch {
 			s+= " x";
 			s += items.get(cur).toString();
 			if(cur.toString().contains("Large Attack") ||  cur.toString().contains("Large Defense")) {
-				g.drawString(s, Game.camX + 555, y + g.getFontMetrics().getHeight());
-				g.drawImage(cur.getImage(), Game.camX+479, Game.camY+imgY, null);
+				g.drawString(s, Game.camX + 240, y + g.getFontMetrics().getHeight());
+				g.drawImage(cur.getImage(), Game.camX+164, Game.camY+imgY, null);
 			}
 			else if(cur.toString().contains("Small Attack") || cur.toString().contains("Small Defense")) {
-				g.drawString(s, Game.camX + 540, y + g.getFontMetrics().getHeight());
-				g.drawImage(cur.getImage(), Game.camX+472, Game.camY+imgY, null);
+				g.drawString(s, Game.camX + 220, y + g.getFontMetrics().getHeight());
+				g.drawImage(cur.getImage(), Game.camX+150, Game.camY+imgY, null);
 			}
 			else{
-				g.drawString(s, Game.camX + 560, y + g.getFontMetrics().getHeight());
-				g.drawImage(cur.getImage(), Game.camX+482, Game.camY+imgY, null);
+				g.drawString(s, Game.camX + 250, y + g.getFontMetrics().getHeight());
+				g.drawImage(cur.getImage(), Game.camX+164, Game.camY+imgY, null);
 			}
 			
 			y+=g.getFontMetrics().getHeight()*3.6;

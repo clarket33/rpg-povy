@@ -51,7 +51,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 	public static boolean overAnAlly = false, overAnOutfit = false;
 	public static int xValForDrawingAlly, xValForDrawingAttire, gameOverCount = 0, gameOverSpeed = 0;
 	
-	private BufferedImage text;
+	private BufferedImage text, itemText;
 	private BufferedImage allyCover;
 	public static int overItemY = 0;
 	//public static int yItem = 198;
@@ -78,9 +78,11 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 		curItemOverLst = new ArrayList<String>();
 		text = null;
 		allyCover = null;
+		itemText = null;
 		
 		try {
 	        text = ImageIO.read(new File("res/textbox.png"));
+	        itemText = ImageIO.read(new File("res/itemText.png"));
 	        allyCover = ImageIO.read(new File("res/allyCover.png"));
 	    } catch (IOException e) {
 	    	e.printStackTrace();
@@ -242,7 +244,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				}
 			}
 			if(pauseState == PauseState.ItemScreen) {
-				if(mouseOver(mx, my, 430, 78, 36, 36)) {
+				if(mouseOver(mx, my, 112, 78, 36, 36)) {
 					backToRegFromItem = true;
 				}
 				else {
@@ -251,7 +253,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				int yItemP = 198;
 				//System.out.println(Game.itemPouch.getItemAmnt());
 				for(int i = 0; i < Game.itemPouch.getItemAmnt(); i++) {
-					if(mouseOver(mx, my, 482, yItemP, 320, 78)) {
+					if(mouseOver(mx, my, 164, yItemP, 320, 78)) {
 						overItem = true;
 						overItemY = yItemP;
 						break;
@@ -704,23 +706,21 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 				}
 				
 				if(overItem == true) {
-					Font fo = new Font("Cooper Black", 1, 33);
+					Font fo = new Font("verdana", 1, 22);
 					g.setColor(new Color(106, 215, 48));
 					g.setFont(fo);
-					g.drawImage(itemCover, Game.camX+482, Game.camY + overItemY, null);
-					if(overItemY > 460) g.drawImage(text, Game.camX + 120, Game.camY + overItemY - 300, null);
-					else g.drawImage(text, Game.camX + 120, Game.camY + overItemY + 75, null);
+					g.drawImage(itemCover, Game.camX+164, Game.camY + overItemY, null);
+					g.drawImage(itemText, Game.camX + 480, Game.camY + 346, null); //Game.camY + overItemY - 100
 					if(curItemOver != null) {
 						curItemOverLst = curItemOver.itemDescript();
 						int ySpot = 0;
 						if(curItemOverLst.size() == 1) {
-							if(overItemY > 460) drawCenteredString(g, curItemOverLst.get(0), new Rectangle(Game.camX+20, Game.camY +overItemY - 200, Game.WIDTH, 50), fo);
-							else drawCenteredString(g, curItemOverLst.get(0), new Rectangle(Game.camX+20, Game.camY + overItemY + 200, Game.WIDTH, 50), fo);
+							drawCenteredString(g, curItemOverLst.get(0), new Rectangle(Game.camX+480, Game.camY +406, 790, 150), fo);
+						
 						}
 						else{
 							for(int i = 0; i < curItemOverLst.size(); i++) {
-								if(overItemY > 460) drawCenteredString(g, curItemOverLst.get(i), new Rectangle(Game.camX+20, Game.camY + overItemY - 220 + ySpot, Game.WIDTH, 50), fo);
-								else  drawCenteredString(g, curItemOverLst.get(i), new Rectangle(Game.camX+20, Game.camY + overItemY + 150 + ySpot, Game.WIDTH, 50), fo);
+								drawCenteredString(g, curItemOverLst.get(i), new Rectangle(Game.camX+480, Game.camY + 370 + ySpot, 790, 150), fo);
 								//g.drawString(curItemOverLst.get(i), Game.camX + 390, Game.camY + 750 + ySpot);
 								ySpot += 35;
 							}
@@ -730,24 +730,26 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 			}
 			if(pauseState == PauseState.ItemUse) {
 				g.drawImage(itemMenu.get(0), Game.camX, Game.camY, null);
-				Game.itemPouch.render(g);
-				Font fo = new Font("Cooper Black", 1, 33);
-				g.setColor(new Color(106, 215, 48));
-				g.setFont(fo);
-				g.drawImage(itemCover, Game.camX+482, Game.camY + overItemY, null);
-				if(overItemY > 460) g.drawImage(text, Game.camX + 120, Game.camY + overItemY - 300, null);
-				else g.drawImage(text, Game.camX + 120, Game.camY + overItemY + 75, null);
+				Game.itemPouch.render(g);		
 				if(curItemOver != null) {
-					curItemOverLst = curItemOver.itemDescript();
-					int ySpot = 0;
-					if(curItemOverLst.size() == 1) {
-						drawCenteredString(g, curItemOverLst.get(0), new Rectangle(Game.camX+20, Game.camY + 740, Game.WIDTH, 50), fo);
-					}
-					else{
-						for(int i = 0; i < curItemOverLst.size(); i++) {
-							drawCenteredString(g, curItemOverLst.get(i), new Rectangle(Game.camX+20, Game.camY + 700 + ySpot, Game.WIDTH, 50), fo);
-							//g.drawString(curItemOverLst.get(i), Game.camX + 390, Game.camY + 750 + ySpot);
-							ySpot += 35;
+					Font fo = new Font("verdana", 1, 22);
+					g.setColor(new Color(106, 215, 48));
+					g.setFont(fo);
+					g.drawImage(itemCover, Game.camX+164, Game.camY + overItemY, null);
+					g.drawImage(itemText, Game.camX + 480, Game.camY + 346, null); //Game.camY + overItemY - 100
+					if(curItemOver != null) {
+						curItemOverLst = curItemOver.itemDescript();
+						int ySpot = 0;
+						if(curItemOverLst.size() == 1) {
+							drawCenteredString(g, curItemOverLst.get(0), new Rectangle(Game.camX+480, Game.camY +406, 790, 150), fo);
+						
+						}
+						else{
+							for(int i = 0; i < curItemOverLst.size(); i++) {
+								drawCenteredString(g, curItemOverLst.get(i), new Rectangle(Game.camX+480, Game.camY + 370 + ySpot, 790, 150), fo);
+								//g.drawString(curItemOverLst.get(i), Game.camX + 390, Game.camY + 750 + ySpot);
+								ySpot += 35;
+							}
 						}
 					}
 				}
@@ -1066,7 +1068,7 @@ public class PauseScreen extends MouseAdapter implements MouseMotionListener{
 			}
 		}
 		else if(Game.gameState == Game.STATE.PostBattle) {
-			System.out.println(overNext);
+			//System.out.println(overNext);
 			if(ExperienceBar.levelUp != true && Battle.expToBeAdded == 0) {
 				if(overNext) {//mouseOver(mx, my, 483, 716, 278, 64)) {
 					Game.gameState = Game.STATE.Game;

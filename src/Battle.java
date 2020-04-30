@@ -1062,7 +1062,7 @@ public class Battle{
 		       				g.drawImage(text, Game.camX + 120, Game.camY + 645, null);
 		       				String ready = "";
 		       				Color c;
-		       				if(Battle.useAlly) {
+		       				if(Battle.useAlly && !Game.firstBattle) {
 		       					c = Color.green;
 		       					ready = "Ready!";
 		       				}
@@ -1166,7 +1166,7 @@ public class Battle{
 		       				g.drawImage(text, Game.camX + 120, Game.camY + 645, null);
 		       				String ready = "";
 		       				Color c;
-		       				if(Battle.useAlly) {
+		       				if(Battle.useAlly && !Game.firstBattle) {
 		       					c = Color.green;
 		       					ready = "Ready!";
 		       				}

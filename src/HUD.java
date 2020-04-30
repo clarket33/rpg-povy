@@ -108,16 +108,18 @@ public class HUD {
 		}
 		
 		if(Game.gameState == Game.STATE.Battle) {
-			if(allyCount != 3) g.drawImage(allyMeter.get(allyCount), 800, 0, null);
-			else {
-				g.drawImage(allyMeter.get(meterCount), 800, 0, null);
-				changeCount++;
-				if(changeCount % 10 == 0) {
-					changeCount = 0;
-					meterCount++;
-				}
-				if(meterCount == 9) {
-					meterCount = 3;
+			if(!Game.firstBattle) {
+				if(allyCount != 3) g.drawImage(allyMeter.get(allyCount), 800, 0, null);
+				else {
+					g.drawImage(allyMeter.get(meterCount), 800, 0, null);
+					changeCount++;
+					if(changeCount % 10 == 0) {
+						changeCount = 0;
+						meterCount++;
+					}
+					if(meterCount == 9) {
+						meterCount = 3;
+					}
 				}
 			}
 		}

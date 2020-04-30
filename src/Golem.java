@@ -71,7 +71,7 @@ public class Golem extends GameObject{
 			health = 60;
 		}
 		if(g == GolemType.firstGolem) {
-			health = 3;
+			health = 25;
 		}
 		maxHealth = health;
 		

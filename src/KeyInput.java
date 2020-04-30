@@ -695,7 +695,7 @@ public class KeyInput extends KeyAdapter{
 					}
 				}
 				if(key == KeyEvent.VK_ENTER || key == KeyEvent.VK_E) {
-					if(Battle.menuPosition == 4 && Battle.useAlly == false) {
+					if(Battle.menuPosition == 4 && (Battle.useAlly == false || Game.firstBattle)) {
 						AudioPlayer.getSound("errorGate").play(1, (float).1);
 						return;
 					}
